@@ -34,6 +34,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
+          package-manager-cache: false
           node-version: ${{ matrix.node }}
 
       - name: Syntax check scripts
@@ -55,11 +56,10 @@ jobs:
         shell: bash
         run: |
           set -e
-          node skills/ux-doctor/scripts/rule.mjs E-12 | grep -q "E-12"
-          # contrast.mjs exits 1 on failing ratios; #000 on #fff must pass
-          node skills/ux-doctor/scripts/contrast.mjs '#000000' '#ffffff' | grep -q '"AA_normal":true'
-          # cta-scan must flag the duplicate-CTA fixture
-          node skills/ux-doctor/scripts/cta-scan.mjs reference/fixtures/dup-cta.html | grep -q DUP_IN_VIEWPORT
+          # capture output first: `cmd | grep -q` can SIGPIPE the producer under pipefail
+          out=$(node skills/ux-doctor/scripts/rule.mjs E-12); grep -q "E-12" <<<"$out"
+          out=$(node skills/ux-doctor/scripts/contrast.mjs '#000000' '#ffffff'); grep -q '"AA_normal":true' <<<"$out"
+          out=$(node skills/ux-doctor/scripts/cta-scan.mjs reference/fixtures/dup-cta.html); grep -q DUP_IN_VIEWPORT <<<"$out"
 
   ci-ok:
     name: CI ok
