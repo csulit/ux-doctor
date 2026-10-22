@@ -13,6 +13,7 @@ fix:      <concrete, token-based change with target values> — keeps: <the visi
 - The `where` anchor must survive edits: file + selector/symbol/component name + `line N @ <short sha>`. Lines go stale after edits; the name stays findable.
 - Evidence labels (verified | measured | inferred; `inferred (no render)` without a render) are defined in `../SKILL.md`.
 - No good option? Write `fix: needs a design decision` and give none. A fix blocked by a project rule is not a finding fix: list it once as `Blocked by project rule — <file:line>`.
+- `keeps:` is a claim the restyle verifies; for hide/remove/move fixes state the end state per scroll state (`at top: …; after the hero scrolls out: …`) and what the freed space becomes.
 - One finding per distinct problem; repeats go under one finding as `+7 more: ...`.
 
 ## Dimensions and score

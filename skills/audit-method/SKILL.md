@@ -45,6 +45,7 @@ Apply severity, scoring and the report template from `../ux-doctor/references/fi
 
 ## Quality bar
 - Cap ~25 findings; merge repeats. No finding without rule ID + citation + stable anchor + evidence label + fix (or `needs a design decision`).
+- A fix that hides, removes or moves a control states its end state per scroll state and what the freed space becomes; `keeps:` names only what the fix provably preserves (the restyle checks it afterwards).
 - Don't flag intentional brand decisions consistent across the product unless they break contrast/legibility.
 - Distinguish playbook (`p.N`), web (`web:<slug>`, `source: web`) and `(general practice)`.
 - Include one **"AI-look tells"** line (generic gradients/blobs, adjective headlines, equal-weight CTAs, icon-circle feature rows — rules W1-80..W1-84; unchanged framework-default palette/type/spacing is a `(general practice)` note, not scored) when auditing a landing page or when most colours/type/spacing are framework defaults (see `ux-web-patterns`).
