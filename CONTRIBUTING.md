@@ -25,4 +25,8 @@ CI runs all three, fails if generated files are stale, and smoke-tests the CLI h
 
 ## Pull requests
 
-Keep them focused. Use the PR template checklist. Be kind: all participation falls under the [Code of Conduct](CODE_OF_CONDUCT.md).
+Keep them focused. Use the PR template checklist.
+
+**Tests:** new functionality and bug fixes come with automated tests in the same PR (under `test/`, run by `npm test`), and CI must be green before merge.
+
+Be kind: all participation falls under the [Code of Conduct](CODE_OF_CONDUCT.md).
