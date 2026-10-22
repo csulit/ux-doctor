@@ -1,0 +1,41 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write # create the GitHub release
+      id-token: write # sign build provenance
+      attestations: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22"
+      - name: Tag matches package.json version
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          V=$(node -p "require('./package.json').version")
+          [ "$TAG" = "v$V" ] || { echo "::error::tag $TAG != package.json v$V"; exit 1; }
+      - run: npm run validate
+      - name: Pack
+        run: npm pack
+      - uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-path: "ux-doctor-*.tgz"
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: gh release create "$TAG" ux-doctor-*.tgz --generate-notes --verify-tag --title "$TAG"
