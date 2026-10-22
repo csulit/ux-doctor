@@ -1,0 +1,22 @@
+{
+  "name": "ux-doctor-marketplace",
+  "owner": {
+    "name": "csulit",
+    "url": "https://github.com/csulit"
+  },
+  "plugins": [
+    {
+      "name": "ux-doctor",
+      "source": "./",
+      "description": "UI/UX audit, design review and restyle based on The UI/UX Playbook",
+      "author": {
+        "name": "csulit",
+        "url": "https://github.com/csulit"
+      },
+      "homepage": "https://github.com/csulit/ux-doctor"
+    }
+  ],
+  "metadata": {
+    "description": "UI/UX audit, design review and restyle plugin"
+  }
+}

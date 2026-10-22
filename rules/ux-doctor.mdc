@@ -1,0 +1,13 @@
+---
+description: "Use the ux-doctor playbook rules when auditing, reviewing or restyling UI (styling, layout, typography, colour, spacing, forms)."
+alwaysApply: false
+---
+
+When working on UI design quality, use the ux-doctor skills instead of ad-hoc taste:
+- Load the `ux-doctor` skill, then the relevant `ux-*` knowledge skill(s); cite playbook rule IDs (e.g. `E-12`) for design judgements.
+- Workflows: `/ux-audit` (score a UI), `/ux-review` (critique a change), `/ux-restyle` (apply fixes), `/ux-rules` (look up rules).
+- Project rules (`AGENTS.md`, `CLAUDE.md`, `.cursor/rules/*`, `DESIGN.md`) outrank playbook rules; read them first and never propose a fix that breaches one.
+- Measure instead of guessing (`<ux-doctor skill folder>` = the directory containing the `ux-doctor` skill's `SKILL.md`, e.g. `skills/ux-doctor`):
+  - `node <ux-doctor skill folder>/scripts/contrast.mjs <fg> <bg> [--large] [--over <hex>]` (`--over` flattens translucent colours)
+  - `node <ux-doctor skill folder>/scripts/cta-scan.mjs <url|file.html> [--render] [--shots <dir>]` (CTAs/primaries in the first viewport, duplicates; look at the screenshots; `--render` needs Node ≥ 22; `--shots` writes only under `.ux-doctor/shots/`, never in `/ux-review` subagents or `/ux-restyle --dry-run`)
+  - `node <ux-doctor skill folder>/scripts/rule.mjs <ID|tag|keyword>` (rule lookup); known rule conflicts: `references/rule-tensions.md`.

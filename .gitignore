@@ -1,0 +1,7 @@
+*.pdf
+reference/pages/
+reference/render/
+.ux-doctor/
+node_modules/
+.DS_Store
+reference/web/

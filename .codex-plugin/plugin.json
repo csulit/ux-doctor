@@ -1,0 +1,18 @@
+{
+  "name": "ux-doctor",
+  "version": "0.1.0",
+  "description": "Audit, design-review and restyle UIs against 188 rules from The UI/UX Playbook (skills: audit-method, review-method, restyle-method + 8 knowledge skills).",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "UX Doctor",
+    "shortDescription": "UI audit, design review and restyle",
+    "category": "Design"
+  },
+  "author": {
+    "name": "csulit",
+    "url": "https://github.com/csulit"
+  },
+  "homepage": "https://github.com/csulit/ux-doctor",
+  "repository": "https://github.com/csulit/ux-doctor",
+  "license": "MIT"
+}

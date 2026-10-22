@@ -1,0 +1,51 @@
+{
+  "name": "ux-doctor",
+  "version": "0.1.0",
+  "description": "UI/UX audit, design review and restyle skills and commands based on The UI/UX Playbook (Pi package; also a Claude Code, Codex and Cursor plugin).",
+  "keywords": [
+    "pi-package",
+    "ux",
+    "ui",
+    "design-review"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20.1"
+  },
+  "files": [
+    "skills",
+    "commands",
+    "agents",
+    "rules",
+    "scripts",
+    "platforms",
+    ".claude-plugin",
+    ".codex-plugin",
+    ".cursor-plugin",
+    "AGENTS.md",
+    "LICENSE",
+    "NOTICE.md"
+  ],
+  "scripts": {
+    "build": "node scripts/build-knowledge.mjs && node scripts/sync-platforms.mjs",
+    "validate": "node scripts/validate.mjs"
+  },
+  "pi": {
+    "skills": [
+      "./skills"
+    ],
+    "prompts": [
+      "./commands/*.md"
+    ]
+  },
+  "author": "csulit",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/csulit/ux-doctor.git"
+  },
+  "homepage": "https://github.com/csulit/ux-doctor",
+  "bugs": {
+    "url": "https://github.com/csulit/ux-doctor/issues"
+  }
+}

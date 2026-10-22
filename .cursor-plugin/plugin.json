@@ -1,0 +1,19 @@
+{
+  "name": "ux-doctor",
+  "version": "0.1.0",
+  "description": "Audit, design-review and restyle UIs against 188 rules from The UI/UX Playbook.",
+  "keywords": [
+    "ui",
+    "ux",
+    "design-review",
+    "audit",
+    "restyle"
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "csulit",
+    "url": "https://github.com/csulit"
+  },
+  "homepage": "https://github.com/csulit/ux-doctor",
+  "repository": "https://github.com/csulit/ux-doctor"
+}
