@@ -239,3 +239,5 @@
 | W3-51 | Apply skeletons only where they help and render user actions optimistically | web:skeleton-loading | low | states, motion, interaction-cost |
 | W3-52 | Drive scroll effects with CSS scroll and view timelines | web:scroll-driven-animations | low | motion, craft |
 | W3-53 | Combine sticky positioning with scroll timelines | web:scroll-driven-animations | low | motion, navigation, craft |
+| W4-01 | Size the skeleton from the measured loaded UI | web:skeleton-measure | medium | states, layout, craft |
+| W4-02 | Prove the skeleton-to-content swap causes no layout shift | web:skeleton-measure | medium | states, layout, mobile |

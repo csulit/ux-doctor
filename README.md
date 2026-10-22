@@ -1,6 +1,6 @@
 # ux-doctor
 
-Audit, design-review and restyle UIs against **188 rules extracted page-by-page from *The UI/UX Playbook*** (uxpeak, 144 pp) plus a secondary layer of 237 web-pattern tips (paraphrased from public UX pattern pages). One canonical source, packaged for **Claude Code, Codex, Cursor and Pi**.
+Audit, design-review and restyle UIs against **188 rules extracted page-by-page from *The UI/UX Playbook*** (uxpeak, 144 pp) plus a secondary layer of 239 web-pattern tips (paraphrased from public UX pattern pages). One canonical source, packaged for **Claude Code, Codex, Cursor and Pi**.
 
 ## Commands (4)
 | Command | What it does | Writes files? |
@@ -19,7 +19,7 @@ Restyle command per platform: `/ux-restyle --from-audit` (Pi, Cursor), `/ux-doct
 
 ## Skills (12) and agents (3)
 - Workflow skills: `audit-method`, `review-method`, `restyle-method`; core `ux-doctor` (severity, scoring, finding format).
-- Knowledge skills (progressive disclosure: `SKILL.md` → `references/index.md` → `references/rules.md`): `ux-hierarchy-clarity`, `ux-layout-spacing`, `ux-depth-craft`, `ux-color`, `ux-typography`, `ux-interaction-cost`, `ux-ui-patterns`, and `ux-web-patterns` (secondary: 237 paraphrased tips from public UX pattern pages — states, motion, focus/touch, tokens, AI-look tells; labelled `source: web`).
+- Knowledge skills (progressive disclosure: `SKILL.md` → `references/index.md` → `references/rules.md`): `ux-hierarchy-clarity`, `ux-layout-spacing`, `ux-depth-craft`, `ux-color`, `ux-typography`, `ux-interaction-cost`, `ux-ui-patterns`, and `ux-web-patterns` (secondary: 239 paraphrased tips from public UX pattern pages — states, motion, focus/touch, tokens, AI-look tells; labelled `source: web`).
 - Agents: `ux-auditor` (read-only, run ×4 in parallel by dimension group), `ux-reviewer` (read-only), `ux-restyler` (edits one approved batch).
 
 ## Install
@@ -39,7 +39,7 @@ Requirements: Node ≥ 20.1 for the bundled scripts; `cta-scan.mjs --render` nee
 skills/            Agent Skills (shared by all platforms)
 commands/          4 slash commands (Claude Code, Cursor, Pi)
 agents/            subagents (Claude Code, Cursor); platforms/codex/agents = generated TOML
-skills/ux-doctor/references/rules.json   all 425 rules (188 playbook + 237 web), machine readable
+skills/ux-doctor/references/rules.json   all 427 rules (188 playbook + 239 web), machine readable
 reference/         editable sources: extracted/*.md (playbook), extracted-web/*.md (web layer); generated: page-coverage.md; git-ignored: PDF, render/, pages/, web/
 scripts/           build-knowledge.mjs, sync-platforms.mjs, validate.mjs, check-paraphrase.mjs (dev)  (measuring tools ship with the skill: skills/ux-doctor/scripts/contrast.mjs, cta-scan.mjs, rule.mjs)
 ```
