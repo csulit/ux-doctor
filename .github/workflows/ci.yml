@@ -59,7 +59,10 @@ jobs:
           # capture output first: `cmd | grep -q` can SIGPIPE the producer under pipefail
           out=$(node skills/ux-doctor/scripts/rule.mjs E-12); grep -q "E-12" <<<"$out"
           out=$(node skills/ux-doctor/scripts/contrast.mjs '#000000' '#ffffff'); grep -q '"AA_normal":true' <<<"$out"
-          out=$(node skills/ux-doctor/scripts/cta-scan.mjs reference/fixtures/dup-cta.html); grep -q DUP_IN_VIEWPORT <<<"$out"
+          # cta-scan exits 1 when it finds flags, which is what this fixture should produce
+          rc=0; out=$(node skills/ux-doctor/scripts/cta-scan.mjs reference/fixtures/dup-cta.html) || rc=$?
+          [ "$rc" = 1 ] || { echo "::error::cta-scan exit $rc, expected 1"; exit 1; }
+          grep -q DUP_IN_VIEWPORT <<<"$out"
 
   ci-ok:
     name: CI ok
