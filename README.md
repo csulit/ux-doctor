@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/csulit/ux-doctor/actions/workflows/ci.yml/badge.svg)](https://github.com/csulit/ux-doctor/actions/workflows/ci.yml)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/csulit/ux-doctor/badge)](https://scorecard.dev/viewer/?uri=github.com/csulit/ux-doctor)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/15792/badge)](https://www.bestpractices.dev/projects/15792)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 Audit, design-review and restyle UIs against **188 rules extracted page-by-page from *The UI/UX Playbook*** (uxpeak, 144 pp) plus a secondary layer of 239 web-pattern tips (paraphrased from public UX pattern pages). One canonical source, packaged for **Claude Code, Codex, Cursor and Pi**.
