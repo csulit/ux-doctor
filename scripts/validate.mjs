@@ -31,9 +31,22 @@ if (ids.size !== rules.length) errs.push("duplicate rule IDs");
 // every rule ID cited in SKILL.md/agents/commands and in hand-written references/*.md (finding-format.md, rule-tensions.md, ...) must exist;
 // only the generated reference files are skipped
 const GENERATED = new Set(["rules.md", "index.md", "numeric-cheatsheet.md", "rules.json"]);
-for (const dir of ["skills", "commands", "agents"]) for (const f of readdirSync(join(root, dir), { recursive: true }).filter((n) => /\.md$/.test(n) && !(/(^|\/)references\//.test(n) && GENERATED.has(n.split("/").pop())))) {
+const handMd = (dir) => readdirSync(join(root, dir), { recursive: true }).map((n) => n.replaceAll("\\", "/")).filter((n) => /\.md$/.test(n) && !(/(^|\/)references\//.test(n) && GENERATED.has(n.split("/").pop()))); // "/" paths on Windows too
+for (const dir of ["skills", "commands", "agents"]) for (const f of handMd(dir)) {
   const txt = readFileSync(join(root, dir, f), "utf8");
   for (const m of txt.matchAll(/\b([A-H]-\d{2}|W\d-\d{2})\b/g)) if (!ids.has(m[1]) && !/^[A-H]-00$/.test(m[1])) errs.push(`${dir}/${f}: unknown rule ${m[1]}`);
+}
+// duplicate-CTA guidance has one canonical home (ux-hierarchy-clarity); other files point to it instead of restating it
+{
+  const read = (p) => (existsSync(join(root, p)) ? readFileSync(join(root, p), "utf8") : "");
+  const canon = "skills/ux-hierarchy-clarity/SKILL.md", low = read(canon).toLowerCase(), phrase = "outline-only only lowers major to minor", restated = [phrase, "hero cta a different job", "hide the header copy until"];
+  const weak = ["same-destination test", phrase, "never a resolution", "persistent conversion route", "at top:", "both scroll states", "prefers-reduced-motion", "no empty slot"].filter((c) => !low.includes(c));
+  if (weak.length) errs.push(`${canon}: canonical duplicate-CTA guidance was removed or weakened (missing: ${weak.join("; ")})`);
+  for (const dir of ["skills", "commands", "agents"]) for (const f of handMd(dir))
+    if (`${dir}/${f}` !== canon && restated.some((c) => read(`${dir}/${f}`).toLowerCase().includes(c))) errs.push(`${dir}/${f}: restates the duplicate-CTA fix — point to the same-destination test in ux-hierarchy-clarity instead`);
+  for (const p of ["skills/restyle-method/SKILL.md", "skills/ux-web-patterns/SKILL.md", "skills/ux-doctor/references/rule-tensions.md"])
+    if (!read(p).includes("same-destination test")) errs.push(`${p}: must point to the same-destination test in ux-hierarchy-clarity`);
+  if (!read("skills/restyle-method/SKILL.md").includes("keeps: verified")) errs.push("skills/restyle-method/SKILL.md: must require verifying audit `keeps:` claims (`keeps: verified`)");
 }
 // each skill's references/index.md lists every rule of that skill
 for (const s of skills.filter((x) => existsSync(join(root, "skills", x, "references/index.md")))) {

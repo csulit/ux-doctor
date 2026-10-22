@@ -10,6 +10,10 @@ All notable changes to this project are documented here. Format: [Keep a Changel
 - Version tracking: `package.json` is the source of truth, synced into the plugin manifests by `npm run build` and enforced by `npm run validate`; tag-driven release workflow (see RELEASING.md) with build provenance.
 - Community files: SECURITY, CONTRIBUTING, CODE_OF_CONDUCT, CODEOWNERS, issue and PR templates.
 
+### Fixed
+- Duplicate-CTA guidance now lives in one place (the same-destination test in `ux-hierarchy-clarity`): a fix must keep a persistent route to the destination at every scroll state, state its end state per scroll state, and re-check the vacated region at both scroll states, so a hidden header CTA is now checked for an orphaned slot.
+- Restyle verifies each audit `keeps:` claim after the change and reports `keeps: verified` or `keeps: broken`; `npm run validate` now guards the canonical guidance against removal, weakening or copy-paste drift.
+
 ## [0.1.0]
 
 ### Added
