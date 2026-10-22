@@ -52,6 +52,12 @@ jobs:
           npm run build
           git diff --exit-code || { echo "::error::Generated files are stale. Run 'npm run build' and commit the result."; exit 1; }
 
+      - name: Install dev dependencies (pinned by package-lock.json)
+        run: npm ci --ignore-scripts
+
+      - name: Fuzz / property tests
+        run: npm test
+
       - name: Smoke test CLI helpers
         shell: bash
         run: |

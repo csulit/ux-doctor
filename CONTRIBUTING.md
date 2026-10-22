@@ -1,19 +1,20 @@
 # Contributing
 
-Thanks for helping. Issues and PRs are welcome.
+Thanks for helping. Issues and PRs are welcome. To report a bug or suggest a rule, [open an issue](https://github.com/csulit/ux-doctor/issues/new/choose) using the templates; report vulnerabilities privately (see [SECURITY.md](SECURITY.md)).
 
 ## Setup
 
-Node ≥ 20.1, no dependencies to install.
+Node ≥ 20.1. The scripts have no runtime dependencies; the tests need `npm ci` (dev dependency: fast-check).
 
 ```sh
 npm run build      # regenerate skills/*/references, page-coverage.md, platforms/codex/agents/*.toml
 npm run validate   # structure, rule IDs, manifests
+npm test           # property-based fuzz tests for cta-scan
 ```
 
 Releases: see [RELEASING.md](RELEASING.md).
 
-CI runs both, fails if generated files are stale, and smoke-tests the CLI helpers.
+CI runs all three, fails if generated files are stale, and smoke-tests the CLI helpers.
 
 ## Where to edit
 

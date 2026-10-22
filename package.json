@@ -31,7 +31,8 @@
   "scripts": {
     "build": "node scripts/build-knowledge.mjs && node scripts/sync-platforms.mjs",
     "validate": "node scripts/validate.mjs",
-    "version": "npm run build && npm run validate && git add .claude-plugin .codex-plugin .cursor-plugin platforms CHANGELOG.md"
+    "version": "npm run build && npm run validate && git add .claude-plugin .codex-plugin .cursor-plugin platforms CHANGELOG.md",
+    "test": "node --test"
   },
   "pi": {
     "skills": [
@@ -49,5 +50,8 @@
   "homepage": "https://github.com/csulit/ux-doctor",
   "bugs": {
     "url": "https://github.com/csulit/ux-doctor/issues"
+  },
+  "devDependencies": {
+    "fast-check": "4.10.2"
   }
 }

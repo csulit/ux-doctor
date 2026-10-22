@@ -165,7 +165,8 @@ function parseCSS(css) {
       if (/^@media/i.test(head)) block([...media, head.slice(6).trim()]);
       else if (/^@(supports|layer|container|scope)/i.test(head)) block(media);
       else if (head.startsWith("@")) skip();
-      else { const end = css.indexOf("}", i), body = css.slice(i, end); i = end + 1; const decl = {};
+      else { const close2 = css.indexOf("}", i), end = close2 === -1 ? css.length : close2, body = css.slice(i, end); i = end + 1; // unterminated rule: consume to EOF (never rewind)
+        const decl = {};
         for (const d of body.split(";")) { const k = d.indexOf(":"); if (k > 0) decl[d.slice(0, k).trim().toLowerCase()] = d.slice(k + 1).replace(/!important/i, "").trim(); }
         for (const sel of head.split(/,(?![^(]*\))/)) { const mt = matcher(sel.trim()); if (mt) rules.push({ mt, decl, media, order: order++, spec: spec(sel) }); } }
     }
