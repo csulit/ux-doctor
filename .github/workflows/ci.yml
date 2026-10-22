@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: validate (${{ matrix.os }}, node ${{ matrix.node }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        node: ["20", "22", "24"]
+        include:
+          - os: macos-latest
+            node: "22"
+          - os: windows-latest
+            node: "22"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          package-manager-cache: false
+          node-version: ${{ matrix.node }}
+
+      - name: Syntax check scripts
+        shell: bash
+        run: |
+          set -e
+          for f in scripts/*.mjs skills/*/scripts/*.mjs; do node --check "$f"; done
+
+      - name: Validate skills, commands, rules and manifests
+        run: npm run validate
+
+      - name: Generated files are up to date
+        if: runner.os == 'Linux'
+        run: |
+          npm run build
+          git diff --exit-code || { echo "::error::Generated files are stale. Run 'npm run build' and commit the result."; exit 1; }
+
+      - name: Smoke test CLI helpers
+        shell: bash
+        run: |
+          set -e
+          # capture output first: `cmd | grep -q` can SIGPIPE the producer under pipefail
+          out=$(node skills/ux-doctor/scripts/rule.mjs E-12); grep -q "E-12" <<<"$out"
+          out=$(node skills/ux-doctor/scripts/contrast.mjs '#000000' '#ffffff'); grep -q '"AA_normal":true' <<<"$out"
+          # cta-scan exits 1 when it finds flags, which is what this fixture should produce
+          rc=0; out=$(node skills/ux-doctor/scripts/cta-scan.mjs reference/fixtures/dup-cta.html) || rc=$?
+          [ "$rc" = 1 ] || { echo "::error::cta-scan exit $rc, expected 1"; exit 1; }
+          grep -q DUP_IN_VIEWPORT <<<"$out"
+
+  ci-ok:
+    name: CI ok
+    if: always()
+    needs: [validate]
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Require every job to pass
+        env:
+          RESULT: ${{ needs.validate.result }}
+        run: |
+          [ "$RESULT" = "success" ] || { echo "::error::validate result: $RESULT"; exit 1; }

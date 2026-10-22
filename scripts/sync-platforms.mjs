@@ -23,3 +23,13 @@ for (const f of readdirSync(join(root, "agents")).filter((n) => n.endsWith(".md"
   writeFileSync(join(out, f.replace(/\.md$/, ".toml")), toml);
   console.log("wrote", join("platforms/codex/agents", f.replace(/\.md$/, ".toml")));
 }
+
+// Version: package.json is the single source of truth; mirror it into each plugin manifest (formatting preserved).
+const version = JSON.parse(readFileSync(join(root, "package.json"), "utf8")).version;
+for (const m of [".claude-plugin/plugin.json", ".codex-plugin/plugin.json", ".cursor-plugin/plugin.json"]) {
+  const p = join(root, m), txt = readFileSync(p, "utf8");
+  const next = txt.replace(/^(\s*"version":\s*)"[^"]*"/m, `$1${JSON.stringify(version)}`);
+  if (next === txt) continue;
+  writeFileSync(p, next);
+  console.log("synced version", version, "->", m);
+}

@@ -1,0 +1,26 @@
+name: Bug report
+description: Something in a skill, command, rule or script is wrong
+labels: [bug]
+body:
+  - type: input
+    id: platform
+    attributes:
+      label: Platform
+      description: Claude Code, Codex, Cursor, Pi, or CLI scripts only
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened vs. what you expected
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Command or prompt used, rule ID(s) involved, a URL or HTML snippet if relevant
+  - type: input
+    id: version
+    attributes:
+      label: ux-doctor version / commit

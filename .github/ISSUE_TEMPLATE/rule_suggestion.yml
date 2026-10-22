@@ -1,0 +1,21 @@
+name: Rule suggestion or correction
+description: Propose a new rule, or fix a wrong or missing one
+labels: [rules]
+body:
+  - type: input
+    id: rule
+    attributes:
+      label: Rule ID (if correcting an existing one)
+      placeholder: E-12
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: State the rule in your own words and how an audit would check it
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: Playbook page number or public URL (do not paste copyrighted text)
