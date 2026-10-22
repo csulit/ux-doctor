@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // cta-scan: repeated and competing calls to action, per page and per first viewport.
 // Usage: node scripts/cta-scan.mjs <url | file.html | -> [--render] [--shots <dir>] [--json] [--timeout <s>]
-//          [--desktop 1440x900] [--mobile 390x844] [--scheme light|dark] [--filled <class-regex>] [--base <url>] [--help]
+//          [--desktop 1440x900] [--mobile 390x844] [--scheme light|dark] [--filled <class-list>] [--base <url>] [--help]
 // Static (default): parses the HTML plus inline/linked CSS; "first viewport" ≈ header/banner + first block
 //   of <main> (DOM order, approximate). APPROXIMATION: if finding the content container meant descending through
 //   single-child wrappers (e.g. <main><section>…</section></main>, or main > div.container > sections), the first TWO
@@ -25,23 +25,24 @@
 // Limits: static mode only approximates the first viewport (header + first <main> block, no real layout, simple
 //   selectors, no JS-rendered content; prefer --render when a dev server is running). Prominence is a heuristic
 //   (saturated fill = primary, other fill = neutral-fill, border/inset shadow = outline, else ghost/link): a
-//   saturated neutral brand colour or a gradient can be misjudged; --filled <class-regex> forces "primary" for
-//   matching class names. A hint of "major"/"minor" is a starting point for the auditor, not a verdict.
-import { readFileSync, writeFileSync, existsSync, mkdtempSync, mkdirSync, rmSync } from "node:fs";
+//   saturated neutral brand colour or a gradient can be misjudged; --filled <class-list> forces "primary" for
+//   class names containing any of the given literal substrings (comma/space separated, * = wildcard; NOT a regex). A hint of "major"/"minor" is a starting point for the auditor, not a verdict.
+import { readFileSync, writeFileSync, existsSync, mkdtempSync, mkdirSync, rmSync, realpathSync } from "node:fs";
 import { spawn, execFileSync } from "node:child_process";
 import { tmpdir } from "node:os";
-import { join, dirname, resolve as resolvePath } from "node:path";
+import { join, dirname, resolve as resolvePath, relative as relativePath, isAbsolute } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const USAGE = `usage: cta-scan.mjs <url|file.html|-> [--render] [--shots dir] [--json] [--timeout s] [--desktop WxH] [--mobile WxH]
-                    [--scheme light|dark] [--filled class-regex] [--base url] [--help]
+                    [--scheme light|dark] [--filled class-list] [--base url] [--help]
   static (default): HTML+CSS heuristics, approximate first viewport
   --render          measure in an installed Chrome/Chromium/Edge (Node >= 22; CHROME_PATH overrides)
   --shots dir       with --render: save first-viewport screenshots <page>-desktop.png / -mobile.png
   --json            machine-readable output
   --timeout s       overall watchdog in seconds (default 60); exit 2 when exceeded
   --base url        base for relative links of a local file or stdin (e.g. https://example.com/)
-  --filled regex    class names that always count as a primary (filled) CTA
+  --filled list     class-name substrings (comma/space separated, * = wildcard, literal not regex; max 200 chars,
+                    20 entries) whose elements always count as a primary (filled) CTA, e.g. --filled "btn-main,hero-*-cta"
 exit: 0 no flags, 1 flags (DUP_IN_VIEWPORT, MULTI_PRIMARY_IN_VIEWPORT), 2 bad input / page not loadable / no interactive elements / browser failure / timeout`;
 const die = (m) => { console.error(m); process.exit(2); };
 const argv = process.argv.slice(2), VALUED = ["--desktop", "--mobile", "--filled", "--base", "--shots", "--scheme", "--timeout"], BOOL = ["--render", "--json", "--help", "-h"];
@@ -62,7 +63,13 @@ if (RENDER && target === "-") die("--render needs a URL or a file, not stdin");
 const wh = (s, k) => { const m = /^(\d{2,5})x(\d{2,5})$/.exec(s); if (!m) die(`${k} must look like 1440x900 (got "${s}")`); return { w: +m[1], h: +m[2] }; };
 const VIEWS = { desktop: wh(opt("--desktop", "1440x900"), "--desktop"), mobile: wh(opt("--mobile", "390x844"), "--mobile") };
 if (opt("--scheme") && !/^(light|dark)$/.test(opt("--scheme"))) die(`--scheme must be light or dark (got "${opt("--scheme")}")`);
-const FILLED_RE = (() => { if (!opt("--filled")) return null; try { return new RegExp(opt("--filled")); } catch (e) { return die(`--filled is not a valid regex: ${e.message}`); } })();
+// --filled is a list of literal class-name substrings ("*" = wildcard), never a raw regex: every segment is escaped.
+const escapeRegExp = (str) => str.replace(/[.*+?^${}()|[\]\\\/-]/g, "\\$&");
+const FILLED_RE = (() => { const raw = opt("--filled"); if (raw == null) return null;
+  if (raw.length > 200) die(`--filled is too long (max 200 characters, got ${raw.length})`);
+  const parts = raw.split(/[\s,]+/).filter(Boolean); if (!parts.length) die("--filled needs at least one class-name substring");
+  if (parts.length > 20) die(`--filled takes at most 20 entries (got ${parts.length})`);
+  return new RegExp(parts.map((p) => p.split(/\*+/).map((seg) => escapeRegExp(seg)).join("[^\\s]*")).join("|")); })();
 const isUrl = /^https?:\/\//i.test(target);
 const base = opt("--base", isUrl ? target : "http://local.invalid/");
 try { new URL(base); } catch { die(`--base must be an absolute URL (got "${base}")`); }
@@ -120,7 +127,11 @@ const byClassName = (cls, tag) => {
 const isCTA = (p) => p === "primary" || p === "neutral-fill" || p === "outline" || p === "unknown";
 
 // ---------- tiny HTML tree ----------
-const decode = (s) => s.replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#0?39;|&apos;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&nbsp;|&#160;/g, " ").replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(+n));
+const ENTITIES = { amp: "&", quot: '"', apos: "'", lt: "<", gt: ">", nbsp: " " };
+// single pass: each entity is decoded exactly once ("&amp;lt;" -> "&lt;", never "<")
+const decode = (s) => s.replace(/&(?:amp|quot|apos|lt|gt|nbsp|#0?39|#160|#\d+);/g, (m) => {
+  const name = m.slice(1, -1); if (name in ENTITIES) return ENTITIES[name];
+  const n = Number(name.slice(1)); return n === 160 ? " " : n > 0x10ffff ? "\ufffd" : String.fromCodePoint(n); });
 const attrsOf = (s) => { const o = {}; for (const m of (s || "").matchAll(/([^\s=/"']+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+)))?/g)) o[m[1].toLowerCase()] = decode(m[2] ?? m[3] ?? m[4] ?? ""); return o; };
 const VOID = new Set("area base br col embed hr img input link meta param source track wbr".split(" "));
 function parseHTML(html) {
@@ -207,22 +218,43 @@ function cascade(rules) {
 }
 
 // ---------- static scan ----------
-async function load(t) {
+async function loadRemote(t) {
+  const r = await fetch(t, { signal: AbortSignal.timeout(8000) }).catch((e) => die(`fetch failed: ${t} (${e.cause?.code || e.message}) — try http://localhost and http://[::1]`)); if (!r.ok) die(`HTTP ${r.status} for ${t}`); return r.text();
+}
+function loadLocal(t) {
   if (t === "-") return readFileSync(0, "utf8");
-  if (isUrl) { const r = await fetch(t, { signal: AbortSignal.timeout(8000) }).catch((e) => die(`fetch failed: ${t} (${e.cause?.code || e.message}) — try http://localhost and http://[::1]`)); if (!r.ok) die(`HTTP ${r.status} for ${t}`); return r.text(); }
   if (!existsSync(t)) die(`no such file: ${t}`); return readFileSync(t, "utf8");
+}
+// Linked CSS, local file: only paths inside the HTML file's directory are read; nothing read here is ever sent over the network.
+function readLocalCss(htmlPath, links) {
+  if (htmlPath === "-") return "";
+  let dir; try { dir = realpathSync(dirname(resolvePath(htmlPath))); } catch { return ""; }
+  let css = "";
+  for (const href of links.slice(0, 12)) { if (/^[a-z][a-z0-9+.-]*:|^\/\//i.test(href)) continue;
+    // root-relative hrefs ("/css/a.css") are resolved against the HTML file's directory, never the filesystem root; missing files are skipped
+    let rel = href.split(/[?#]/)[0].replace(/^\/+/, ""); try { rel = decodeURIComponent(rel); } catch {}
+    try { const f = realpathSync(resolvePath(dir, rel)), up = relativePath(dir, f);
+      if (up === "" || up.startsWith("..") || isAbsolute(up)) continue; // escapes the HTML file's directory (.. or symlink)
+      css += "\n" + readFileSync(f, "utf8"); } catch {} }
+  return css;
+}
+// Linked CSS, URL target: hrefs come from the fetched remote page only; http(s) same-origin as the target, redirects must stay there.
+async function fetchRemoteCss(pageUrl, links) {
+  let origin; try { const o = new URL(pageUrl); if (!/^https?:$/.test(o.protocol)) return ""; origin = o.origin; } catch { return ""; }
+  let css = "";
+  for (const href of links.slice(0, 12)) { try { const u = new URL(href, pageUrl); if (!/^https?:$/.test(u.protocol) || u.origin !== origin) continue;
+    const r = await fetch(u, { signal: AbortSignal.timeout(5000) }); if (new URL(r.url).origin !== origin) continue; css += "\n" + await r.text(); } catch {} }
+  return css;
 }
 function srcOf(el) {
   const a = el.attrs, f = a["data-astro-source-file"]; if (f) return `${f.replace(process.cwd() + "/", "")}:${(a["data-astro-source-loc"] || "").split(":")[0]}`;
   const v = a["data-v-inspector"] || a["data-inspector-relative-path"] && `${a["data-inspector-relative-path"]}:${a["data-inspector-line"]}` || a["data-source"] || a["data-source-loc"]; return v || "";
 }
-async function staticScan(html) {
-  const { root, styles, links } = parseHTML(html); let css = styles.join("\n");
-  if (!isUrl && target !== "-") for (const href of links.slice(0, 12)) { if (/^[a-z][a-z0-9+.-]*:|^\/\//i.test(href)) continue;
-    // root-relative hrefs ("/css/a.css") are resolved against the HTML file's directory, never the filesystem root; missing files are skipped
-    let rel = href.split(/[?#]/)[0].replace(/^\/+/, ""); try { rel = decodeURIComponent(rel); } catch {}
-    const f = resolvePath(dirname(resolvePath(target)), rel); try { if (existsSync(f)) css += "\n" + readFileSync(f, "utf8"); } catch {} }
-  if (isUrl) for (const href of links.slice(0, 12)) { try { const u = new URL(href, base); if (u.host === new URL(base).host) css += "\n" + await (await fetch(u, { signal: AbortSignal.timeout(5000) })).text(); } catch {} }
+// URL target: HTML comes from the network, linked CSS may be fetched (same origin). Local file/stdin: linked CSS is read from disk only.
+const scanRemote = async (html) => staticScan(html, await fetchRemoteCss(target, parseHTML(html).links));
+const scanLocal = (html) => staticScan(html, readLocalCss(target, parseHTML(html).links));
+async function staticScan(html, linkedCss) {
+  const { root, styles } = parseHTML(html); const css = [styles.join("\n"), linkedCss].join("\n");
   const rules = parseCSS(css), val = cascade(rules); let htmlEl = null; walk(root, (n) => { if (n.tag === "html") htmlEl = n; });
   const vars = {}; if (htmlEl) for (const r of rules) if (!r.media.length && r.mt(htmlEl)) for (const [k, v] of Object.entries(r.decl)) if (k.startsWith("--")) vars[k] = v;
   const resolve = (v, d = 0) => d > 6 || !v ? v : resolve(v.replace(/var\(\s*(--[\w-]+)\s*(?:,\s*([^)]+))?\)/g, (_, n, fb) => vars[n] ?? fb ?? ""), d + 1);
@@ -374,13 +406,13 @@ async function renderScan(url) {
 if (RENDER && !isUrl && !existsSync(target)) die(`no such file: ${target}`);
 let scheme = null;
 const items = await (async () => { try {
-  let list; if (RENDER) { const r = await renderScan(isUrl ? target : pathToFileURL(resolvePath(target)).href); list = r.list; scheme = r.scheme; } else list = await staticScan(await load(target));
+  let list; if (RENDER) { const r = await renderScan(isUrl ? target : pathToFileURL(resolvePath(target)).href); list = r.list; scheme = r.scheme; } else list = isUrl ? await scanRemote(await loadRemote(target)) : await scanLocal(loadLocal(target));
   return list.filter((x) => !x.skip); }
   catch (e) { return die(`${RENDER ? "render" : "scan"} failed: ${e.message}`); } })();
 if (!items.length) die(`no interactive elements found in ${target} (${RENDER ? "rendered page is empty, blocked or an error page" : "static HTML has no links/buttons — JS-rendered page? try --render"})`);
 const schemeLine = RENDER ? `${scheme} (from prefers-color-scheme, set with --scheme)` : "not applicable (static ignores --scheme)";
 const key = (x) => `${x.label} → ${x.href ?? "(no href)"}`;
-if (RENDER && isUrl && items.some((x) => !x.src)) { const st = (await staticScan(await load(target)).catch(() => [])).filter((x) => !x.skip), seen = {};
+if (RENDER && isUrl && items.some((x) => !x.src)) { const st = (await scanRemote(await loadRemote(target)).catch(() => [])).filter((x) => !x.skip), seen = {};
   for (const x of items) { const k = key(x), n = (seen[k] = (seen[k] ?? -1) + 1), m = st.filter((y) => key(y) === k)[n]; if (!x.src && m) x.src = m.src; } }
 const flags = [], views = {};
 for (const name of Object.keys(VIEWS)) {
