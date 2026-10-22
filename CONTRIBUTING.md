@@ -11,6 +11,8 @@ npm run build      # regenerate skills/*/references, page-coverage.md, platforms
 npm run validate   # structure, rule IDs, manifests
 ```
 
+Releases: see [RELEASING.md](RELEASING.md).
+
 CI runs both, fails if generated files are stale, and smoke-tests the CLI helpers.
 
 ## Where to edit

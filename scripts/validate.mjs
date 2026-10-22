@@ -78,6 +78,18 @@ else { const a = run("contrast.mjs", ["rgba(0,0,0,.2)", "#fff"]); if (a.status !
 if (!existsSync(join(scriptDir, "rule.mjs"))) errs.push("rule.mjs missing");
 else { const a = run("rule.mjs", ["F-06"]); if (a.status !== 0 || !a.stdout.includes("F-06")) errs.push(`rule.mjs F-06: expected exit 0 and output containing F-06, got exit ${a.status}`);
   const b = run("rule.mjs", ["zzzz-nomatch"]); if (b.status !== 1) errs.push(`rule.mjs zzzz-nomatch: expected exit 1, got ${b.status}`); }
+// Versioning: package.json is the source of truth; manifests must match, be valid semver, and have a CHANGELOG entry.
+{
+  const SEMVER = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(-[0-9A-Za-z.-]+)?(\+[0-9A-Za-z.-]+)?$/;
+  const v = JSON.parse(readFileSync(join(root, "package.json"), "utf8")).version;
+  if (!SEMVER.test(v ?? "")) errs.push(`package.json: invalid semver "${v}"`);
+  for (const m of [".claude-plugin/plugin.json", ".codex-plugin/plugin.json", ".cursor-plugin/plugin.json"]) {
+    const mv = JSON.parse(readFileSync(join(root, m), "utf8")).version;
+    if (mv !== v) errs.push(`${m}: version "${mv}" != package.json "${v}" (run npm run build)`);
+  }
+  const cl = existsSync(join(root, "CHANGELOG.md")) ? readFileSync(join(root, "CHANGELOG.md"), "utf8") : "";
+  if (!cl.includes(`## [${v}]`)) errs.push(`CHANGELOG.md: missing "## [${v}]" section`);
+}
 console.log(`skills ${skills.length}, commands ${cmds.length}, rules ${rules.length}`);
 if (errs.length) { console.error(errs.join("\n")); process.exit(1); }
 console.log("ok");

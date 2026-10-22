@@ -25,11 +25,13 @@
     ".cursor-plugin",
     "AGENTS.md",
     "LICENSE",
-    "NOTICE.md"
+    "NOTICE.md",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "build": "node scripts/build-knowledge.mjs && node scripts/sync-platforms.mjs",
-    "validate": "node scripts/validate.mjs"
+    "validate": "node scripts/validate.mjs",
+    "version": "npm run build && npm run validate && git add .claude-plugin .codex-plugin .cursor-plugin platforms CHANGELOG.md"
   },
   "pi": {
     "skills": [
