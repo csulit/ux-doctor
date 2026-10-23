@@ -61,11 +61,20 @@ test("a self-closing <Card /> inside a <Card> is nesting", () => {
   assert.equal(run(["-"], "<Card />\n<Card>x</Card>").status, 0);
 });
 
-test("an unreadable file exits 2 without a stack trace", { skip: process.platform === "win32" || process.getuid?.() === 0 }, () => {
+test("an unreadable file exits 2 without a stack trace, alone or inside a directory", { skip: process.platform === "win32" || process.getuid?.() === 0 }, () => {
   const d = mkdtempSync(join(tmpdir(), "slop-scan-"));
   try { const f = join(d, "locked.html"); writeFileSync(f, "<p>x</p>"); chmodSync(f, 0o000);
     const r = run([f]); assert.equal(r.status, 2); assert.ok(ok(r), r.stderr); assert.match(r.stderr, /cannot read/);
+    const only = run([d]); assert.equal(only.status, 2); assert.match(only.stderr, /cannot read any/);
+    writeFileSync(join(d, "ok.html"), "<p>Trusted by 10,000+ teams</p>");
+    const part = run([d, "--json"]); assert.equal(part.status, 2); assert.match(part.stderr, /incomplete scan, 1 file/);
+    const j = json(part); assert.equal(j.unreadable, 1); assert.ok(j.flags.some((x) => x.tell === "TRUSTED_BY_COUNT"));
   } finally { rmSync(d, { recursive: true, force: true }); }
+});
+
+test("entity arrows on a long minified line still count", () => {
+  const line = "<div>" + "<span>x</span>".repeat(200) + Array.from({ length: 4 }, (_, i) => `<a href="/${i}">Go &rarr;</a>`).join("") + "</div>";
+  assert.ok(json(run(["-", "--json"], line)).flags.some((f) => f.tell === "ARROW_LABELS"));
 });
 
 test("plain fixture: Inter, a rounded quote with a left border and real copy are not tells", () => {
@@ -82,7 +91,7 @@ test("JSX via stdin: nested Card, hidden-until-scroll and accent word across lin
     "  whileInView={{ opacity: 1 }}>",
     "<h2 className=\"text-4xl\">Close books",
     "  <em className=\"font-serif italic\">faster</em></h2>",
-    "<Card><Card /></Card>", // self-closing inner card nests too (also tested alone below)
+    "<Card><Card /></Card>", // self-closing inner card nests too (also tested alone above)
   ].join("\n");
   const j = json(run(["-", "--json"], src));
   const found = new Set([...j.flags, ...j.defects].map((f) => f.tell));

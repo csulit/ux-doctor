@@ -16,7 +16,8 @@
 // is scored on its own once a render without JS or with reduced motion confirms it.
 // Not checked (needs a render or a judgement): nested non-Card containers, stat rows (W5-14), demo-sized content
 // (W5-13), whether a look was chosen (W5-02). Inter is never a tell (the playbook recommends it, E-17).
-// Exit 0 = no tells or defect candidates, 1 = found, 2 = bad input, unreadable target, fetch failure or timeout.
+// Exit 0 = no tells or defect candidates, 1 = found, 2 = bad input, unreadable target (in a directory scan: any
+// unreadable file, after printing the partial result), fetch failure or timeout.
 // --list prints every tell with its rule IDs as JSON (used by validate.mjs) and exits 0.
 // Writes nothing.
 import { readFileSync, readdirSync, lstatSync, existsSync } from "node:fs";
@@ -56,7 +57,7 @@ const SKIP_DIR = new Set(["node_modules", ".git", ".hg", ".svn", "dist", "build"
 const SKIP_FILE = /\.(min|test|spec|stories|story|d)\.[a-z]+$/i;
 
 // ---------- tells: one entry per pattern; `min` = hits needed (per scan) before it counts as a tell ----------
-// Each `line` test gets one line (truncated to MAX_LINE). Regexes are anchored on literal tokens with bounded
+// Each `line` test gets one line or one piece of a long line (at most MAX_LINE characters). Regexes are anchored on literal tokens with bounded
 // repetition only (no nested quantifiers), so worst-case time stays linear in the line length.
 const ACCENT_FAMILIES = "(?:purple|violet|indigo|fuchsia)";
 const NEUTRAL = "(?:gray|grey|slate|zinc|neutral|stone|white|black|transparent|current|inherit|border|muted|input|background|foreground|card|secondary)";
@@ -136,7 +137,8 @@ else {
   if (!existsSync(target)) die(`no such file or directory: ${target}`);
   let st; try { st = lstatSync(target); } catch (e) { die(`cannot read ${target} (${e.code || e.message})`); }
   if (st.isDirectory()) { walk(target); if (!files.length) die(`no scannable source files under ${target} (extensions: ${[...EXT].join(" ")})`);
-    for (const f of files) { try { sources.push({ name: relative(target, f) || basename(f), text: readFileSync(f, "utf8") }); } catch { unreadable++; } } }
+    for (const f of files) { try { sources.push({ name: relative(target, f) || basename(f), text: readFileSync(f, "utf8") }); } catch { unreadable++; } }
+    if (!sources.length) die(`cannot read any of the ${files.length} source file(s) under ${target}`); }
   else if (st.isFile()) { if (st.size > MAX_TOTAL_BYTES) die(`file too large: ${target}`);
     let text; try { text = readFileSync(target, "utf8"); } catch (e) { die(`cannot read ${target} (${e.code || e.message})`); }
     sources.push({ name: basename(target), text }); }
@@ -151,7 +153,7 @@ for (const { name, text } of sources) {
   // piece's original line number so reported file:line anchors stay exact
   const lines = [], lns = [];
   text.split(/\r?\n/).forEach((l, i) => {
-    const parts = l.length > MAX_LINE ? l.split(/(?<=>)(?=<)|(?<=[;}])/) : [l];
+    const parts = l.length > MAX_LINE ? l.split(/(?<=>)(?=<)|(?<=\})/) : [l]; // tags and CSS rules; never inside an entity like &rarr;
     for (const p of parts) for (let k = 0; k < Math.max(1, p.length); k += MAX_LINE) { lines.push(p.slice(k, k + MAX_LINE)); lns.push(i + 1); } });
   for (const t of TELLS) {
     if (t.nesting) { // <Card ...> depth tracking (JSX/Vue/Svelte component names only)
@@ -205,4 +207,5 @@ else {
   if (below.length) console.log(`\nbelow threshold (not counted): ${below.map((b) => `${b.tell} ${b.count} hit(s), needs ${b.min}${b.ofControls != null ? ` and ≥30% of ${b.ofControls} links/buttons` : ""}`).join("; ")}`);
   console.log("\nHeuristic hints, not verdicts: confirm each against the code or a render. Not checked: stat rows (W5-14), demo-sized content (W5-13), whether the look was chosen (W5-02). Inter is never a tell (E-17).");
 }
+if (unreadable) { console.error(`slop-scan: incomplete scan, ${unreadable} file(s) could not be read`); process.exit(2); }
 process.exit(n || defects.length ? 1 : 0);
