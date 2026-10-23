@@ -83,6 +83,13 @@ else {
   if (!existsSync(single)) errs.push("reference/fixtures/single-section-dup.html missing");
   else { const r = run("cta-scan.mjs", [single, "--json"]); let j = null; try { j = JSON.parse(r.stdout); } catch {}
     if (r.status !== 1 || !j?.flags?.some((f) => f.flag === "DUP_IN_VIEWPORT")) errs.push(`cta-scan on single-section-dup.html: expected exit 1 with a DUP_IN_VIEWPORT flag, got exit ${r.status} ${r.stderr.slice(0, 200)}`); } }
+{ const slop = join(root, "reference/fixtures/ai-slop.html"), plain = join(root, "reference/fixtures/plain-landing.html");
+  if (!existsSync(join(scriptDir, "slop-scan.mjs")) || !existsSync(slop) || !existsSync(plain)) errs.push("slop-scan.mjs or reference/fixtures/{ai-slop,plain-landing}.html missing");
+  else { const r = run("slop-scan.mjs", [slop, "--json"]); let j = null; try { j = JSON.parse(r.stdout); } catch {}
+    if (r.status !== 1 || j?.tier !== "high") errs.push(`slop-scan on ai-slop.html: expected exit 1 and tier high, got exit ${r.status} tier ${j?.tier} ${r.stderr.slice(0, 200)}`);
+    for (const id of new Set((j?.flags ?? []).flatMap((f) => f.rules))) if (!ids.has(id)) errs.push(`slop-scan cites unknown rule ${id}`);
+    const c = run("slop-scan.mjs", [plain]); if (c.status !== 0) errs.push(`slop-scan on plain-landing.html: expected exit 0 (no tells), got ${c.status}`);
+    const m = run("slop-scan.mjs", [join(root, "reference/fixtures/no-such-file.html")]); if (m.status !== 2) errs.push(`slop-scan on a missing file: expected exit 2, got ${m.status}`); } }
 if (!existsSync(join(scriptDir, "contrast.mjs"))) errs.push("contrast.mjs missing");
 else { const a = run("contrast.mjs", ["rgba(0,0,0,.2)", "#fff"]); if (a.status !== 2) errs.push(`contrast rgba without --over: expected exit 2, got ${a.status}`);
   const b = run("contrast.mjs", ["rgba(0,0,0,.2)", "#fff", "--over", "#fff"]); let j = null; try { j = JSON.parse(b.stdout); } catch {}

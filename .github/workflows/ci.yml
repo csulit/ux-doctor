@@ -69,6 +69,10 @@ jobs:
           rc=0; out=$(node skills/ux-doctor/scripts/cta-scan.mjs reference/fixtures/dup-cta.html) || rc=$?
           [ "$rc" = 1 ] || { echo "::error::cta-scan exit $rc, expected 1"; exit 1; }
           grep -q DUP_IN_VIEWPORT <<<"$out"
+          # slop-scan exits 1 when it finds AI-look tells, which is what this fixture should produce
+          rc=0; out=$(node skills/ux-doctor/scripts/slop-scan.mjs reference/fixtures/ai-slop.html) || rc=$?
+          [ "$rc" = 1 ] || { echo "::error::slop-scan exit $rc, expected 1"; exit 1; }
+          grep -q "tier: high" <<<"$out"
 
   ci-ok:
     name: CI ok

@@ -241,3 +241,17 @@
 | W3-53 | Combine sticky positioning with scroll timelines | web:scroll-driven-animations | low | motion, navigation, craft |
 | W4-01 | Size the skeleton from the measured loaded UI | web:skeleton-measure | medium | states, layout, craft |
 | W4-02 | Prove the skeleton-to-content swap causes no layout shift | web:skeleton-measure | medium | states, layout, mobile |
+| W5-01 | Report AI-look tells as a cluster, never one by one | web:design-slop-score | low | craft, hierarchy |
+| W5-02 | Check whether the look was chosen for this product | web:ai-design-slop-review | low | craft, typography, color |
+| W5-03 | Keep motion for user actions, not a fade-up on every section | web:frontend-design-skill | low | motion, craft |
+| W5-04 | Never hide content behind a scroll-triggered entrance | web:ai-design-slop-review | high | motion, states, accessibility |
+| W5-05 | Don't single out one styled word in a headline | web:frontend-design-skill | low | typography, hierarchy, copy |
+| W5-06 | Use eyebrows, labels and numbers only when they carry information | web:frontend-design-skill | low | typography, hierarchy, craft |
+| W5-07 | Strip template chrome from links, meta lines and labels | web:frontend-design-skill | low | copy, typography, craft |
+| W5-08 | Don't mark cards with a coloured edge stripe | web:design-slop-score | low | cards, borders, color |
+| W5-09 | Don't nest cards or box single lines to fake hierarchy | web:vercel-design-md | medium | cards, hierarchy, borders |
+| W5-10 | Use icons that inform, not emoji bullets or stock icon tiles | web:slop-taxonomy | low | icons, imagery, cards |
+| W5-11 | Write copy that could only belong to this product | web:ai-design-slop-review | medium | copy |
+| W5-12 | Don't ship a default palette cluster as the brand | web:frontend-design-skill | low | color, craft |
+| W5-13 | Test layouts with real content, not demo-sized content | web:ai-design-slop-review | medium | states, layout |
+| W5-14 | Show metric rows only for real, sourced numbers | web:vercel-design-md | low | copy, hierarchy, craft |

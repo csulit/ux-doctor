@@ -8460,5 +8460,279 @@
   "doDont": "Do compare element boxes before and after the swap, or record layout-shift entries during load. Don't call the skeleton done because it looks similar.",
   "auditCheck": "With a browser tool, capture boxes of the elements below and beside the skeleton in both states, or read `PerformanceObserver` `layout-shift` entries during the swap; media without reserved space (`width`/`height` or `aspect-ratio`) is a likely cause (inference). Text with a different line count than the skeleton is another.",
   "restyleFix": "Reserve space for media with `aspect-ratio` or explicit dimensions, set `min-height` on the container for the loaded content, and match line counts; re-measure until the shift is gone."
+ },
+ {
+  "id": "W5-01",
+  "title": "Report AI-look tells as a cluster, never one by one",
+  "source": "web",
+  "pages": "design-slop-score",
+  "citation": "web:design-slop-score",
+  "section": "Web patterns: AI-look tells",
+  "skill": "ux-web-patterns",
+  "severity": "low",
+  "tags": [
+   "craft",
+   "hierarchy"
+  ],
+  "rule": "One default pattern on its own says nothing about how a page was made; count the tells from W1-80..W1-84 and W5 together and treat a page as generic only when several of them show up at once (the source's tiers: 0–1 low, 2–3 medium, 4 or more high).",
+  "why": "Automated checks for these patterns misfire on a share of pages, and plenty of hand-made sites use one or two of them for good reasons.",
+  "doDont": "Do give one grouped \"AI-look tells\" line that lists the tells found. Don't raise a separate finding for each tell, and don't claim the page was AI-generated.",
+  "auditCheck": "Run `node scripts/slop-scan.mjs <url|file|dir>` or check the tells by hand; report the count and the tier. Below 3 tells, mention them as one `(general practice)` note; at 3 or more, one grouped finding at this rule's severity. Drop any tell the brief, `DESIGN.md` or the project tokens chose explicitly (Accepted by design).",
+  "restyleFix": "Fix the tells that cost clarity first (W1-80..W1-84, W5-04, W5-09), then replace the remaining defaults with one deliberate choice tied to the product (W5-02)."
+ },
+ {
+  "id": "W5-02",
+  "title": "Check whether the look was chosen for this product",
+  "source": "web",
+  "pages": "ai-design-slop-review",
+  "citation": "web:ai-design-slop-review",
+  "section": "Web patterns: AI-look tells",
+  "skill": "ux-web-patterns",
+  "severity": "low",
+  "tags": [
+   "craft",
+   "typography",
+   "color"
+  ],
+  "rule": "Ask whether anyone decided the type, palette and layout, rather than whether a model made them: if the same treatment would fit an unrelated product (say a booking tool, a CRM or a trading app) just as well, it is an accepted default.",
+  "why": "Generic output comes from a missing brief, and its ingredients (Inter, cards, rounded corners, standard icon sets) are fine on their own; what is missing is a decision.",
+  "doDont": "Do tie at least one visible decision (type, colour, imagery or layout) to the product's subject and audience. Don't call Inter, cards or rounded corners a defect by themselves (the playbook recommends Inter, E-17).",
+  "auditCheck": "Put the hero and one product screen next to the product's domain and ask what in them could not belong to an unrelated product; if nothing, note it under W5-01. Inferred; needs a render or screenshot.",
+  "restyleFix": "Needs a design decision: propose one product-specific choice (a real screenshot, domain imagery, a type pairing or an accent from the brand) instead of restyling everything."
+ },
+ {
+  "id": "W5-03",
+  "title": "Keep motion for user actions, not a fade-up on every section",
+  "source": "web",
+  "pages": "frontend-design-skill",
+  "citation": "web:frontend-design-skill",
+  "section": "Web patterns: AI-look tells",
+  "skill": "ux-web-patterns",
+  "severity": "low",
+  "tags": [
+   "motion",
+   "craft"
+  ],
+  "rule": "Motion the user did not trigger should be rare and should point at something; one orchestrated load or reveal works better than a fade-and-rise entrance on each section and a hover effect on every card, which is the generated default.",
+  "why": "Effects scattered across the page add noise, and decoration seen on every visit becomes friction.",
+  "doDont": "Do animate responses to the user (open, expand, confirm) and at most one entrance moment per page. Don't attach the same scroll entrance to every section.",
+  "auditCheck": "Count scroll-entrance hooks on section roots (`whileInView`, `data-aos`, `useInView`, `IntersectionObserver` + `opacity-0`/`translate-y-*`, `animate-*fade*`); flag 3 or more. Check that a `prefers-reduced-motion: reduce` path exists.",
+  "restyleFix": "Remove the per-section entrances, keep one page-level moment if it carries meaning, and gate all non-essential motion behind `@media (prefers-reduced-motion: no-preference)`."
+ },
+ {
+  "id": "W5-04",
+  "title": "Never hide content behind a scroll-triggered entrance",
+  "source": "web",
+  "pages": "ai-design-slop-review",
+  "citation": "web:ai-design-slop-review",
+  "section": "Web patterns: AI-look tells",
+  "skill": "ux-web-patterns",
+  "severity": "high",
+  "tags": [
+   "motion",
+   "states",
+   "accessibility"
+  ],
+  "rule": "Content must be visible without its entrance animation: when a section starts transparent and waits for a scroll observer, a trigger that never fires leaves a blank section, which is a defect, not a matter of taste.",
+  "why": "Observers miss on fast scrolls, anchor jumps, print, reduced motion, slow scripts and some crawlers, and the content then never appears.",
+  "doDont": "Do start content visible and add the animation as an enhancement. Don't ship sections whose resting style is `opacity: 0` until a script runs.",
+  "auditCheck": "grep for elements that start hidden (`opacity-0`, `opacity: 0`, `initial={{ opacity: 0`) and only become visible through `whileInView`, `data-aos` or an observer; render with JavaScript disabled, with `prefers-reduced-motion: reduce`, and after jumping to an anchor further down, and check every section shows its content.",
+  "restyleFix": "Make the visible state the default and apply the hidden start only when script and motion are allowed (e.g. a class set by JS inside `prefers-reduced-motion: no-preference`), or use a CSS view timeline whose resting state is visible (W3-52)."
+ },
+ {
+  "id": "W5-05",
+  "title": "Don't single out one styled word in a headline",
+  "source": "web",
+  "pages": "frontend-design-skill",
+  "citation": "web:frontend-design-skill",
+  "section": "Web patterns: AI-look tells",
+  "skill": "ux-web-patterns",
+  "severity": "low",
+  "tags": [
+   "typography",
+   "hierarchy",
+   "copy"
+  ],
+  "rule": "Restyling just one word or phrase of a headline (italic serif, bold, a different colour or a gradient) is one of the commonest typographic defaults of generated pages; let the whole headline carry the emphasis.",
+  "why": "The lone accented word repeats across unrelated products, so it reads as a template instead of an emphasis.",
+  "doDont": "Do get headline emphasis from size, weight and placement. Don't wrap a single headline word in an italic serif, accent colour or gradient span by default.",
+  "auditCheck": "Look inside `h1`/`h2` for an `<em>`, `<i>` or `<span>` with `italic`, `font-serif`, an accent `text-*` colour or `bg-clip-text` around one or two words.",
+  "restyleFix": "Set the headline in one style; if a word truly needs stress, make it the subject of the sentence instead."
+ },
+ {
+  "id": "W5-06",
+  "title": "Use eyebrows, labels and numbers only when they carry information",
+  "source": "web",
+  "pages": "frontend-design-skill",
+  "citation": "web:frontend-design-skill",
+  "section": "Web patterns: AI-look tells",
+  "skill": "ux-web-patterns",
+  "severity": "low",
+  "tags": [
+   "typography",
+   "hierarchy",
+   "craft"
+  ],
+  "rule": "Structural devices (eyebrow labels, dividers, numbering) should encode something about the content: a tracked all-caps label above every heading, or 01 / 02 / 03 markers on items that are not a sequence, is template chrome.",
+  "why": "Labels that repeat the heading or number unordered items add reading work without adding meaning.",
+  "doDont": "Do number real steps and timelines. Don't put an uppercase kicker above each section heading or number a list of unrelated features.",
+  "auditCheck": "Count small `uppercase tracking-*` (or `text-transform: uppercase` + `letter-spacing`) labels directly before section headings; flag 3 or more. Check numbered markers (`01`, `02`, step circles) against whether the content is ordered.",
+  "restyleFix": "Delete eyebrows that restate the heading, keep one where it names a category the heading does not, and replace false numbering with plain headings."
+ },
+ {
+  "id": "W5-07",
+  "title": "Strip template chrome from links, meta lines and labels",
+  "source": "web",
+  "pages": "frontend-design-skill",
+  "citation": "web:frontend-design-skill",
+  "section": "Web patterns: AI-look tells",
+  "skill": "ux-web-patterns",
+  "severity": "low",
+  "tags": [
+   "copy",
+   "typography",
+   "craft"
+  ],
+  "rule": "Small habits mark a template whatever the subject: an arrow added to every link and button label, metadata strung together with centred dots, short labels split by a spaced dash after an all-caps word, and small data labels set in a monospace font.",
+  "why": "Applied everywhere, these marks stop signalling anything and make unrelated products look alike.",
+  "doDont": "Do keep an arrow where it says \"this goes somewhere else\" (the one text-link secondary of W1-82). Don't append arrows to every control or build every label with dots and dashes.",
+  "auditCheck": "Count links/buttons whose text ends in `→`/`->`/an arrow icon (flag when most do), ` · ` separators in meta lines, ` — ` inside short labels, and `font-mono` on non-code labels.",
+  "restyleFix": "Keep arrows on links that leave the flow, write meta lines as plain text or separate fields, and use the body face for labels unless the content is code or tabular data."
+ },
+ {
+  "id": "W5-08",
+  "title": "Don't mark cards with a coloured edge stripe",
+  "source": "web",
+  "pages": "design-slop-score",
+  "citation": "web:design-slop-score",
+  "section": "Web patterns: AI-look tells",
+  "skill": "ux-web-patterns",
+  "severity": "low",
+  "tags": [
+   "cards",
+   "borders",
+   "color"
+  ],
+  "rule": "A coloured border on just the left or top edge of ordinary content cards is, according to the designers the source asked, about as reliable a generated-design tell as em dashes are for generated text.",
+  "why": "The stripe adds colour without adding meaning and stands in for real hierarchy.",
+  "doDont": "Do separate cards with spacing, type and surface. Don't put a static accent stripe on every card (a hover edge cue on clickable cards, W1-79, and a status colour on alerts are different cases).",
+  "auditCheck": "grep cards for `border-l-[2-8]`/`border-t-[2-8]` with an accent colour, or `border-left: 3px+ solid <accent>` on rounded containers; ignore `blockquote` and status alerts whose colour encodes severity.",
+  "restyleFix": "Remove the stripe; if the cards need a category signal, use a label or icon that names it (W1-14 pairs colour with a second signal)."
+ },
+ {
+  "id": "W5-09",
+  "title": "Don't nest cards or box single lines to fake hierarchy",
+  "source": "web",
+  "pages": "vercel-design-md",
+  "citation": "web:vercel-design-md",
+  "section": "Web patterns: AI-look tells",
+  "skill": "ux-web-patterns",
+  "severity": "medium",
+  "tags": [
+   "cards",
+   "hierarchy",
+   "borders"
+  ],
+  "rule": "Cards inside cards, and borders drawn around single lines of text, are a reflex for repairing weak hierarchy; fix the hierarchy with spacing and type instead.",
+  "why": "Every extra box adds edges to read past and claims a layer the content does not have.",
+  "doDont": "Do use one container level for a group (a shared region is fine, W2-06). Don't wrap a card in another card or put a bordered box around one line.",
+  "auditCheck": "Look for a bordered/shadowed rounded container inside another (`rounded-* border`/`shadow-*` or `Card` inside `Card`/`CardContent`), and for bordered boxes holding a single line of text.",
+  "restyleFix": "Remove the inner container's border and shadow, group its contents with spacing and a heading, and keep the outer surface."
+ },
+ {
+  "id": "W5-10",
+  "title": "Use icons that inform, not emoji bullets or stock icon tiles",
+  "source": "web",
+  "pages": "slop-taxonomy",
+  "citation": "web:slop-taxonomy",
+  "section": "Web patterns: AI-look tells",
+  "skill": "ux-web-patterns",
+  "severity": "low",
+  "tags": [
+   "icons",
+   "imagery",
+   "cards"
+  ],
+  "rule": "Emoji used as bullets (✨ 🚀 ⚡) and the obvious stock icon in a tinted rounded square for each feature (a bolt for speed, a shield for security, sparkles for AI) are defaults that decorate rather than explain.",
+  "why": "The same icon-for-an-adjective appears on every product, so it carries no information about this one.",
+  "doDont": "Do use icons that help scanning or name a real object or status (G-14 still applies). Don't decorate feature lists with emoji or put a generic icon tile on top of every card.",
+  "auditCheck": "Count pictographic emoji in headings, list items and buttons; count icon tiles (a small square or circle with a tinted background holding one icon) at the top of cards in a grid; flag 3 or more.",
+  "restyleFix": "Replace emoji with the project's icon set or nothing; swap generic icon tiles for product imagery (W1-84) or remove them and let the heading lead."
+ },
+ {
+  "id": "W5-11",
+  "title": "Write copy that could only belong to this product",
+  "source": "web",
+  "pages": "ai-design-slop-review",
+  "citation": "web:ai-design-slop-review",
+  "section": "Web patterns: AI-look tells",
+  "skill": "ux-web-patterns",
+  "severity": "medium",
+  "tags": [
+   "copy"
+  ],
+  "rule": "Text can look as generic as the styling around it: stock lines like \"build the future of\", \"ship faster\", \"AI-native\", \"seamless\" or \"effortless\" could describe any product and say nothing about this one.",
+  "why": "Readers scan for what the product does for them, and stock phrases hide that answer.",
+  "doDont": "Do name the user, the task and the result in plain words. Don't fill sections with filler adjectives and slogans (the hero headline is W1-80; button labels are W2-67).",
+  "auditCheck": "grep visible copy for `seamless|effortless|supercharge|unleash|unlock|elevate|revolutioni[sz]e|game-?chang|cutting-edge|next-gen|empower|streamline|build the future|ship faster|AI-native|in today's`; flag 3 or more outside the hero.",
+  "restyleFix": "Rewrite each flagged line as a concrete claim (who, what, with what result); delete it if no concrete claim exists."
+ },
+ {
+  "id": "W5-12",
+  "title": "Don't ship a default palette cluster as the brand",
+  "source": "web",
+  "pages": "frontend-design-skill",
+  "citation": "web:frontend-design-skill",
+  "section": "Web patterns: AI-look tells",
+  "skill": "ux-web-patterns",
+  "severity": "low",
+  "tags": [
+   "color",
+   "craft"
+  ],
+  "rule": "Generated pages gather around a few palettes regardless of subject: a purple-to-blue gradient, a warm cream page with a serif display and a terracotta accent, near-black with one acid-green or vermilion accent, and the UI kit's untouched default theme.",
+  "why": "These are defaults rather than choices, so they make unrelated products look alike; the cluster shifts over time (the purple gradient has already given way to the cream-and-serif look).",
+  "doDont": "Do use one of these looks when the brief explicitly requests it. Don't spend an open colour decision on one of them.",
+  "auditCheck": "Compare the page's background, accent and display face with the clusters above and with the framework's default tokens (unchanged shadcn/ui `--primary`/`--radius`, Tailwind `indigo-500`/`violet-500`); count a match as one tell under W5-01 only if no brief or token file chose it.",
+  "restyleFix": "Needs a design decision: derive the accent and neutrals from the brand or product domain, then express them as tokens."
+ },
+ {
+  "id": "W5-13",
+  "title": "Test layouts with real content, not demo-sized content",
+  "source": "web",
+  "pages": "ai-design-slop-review",
+  "citation": "web:ai-design-slop-review",
+  "section": "Web patterns: AI-look tells",
+  "skill": "ux-web-patterns",
+  "severity": "medium",
+  "tags": [
+   "states",
+   "layout"
+  ],
+  "rule": "Generated layouts are sized for convenient content; check every view with long names (about forty characters), tables with zero, two and thousands of rows, negative and very large numbers, and missing images.",
+  "why": "A screen tuned to sample data tends to break on the first real account.",
+  "doDont": "Do try extreme but realistic content in each component before calling it done. Don't judge a screen only by the seeded demo data.",
+  "auditCheck": "Render the view with stress data (long strings, empty and huge lists, negative values, missing avatars) or find components without `truncate`/`line-clamp`/`min-w-0`/`overflow-wrap` on user text; flag overflow, collisions and clipped values.",
+  "restyleFix": "Add truncation with full text on demand, wrap or clamp long strings, reserve width for numbers with tabular figures, and design the empty and overflow states."
+ },
+ {
+  "id": "W5-14",
+  "title": "Show metric rows only for real, sourced numbers",
+  "source": "web",
+  "pages": "vercel-design-md",
+  "citation": "web:vercel-design-md",
+  "section": "Web patterns: AI-look tells",
+  "skill": "ux-web-patterns",
+  "severity": "low",
+  "tags": [
+   "copy",
+   "hierarchy",
+   "craft"
+  ],
+  "rule": "A row of repeated metric boxes (big number, small label) is a generated default; use it only for real, attributable figures, and prefer one composed comparison when it explains the point better.",
+  "why": "Unsourced or decorative numbers read as filler and cost trust, like the vague proof in W1-83.",
+  "doDont": "Do give each figure a source, period or comparison. Don't add a stat banner to fill space or repeat numbers shown elsewhere.",
+  "auditCheck": "Look for 3 or more sibling blocks each holding a large number and a short label (`text-3xl`+ followed by `text-sm`/`text-muted`), and check whether each figure is sourced or dated.",
+  "restyleFix": "Keep only sourced figures; merge the rest into one sentence or chart that compares them, or remove them."
  }
 ]

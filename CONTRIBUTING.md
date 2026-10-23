@@ -9,7 +9,7 @@ Node ≥ 20.1. The scripts have no runtime dependencies; the tests need `npm ci`
 ```sh
 npm run build      # regenerate skills/*/references, page-coverage.md, platforms/codex/agents/*.toml
 npm run validate   # structure, rule IDs, manifests
-npm test           # property-based fuzz tests for cta-scan
+npm test           # cta-scan fuzz tests; slop-scan fixture, exit-code and fuzz tests
 ```
 
 Releases: see [RELEASING.md](RELEASING.md).
