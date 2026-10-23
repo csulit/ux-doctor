@@ -19,7 +19,9 @@
 // the count by hand). Inter is never a tell (the playbook recommends it, E-17).
 // Exit 0 = no tells or defect candidates, 1 = found, 2 = bad input, unreadable target, an incomplete directory scan
 // (any unreadable file or folder, or a walk stopped at --max-files or the 50 MB total; the partial result is printed
-// first), fetch failure or timeout. Files over 1 MB are skipped and counted, like minified files (not an error).
+// first; a page or stdin over the 50 MB total is cut and reported the same way), fetch failure or timeout. Files over
+// 1 MB in a directory scan are skipped and counted (a scope limit, not an error); a file named as the target may be up
+// to 50 MB (bigger exits 2).
 // --list prints every tell with its rule IDs as JSON (used by validate.mjs) and exits 0.
 // Writes nothing.
 import { readFileSync, readdirSync, lstatSync, existsSync, openSync, fstatSync, readSync, closeSync, constants as FS } from "node:fs";
@@ -27,7 +29,7 @@ import { join, relative, extname, basename } from "node:path";
 
 const USAGE = `usage: slop-scan.mjs <url|file|dir|-> [--json] [--max-files N] [--timeout s] [--list] [--help]
   url        fetch one page's HTML (static; no JavaScript, no linked CSS)
-  file|dir   scan one file or a source tree (symlinks not followed)
+  file|dir   scan one file (up to 50 MB) or a source tree (files over 1 MB skipped; symlinks not followed)
   -          read stdin
   --json     machine-readable output
   --max-files N   cap for directory scans (default 4000)
@@ -114,6 +116,8 @@ const TELLS = [
 if (LIST) { console.log(JSON.stringify(TELLS.map((t) => ({ tell: t.id, rules: t.rules, label: t.label, min: t.min, defect: !!t.defect })), null, 1)); process.exit(0); }
 
 // ---------- input ----------
+// cut text at the byte cap (UTF-8 bytes, not UTF-16 units) and mark the scan incomplete
+const capText = (text) => { const b = Buffer.from(text, "utf8"); if (b.length <= MAX_TOTAL_BYTES) return text; cappedBytes = true; return b.subarray(0, MAX_TOTAL_BYTES).toString("utf8"); };
 const files = []; let skippedLarge = 0, unreadable = 0, truncatedWalk = false, cappedBytes = false, totalBytes = 0;
 function walk(dir) {
   let ents; try { ents = readdirSync(dir, { withFileTypes: true }); } catch { unreadable++; return; } // an unlistable directory makes the scan incomplete
@@ -148,9 +152,9 @@ if (/^https?:\/\//i.test(target)) {
   const r = await fetch(target, { signal: AbortSignal.timeout(8000), redirect: "follow" }).catch(failed);
   if (!r.ok) die(`HTTP ${r.status} for ${target}`);
   const text = await r.text().catch(failed); // the body can still time out or break after the headers arrive
-  sources.push({ name: target, text: text.slice(0, MAX_TOTAL_BYTES) });
+  sources.push({ name: target, text: capText(text) });
 } else if (target === "-") { let text; try { text = readFileSync(0, "utf8"); } catch (e) { die(`cannot read stdin (${e.code || e.message})`); }
-  sources.push({ name: "stdin", text: text.slice(0, MAX_TOTAL_BYTES) }); }
+  sources.push({ name: "stdin", text: capText(text) }); }
 else {
   if (!existsSync(target)) die(`no such file or directory: ${target}`);
   let st; try { st = lstatSync(target); } catch (e) { die(`cannot read ${target} (${e.code || e.message})`); }
@@ -219,7 +223,7 @@ const scanned = sources.length;
 
 const defectNote = "defect candidate (W5-04): not a style tell and not in the count; confirm with a render without JS or with reduced motion, then score it on its own";
 const truncated = truncatedWalk || cappedBytes;
-const truncNote = truncatedWalk ? `walk stopped at --max-files ${MAX_FILES}: raise --max-files` : cappedBytes ? `stopped at the ${MAX_TOTAL_BYTES / 1e6} MB total: scan a narrower folder` : null;
+const truncNote = truncatedWalk ? `walk stopped at --max-files ${MAX_FILES}: raise --max-files` : cappedBytes ? `stopped at the ${MAX_TOTAL_BYTES / 1e6} MB total${files.length ? ": scan a narrower folder" : ""}` : null;
 if (argv.includes("--json")) console.log(JSON.stringify({ target, filesScanned: scanned, skippedLarge, unreadable, truncated, truncatedReason: truncNote, tells: n, tier, verdict, flags: tells, defects: defects.map((d) => ({ ...d, note: defectNote })), belowThreshold: below }, null, 1));
 else {
   console.log(`slop-scan ${target}\nfiles scanned: ${scanned}${skippedLarge ? ` (skipped ${skippedLarge} over 1 MB)` : ""}${unreadable ? ` (${unreadable} unreadable file(s) or folder(s))` : ""}${truncNote ? ` (incomplete: ${truncNote})` : ""}`);

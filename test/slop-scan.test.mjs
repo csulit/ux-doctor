@@ -148,6 +148,21 @@ test("a scan stopped at --max-files is incomplete: partial result, then exit 2",
   assert.match(r.stderr, /incomplete scan/);
 });
 
+test("the 50 MB total counts UTF-8 bytes: a directory or stdin over it is incomplete (exit 2)", () => {
+  const text = "界".repeat(333_333); // 999,999 bytes but only 333,333 UTF-16 units
+  const d = mkdtempSync(join(tmpdir(), "slop-scan-"));
+  try {
+    for (let i = 0; i < 51; i++) writeFileSync(join(d, `f${String(i).padStart(2, "0")}.html`), text);
+    const r = run([d, "--json"]);
+    assert.equal(r.status, 2, r.stderr);
+    assert.equal(json(r).filesScanned, 50);
+    assert.match(json(r).truncatedReason, /50 MB total/);
+  } finally { rmSync(d, { recursive: true, force: true }); }
+  const s = run(["-", "--json"], text.repeat(51));
+  assert.equal(s.status, 2, s.stderr);
+  assert.equal(json(s).truncated, true);
+});
+
 test("files over 1 MB are skipped and counted, not an error", () => {
   const d = mkdtempSync(join(tmpdir(), "slop-scan-"));
   try {
@@ -157,6 +172,10 @@ test("files over 1 MB are skipped and counted, not an error", () => {
     assert.equal(r.status, 0, r.stderr);
     assert.equal(json(r).skippedLarge, 1);
     assert.equal(json(r).filesScanned, 1);
+    const one = run([join(d, "big.html"), "--json"]); // a file named as the target is scanned up to the 50 MB total
+    assert.equal(one.status, 1, one.stderr);
+    assert.equal(json(one).filesScanned, 1);
+    assert.equal(json(one).skippedLarge, 0);
   } finally { rmSync(d, { recursive: true, force: true }); }
 });
 
