@@ -20,7 +20,7 @@
 // unreadable file or folder, after printing the partial result), fetch failure or timeout.
 // --list prints every tell with its rule IDs as JSON (used by validate.mjs) and exits 0.
 // Writes nothing.
-import { readFileSync, readdirSync, lstatSync, existsSync } from "node:fs";
+import { readFileSync, readdirSync, lstatSync, existsSync, openSync, fstatSync, closeSync, constants as FS } from "node:fs";
 import { join, relative, extname, basename } from "node:path";
 
 const USAGE = `usage: slop-scan.mjs <url|file|dir|-> [--json] [--max-files N] [--timeout s] [--list] [--help]
@@ -120,11 +120,16 @@ function walk(dir) {
     if (e.isSymbolicLink()) continue;
     if (e.isDirectory()) { if (!SKIP_DIR.has(e.name) && !e.name.startsWith(".")) walk(p); continue; }
     if (!e.isFile() || !EXT.has(extname(e.name).toLowerCase()) || SKIP_FILE.test(e.name)) continue;
-    let st; try { st = lstatSync(p); } catch { unreadable++; continue; }
-    if (st.size > MAX_FILE_BYTES) { skippedLarge++; continue; }
-    if (totalBytes + st.size > MAX_TOTAL_BYTES) { truncatedWalk = true; return; }
-    totalBytes += st.size; files.push(p);
+    files.push(p); // size limits are checked on the opened descriptor in readSafe (no check-then-use race)
   }
+}
+// Open once without following symlinks (O_NOFOLLOW where the platform has it), then stat and read the same descriptor,
+// so the file checked is the file read. Returns { text } or { skip: "large" | "notfile" }; throws when unreadable.
+function readSafe(p, maxBytes) {
+  const fd = openSync(p, FS.O_RDONLY | (FS.O_NOFOLLOW ?? 0));
+  try { const st = fstatSync(fd); if (!st.isFile()) return { skip: "notfile" }; if (st.size > maxBytes) return { skip: "large" };
+    return { text: readFileSync(fd, "utf8") }; }
+  finally { closeSync(fd); }
 }
 const sources = []; // { name, text }
 if (/^https?:\/\//i.test(target)) {
@@ -137,11 +142,14 @@ else {
   if (!existsSync(target)) die(`no such file or directory: ${target}`);
   let st; try { st = lstatSync(target); } catch (e) { die(`cannot read ${target} (${e.code || e.message})`); }
   if (st.isDirectory()) { walk(target); if (!files.length) die(unreadable ? `cannot read ${target} (${unreadable} unreadable folder(s))` : `no scannable source files under ${target} (extensions: ${[...EXT].join(" ")})`);
-    for (const f of files) { try { sources.push({ name: relative(target, f) || basename(f), text: readFileSync(f, "utf8") }); } catch { unreadable++; } }
-    if (!sources.length) die(`cannot read any source file under ${target} (${unreadable} unreadable file(s) or folder(s))`); }
-  else if (st.isFile()) { if (st.size > MAX_TOTAL_BYTES) die(`file too large: ${target}`);
-    let text; try { text = readFileSync(target, "utf8"); } catch (e) { die(`cannot read ${target} (${e.code || e.message})`); }
-    sources.push({ name: basename(target), text }); }
+    for (const f of files) { let r; try { r = readSafe(f, MAX_FILE_BYTES); } catch { unreadable++; continue; }
+      if (r.skip === "large") { skippedLarge++; continue; } if (r.skip) continue;
+      if (totalBytes + r.text.length > MAX_TOTAL_BYTES) { truncatedWalk = true; break; }
+      totalBytes += r.text.length; sources.push({ name: relative(target, f) || basename(f), text: r.text }); }
+    if (!sources.length) die(unreadable ? `cannot read any source file under ${target} (${unreadable} unreadable file(s) or folder(s))` : `no scannable source files under ${target} (${skippedLarge} over 1 MB)`); }
+  else if (st.isFile()) { let r; try { r = readSafe(target, MAX_TOTAL_BYTES); } catch (e) { die(`cannot read ${target} (${e.code || e.message})`); }
+    if (r.skip === "large") die(`file too large: ${target}`); if (r.skip) die(`not a regular file: ${target}`);
+    sources.push({ name: basename(target), text: r.text }); }
   else die(`not a file or directory: ${target}`);
 }
 
