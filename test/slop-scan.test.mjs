@@ -61,7 +61,7 @@ test("a self-closing <Card /> inside a <Card> is nesting", () => {
   assert.equal(run(["-"], "<Card />\n<Card>x</Card>").status, 0);
 });
 
-test("an unreadable file exits 2 without a stack trace, alone or inside a directory", { skip: process.platform === "win32" || process.getuid?.() === 0 }, () => {
+test("an unreadable file or folder exits 2 without a stack trace, alone or inside a directory", { skip: process.platform === "win32" || process.getuid?.() === 0 }, () => {
   const d = mkdtempSync(join(tmpdir(), "slop-scan-"));
   try { const f = join(d, "locked.html"); writeFileSync(f, "<p>x</p>"); chmodSync(f, 0o000);
     const r = run([f]); assert.equal(r.status, 2); assert.ok(ok(r), r.stderr); assert.match(r.stderr, /cannot read/);
@@ -69,7 +69,9 @@ test("an unreadable file exits 2 without a stack trace, alone or inside a direct
     writeFileSync(join(d, "ok.html"), "<p>Trusted by 10,000+ teams</p>");
     const part = run([d, "--json"]); assert.equal(part.status, 2); assert.match(part.stderr, /incomplete scan, 1 file/);
     const j = json(part); assert.equal(j.unreadable, 1); assert.ok(j.flags.some((x) => x.tell === "TRUSTED_BY_COUNT"));
-  } finally { rmSync(d, { recursive: true, force: true }); }
+    chmodSync(f, 0o644); mkdirSync(join(d, "private")); writeFileSync(join(d, "private/p.html"), "<p>x</p>"); chmodSync(join(d, "private"), 0o000);
+    const sub = run([d]); assert.equal(sub.status, 2, "an unlistable subfolder makes the scan incomplete"); assert.match(sub.stderr, /incomplete scan, 1 file\(s\) or folder/);
+  } finally { try { chmodSync(join(d, "private"), 0o755); } catch {} rmSync(d, { recursive: true, force: true }); }
 });
 
 test("entity arrows on a long minified line still count", () => {
