@@ -2,8 +2,9 @@
 // Invariants: the AI-look fixture trips every line-based tell; the plain fixture trips none; any input exits 0, 1 or 2.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { mkdtempSync, writeFileSync, mkdirSync, rmSync, symlinkSync, chmodSync } from "node:fs";
+import { spawnSync, spawn } from "node:child_process";
+import { createServer } from "node:http";
+import { mkdtempSync, writeFileSync, mkdirSync, rmSync, symlinkSync, chmodSync, openSync, closeSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -135,6 +136,61 @@ test("bad input exits 2", () => {
   assert.equal(run(["a", "b"]).status, 2);
   assert.equal(run([FIX("ai-slop.html"), "--max-files", "0"]).status, 2);
   assert.equal(run(["http://127.0.0.1:9/"]).status, 2);
+});
+
+test("a scan stopped at --max-files is incomplete: partial result, then exit 2", () => {
+  const r = run([FIX(""), "--max-files", "1", "--json"]);
+  assert.equal(r.status, 2, r.stderr);
+  const j = json(r);
+  assert.equal(j.filesScanned, 1);
+  assert.equal(j.truncated, true);
+  assert.match(j.truncatedReason, /--max-files/);
+  assert.match(r.stderr, /incomplete scan/);
+});
+
+test("files over 1 MB are skipped and counted, not an error", () => {
+  const d = mkdtempSync(join(tmpdir(), "slop-scan-"));
+  try {
+    writeFileSync(join(d, "big.html"), "<p>Trusted by 10,000+ teams</p>" + "a".repeat(1_100_000));
+    writeFileSync(join(d, "ok.html"), "<p>Close the books in three hours</p>");
+    const r = run([d, "--json"]);
+    assert.equal(r.status, 0, r.stderr);
+    assert.equal(json(r).skippedLarge, 1);
+    assert.equal(json(r).filesScanned, 1);
+  } finally { rmSync(d, { recursive: true, force: true }); }
+});
+
+test("a symlinked target file is not followed", { skip: process.platform === "win32" }, () => {
+  const d = mkdtempSync(join(tmpdir(), "slop-scan-"));
+  try {
+    symlinkSync(FIX("ai-slop.html"), join(d, "link.html"));
+    const r = run([join(d, "link.html")]);
+    assert.equal(r.status, 2);
+    assert.equal(r.stdout, "");
+  } finally { rmSync(d, { recursive: true, force: true }); }
+});
+
+test("an unreadable stdin exits 2 without a stack trace", { skip: process.platform === "win32" }, () => {
+  const d = mkdtempSync(join(tmpdir(), "slop-scan-")), fd = openSync(d, "r"); // a directory as stdin: EISDIR on read
+  try {
+    const r = spawnSync(process.execPath, [SCRIPT, "-"], { stdio: [fd, "pipe", "pipe"], encoding: "utf8", timeout: 20000 });
+    assert.equal(r.status, 2, r.stderr);
+    assert.ok(ok(r), r.stderr);
+  } finally { closeSync(fd); rmSync(d, { recursive: true, force: true }); }
+});
+
+test("a page body that breaks after the headers exits 2 (fetch failure), not 1", async () => {
+  const server = createServer((req, res) => { res.writeHead(200, { "content-type": "text/html" }); res.write("<p>Trusted by 10,000+ teams"); setTimeout(() => req.socket.destroy(), 50); });
+  await new Promise((ok) => server.listen(0, "127.0.0.1", ok));
+  try {
+    const { status, stderr } = await new Promise((done) => {
+      const p = spawn(process.execPath, [SCRIPT, `http://127.0.0.1:${server.address().port}/`, "--timeout", "10"], { stdio: ["ignore", "pipe", "pipe"] });
+      let stderr = ""; p.stderr.on("data", (c) => { stderr += c; }); p.on("close", (status) => done({ status, stderr }));
+    });
+    assert.equal(status, 2, stderr);
+    assert.match(stderr, /fetch failed/);
+    assert.doesNotMatch(stderr, /at .*\.mjs:\d+/);
+  } finally { server.closeAllConnections?.(); server.close(); }
 });
 
 const frag = fc.oneof(

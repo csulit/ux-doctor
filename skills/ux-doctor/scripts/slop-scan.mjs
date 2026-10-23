@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// slop-scan: counts "AI-look tells" (unchosen generated-design defaults, rules W1-80..W1-84 and W5-01..W5-14) in
+// slop-scan: counts "AI-look tells" (unchosen generated-design defaults, rules W1-80, W1-81, W1-83, W1-84 and W5-03..W5-12) in
 // markup, components and stylesheets. It flags patterns, not provenance: a tell the brief or the project's tokens
 // chose on purpose is not a finding (W5-01), and nothing here proves a page was AI-generated.
 // Usage: node scripts/slop-scan.mjs <url | file | dir | -> [--json] [--max-files N] [--timeout s] [--help]
@@ -15,12 +15,14 @@
 // HIDDEN_UNTIL_SCROLL (W5-04) is a defect candidate, not a style tell: it is listed apart, outside the tell count, and
 // is scored on its own once a render without JS or with reduced motion confirms it.
 // Not checked (needs a render or a judgement): nested non-Card containers, stat rows (W5-14), demo-sized content
-// (W5-13), whether a look was chosen (W5-02). Inter is never a tell (the playbook recommends it, E-17).
-// Exit 0 = no tells or defect candidates, 1 = found, 2 = bad input, unreadable target (in a directory scan: any
-// unreadable file or folder, after printing the partial result), fetch failure or timeout.
+// (W5-13), whether a look was chosen (W5-02), two equal hero CTAs (W1-82: cta-scan's MULTI_PRIMARY flag; add it to
+// the count by hand). Inter is never a tell (the playbook recommends it, E-17).
+// Exit 0 = no tells or defect candidates, 1 = found, 2 = bad input, unreadable target, an incomplete directory scan
+// (any unreadable file or folder, or a walk stopped at --max-files or the 50 MB total; the partial result is printed
+// first), fetch failure or timeout. Files over 1 MB are skipped and counted, like minified files (not an error).
 // --list prints every tell with its rule IDs as JSON (used by validate.mjs) and exits 0.
 // Writes nothing.
-import { readFileSync, readdirSync, lstatSync, existsSync, openSync, fstatSync, closeSync, constants as FS } from "node:fs";
+import { readFileSync, readdirSync, lstatSync, existsSync, openSync, fstatSync, readSync, closeSync, constants as FS } from "node:fs";
 import { join, relative, extname, basename } from "node:path";
 
 const USAGE = `usage: slop-scan.mjs <url|file|dir|-> [--json] [--max-files N] [--timeout s] [--list] [--help]
@@ -31,8 +33,10 @@ const USAGE = `usage: slop-scan.mjs <url|file|dir|-> [--json] [--max-files N] [-
   --max-files N   cap for directory scans (default 4000)
   --timeout s     overall watchdog in seconds (default 60)
   --list     print every tell and its rule IDs as JSON, then exit 0
-exit: 0 nothing found, 1 tells or defect candidates found, 2 bad input / unreadable / fetch failure / timeout`;
+exit: 0 nothing found, 1 tells or defect candidates found, 2 bad input / unreadable / incomplete scan / fetch failure / timeout`;
 const die = (m) => { console.error(m); process.exit(2); };
+// backstop: an unexpected error is an incomplete run (exit 2), never a stack trace that reads as "found" (exit 1)
+for (const ev of ["uncaughtException", "unhandledRejection"]) process.on(ev, (e) => die(`slop-scan: ${e?.message || e}`));
 const argv = process.argv.slice(2), VALUED = ["--max-files", "--timeout"], BOOL = ["--json", "--list", "--help", "-h"];
 if (argv.includes("--help") || argv.includes("-h")) { console.log(USAGE); process.exit(0); }
 const positional = [];
@@ -110,42 +114,51 @@ const TELLS = [
 if (LIST) { console.log(JSON.stringify(TELLS.map((t) => ({ tell: t.id, rules: t.rules, label: t.label, min: t.min, defect: !!t.defect })), null, 1)); process.exit(0); }
 
 // ---------- input ----------
-const files = []; let skippedLarge = 0, unreadable = 0, truncatedWalk = false, totalBytes = 0;
+const files = []; let skippedLarge = 0, unreadable = 0, truncatedWalk = false, cappedBytes = false, totalBytes = 0;
 function walk(dir) {
   let ents; try { ents = readdirSync(dir, { withFileTypes: true }); } catch { unreadable++; return; } // an unlistable directory makes the scan incomplete
   ents.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
   for (const e of ents) {
-    if (files.length >= MAX_FILES) { truncatedWalk = true; return; }
+    if (truncatedWalk) return;
     const p = join(dir, e.name);
     if (e.isSymbolicLink()) continue;
     if (e.isDirectory()) { if (!SKIP_DIR.has(e.name) && !e.name.startsWith(".")) walk(p); continue; }
     if (!e.isFile() || !EXT.has(extname(e.name).toLowerCase()) || SKIP_FILE.test(e.name)) continue;
+    if (files.length >= MAX_FILES) { truncatedWalk = true; return; } // only a scannable file past the cap truncates
     files.push(p); // size limits are checked on the opened descriptor in readSafe (no check-then-use race)
   }
 }
-// Open once without following symlinks (O_NOFOLLOW where the platform has it), then stat and read the same descriptor,
-// so the file checked is the file read. Returns { text } or { skip: "large" | "notfile" }; throws when unreadable.
+// Open once without following symlinks (O_NOFOLLOW where the platform has it) and without blocking (O_NONBLOCK: a FIFO
+// swapped in after the walk cannot hang the open), then stat and read the same descriptor, so the file checked is the
+// file read. The read stops past maxBytes, so a file that grows after fstat cannot get past the cap.
+// Returns { text, bytes } or { skip: "large" | "notfile" }; throws when unreadable.
 function readSafe(p, maxBytes) {
-  const fd = openSync(p, FS.O_RDONLY | (FS.O_NOFOLLOW ?? 0));
+  const fd = openSync(p, FS.O_RDONLY | (FS.O_NOFOLLOW ?? 0) | (FS.O_NONBLOCK ?? 0));
   try { const st = fstatSync(fd); if (!st.isFile()) return { skip: "notfile" }; if (st.size > maxBytes) return { skip: "large" };
-    return { text: readFileSync(fd, "utf8") }; }
+    const chunks = []; let n = 0;
+    for (;;) { const b = Buffer.allocUnsafe(Math.min(65536, maxBytes + 1 - n)); const k = readSync(fd, b, 0, b.length, null);
+      if (!k) break; chunks.push(b.subarray(0, k)); n += k; if (n > maxBytes) return { skip: "large" }; }
+    return { text: Buffer.concat(chunks, n).toString("utf8"), bytes: n }; }
   finally { closeSync(fd); }
 }
 const sources = []; // { name, text }
 if (/^https?:\/\//i.test(target)) {
   try { new URL(target); } catch { die(`not a valid URL: ${target}`); }
-  const r = await fetch(target, { signal: AbortSignal.timeout(8000), redirect: "follow" }).catch((e) => die(`fetch failed: ${target} (${e.cause?.code || e.message})`));
+  const failed = (e) => die(`fetch failed: ${target} (${e?.cause?.code || e?.name || e?.message})`);
+  const r = await fetch(target, { signal: AbortSignal.timeout(8000), redirect: "follow" }).catch(failed);
   if (!r.ok) die(`HTTP ${r.status} for ${target}`);
-  const text = await r.text(); sources.push({ name: target, text: text.slice(0, MAX_TOTAL_BYTES) });
-} else if (target === "-") sources.push({ name: "stdin", text: readFileSync(0, "utf8").slice(0, MAX_TOTAL_BYTES) });
+  const text = await r.text().catch(failed); // the body can still time out or break after the headers arrive
+  sources.push({ name: target, text: text.slice(0, MAX_TOTAL_BYTES) });
+} else if (target === "-") { let text; try { text = readFileSync(0, "utf8"); } catch (e) { die(`cannot read stdin (${e.code || e.message})`); }
+  sources.push({ name: "stdin", text: text.slice(0, MAX_TOTAL_BYTES) }); }
 else {
   if (!existsSync(target)) die(`no such file or directory: ${target}`);
   let st; try { st = lstatSync(target); } catch (e) { die(`cannot read ${target} (${e.code || e.message})`); }
   if (st.isDirectory()) { walk(target); if (!files.length) die(unreadable ? `cannot read ${target} (${unreadable} unreadable folder(s))` : `no scannable source files under ${target} (extensions: ${[...EXT].join(" ")})`);
     for (const f of files) { let r; try { r = readSafe(f, MAX_FILE_BYTES); } catch { unreadable++; continue; }
       if (r.skip === "large") { skippedLarge++; continue; } if (r.skip) continue;
-      if (totalBytes + r.text.length > MAX_TOTAL_BYTES) { truncatedWalk = true; break; }
-      totalBytes += r.text.length; sources.push({ name: relative(target, f) || basename(f), text: r.text }); }
+      if (totalBytes + r.bytes > MAX_TOTAL_BYTES) { cappedBytes = true; break; }
+      totalBytes += r.bytes; sources.push({ name: relative(target, f) || basename(f), text: r.text }); }
     if (!sources.length) die(unreadable ? `cannot read any source file under ${target} (${unreadable} unreadable file(s) or folder(s))` : `no scannable source files under ${target} (${skippedLarge} over 1 MB)`); }
   else if (st.isFile()) { let r; try { r = readSafe(target, MAX_TOTAL_BYTES); } catch (e) { die(`cannot read ${target} (${e.code || e.message})`); }
     if (r.skip === "large") die(`file too large: ${target}`); if (r.skip) die(`not a regular file: ${target}`);
@@ -199,21 +212,24 @@ const found = TELLS.map((t) => ({ t, h: hits[t.id] }))
 const tells = found.filter((x) => !x.defect), defects = found.filter((x) => x.defect);
 const below = TELLS.filter((t) => hits[t.id].length && !found.some((x) => x.tell === t.id)).map((t) => ({ tell: t.id, count: hits[t.id].length, min: t.min, ...(t.ratio ? { ofControls: controls } : {}) }));
 const n = tells.length, tier = n >= 4 ? "high" : n >= 2 ? "medium" : "low";
-const verdict = n >= 3 ? "report one grouped \"AI-look tells\" finding (W5-01); drop tells the brief or project tokens chose on purpose"
-  : n ? "mention as one (general practice) note, not a scored finding (W5-01)" : "no tells";
+const heroNote = tells.some((x) => x.rules.some((id) => id.startsWith("W1-"))) ? "; hero tells (W1-80..W1-84) stay scored on their own rules and are named, not scored again, in the W5-01 line" : "";
+const verdict = (n >= 3 ? "report one grouped \"AI-look tells\" finding (W5-01); drop tells the brief or project tokens chose on purpose"
+  : n ? "mention as one (general practice) note, not a scored finding (W5-01)" : "no tells") + (n ? heroNote : "");
 const scanned = sources.length;
 
 const defectNote = "defect candidate (W5-04): not a style tell and not in the count; confirm with a render without JS or with reduced motion, then score it on its own";
-if (argv.includes("--json")) console.log(JSON.stringify({ target, filesScanned: scanned, skippedLarge, unreadable, truncated: truncatedWalk, tells: n, tier, verdict, flags: tells, defects: defects.map((d) => ({ ...d, note: defectNote })), belowThreshold: below }, null, 1));
+const truncated = truncatedWalk || cappedBytes;
+const truncNote = truncatedWalk ? `walk stopped at --max-files ${MAX_FILES}: raise --max-files` : cappedBytes ? `stopped at the ${MAX_TOTAL_BYTES / 1e6} MB total: scan a narrower folder` : null;
+if (argv.includes("--json")) console.log(JSON.stringify({ target, filesScanned: scanned, skippedLarge, unreadable, truncated, truncatedReason: truncNote, tells: n, tier, verdict, flags: tells, defects: defects.map((d) => ({ ...d, note: defectNote })), belowThreshold: below }, null, 1));
 else {
-  console.log(`slop-scan ${target}\nfiles scanned: ${scanned}${skippedLarge ? ` (skipped ${skippedLarge} over 1 MB)` : ""}${unreadable ? ` (${unreadable} unreadable file(s) or folder(s))` : ""}${truncatedWalk ? " (walk truncated: raise --max-files)" : ""}`);
+  console.log(`slop-scan ${target}\nfiles scanned: ${scanned}${skippedLarge ? ` (skipped ${skippedLarge} over 1 MB)` : ""}${unreadable ? ` (${unreadable} unreadable file(s) or folder(s))` : ""}${truncNote ? ` (incomplete: ${truncNote})` : ""}`);
   console.log(`AI-look tells: ${n}  tier: ${tier}  → ${verdict}\n`);
   for (const x of tells) { console.log(`[${x.tell}] ${x.label} ×${x.count}  rules: ${x.rules.join(", ")}`);
     for (const w of x.where) console.log(`    ${w.file}:${w.line}  ${w.text}`); }
   for (const x of defects) { console.log(`\nDEFECT CANDIDATE [${x.tell}] ${x.label} ×${x.count}  rules: ${x.rules.join(", ")}\n    ${defectNote}`);
     for (const w of x.where) console.log(`    ${w.file}:${w.line}  ${w.text}`); }
   if (below.length) console.log(`\nbelow threshold (not counted): ${below.map((b) => `${b.tell} ${b.count} hit(s), needs ${b.min}${b.ofControls != null ? ` and ≥30% of ${b.ofControls} links/buttons` : ""}`).join("; ")}`);
-  console.log("\nHeuristic hints, not verdicts: confirm each against the code or a render. Not checked: stat rows (W5-14), demo-sized content (W5-13), whether the look was chosen (W5-02). Inter is never a tell (E-17).");
+  console.log("\nHeuristic hints, not verdicts: confirm each against the code or a render. Not checked: stat rows (W5-14), demo-sized content (W5-13), whether the look was chosen (W5-02), two equal hero CTAs (W1-82: cta-scan's MULTI_PRIMARY). Inter is never a tell (E-17).");
 }
-if (unreadable) { console.error(`slop-scan: incomplete scan, ${unreadable} file(s) or folder(s) could not be read`); process.exit(2); }
+if (unreadable || truncated) { console.error(`slop-scan: incomplete scan, ${[unreadable ? `${unreadable} file(s) or folder(s) could not be read` : "", truncNote || ""].filter(Boolean).join("; ")}`); process.exit(2); }
 process.exit(n || defects.length ? 1 : 0);
