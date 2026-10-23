@@ -10,4 +10,5 @@ When working on UI design quality, use the ux-doctor skills instead of ad-hoc ta
 - Measure instead of guessing (`<ux-doctor skill folder>` = the directory containing the `ux-doctor` skill's `SKILL.md`, e.g. `skills/ux-doctor`):
   - `node <ux-doctor skill folder>/scripts/contrast.mjs <fg> <bg> [--large] [--over <hex>]` (`--over` flattens translucent colours)
   - `node <ux-doctor skill folder>/scripts/cta-scan.mjs <url|file.html> [--render] [--shots <dir>]` (CTAs/primaries in the first viewport, duplicates; look at the screenshots; `--render` needs Node ≥ 22; `--shots` writes only under `.ux-doctor/shots/`, never in `/ux-review` subagents or `/ux-restyle --dry-run`)
+  - `node <ux-doctor skill folder>/scripts/slop-scan.mjs <url|file|dir>` (AI-look tells, W1-80, W1-81, W1-83, W1-84 and W5; W1-82 comes from cta-scan; report a cluster of 3+ as one finding, never claim AI authorship: W5-01)
   - `node <ux-doctor skill folder>/scripts/rule.mjs <ID|tag|keyword>` (rule lookup); known rule conflicts: `references/rule-tensions.md`.
