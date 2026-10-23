@@ -45,7 +45,7 @@ Requirements: Node ≥ 20.1 for the bundled scripts; `cta-scan.mjs --render` nee
 skills/            Agent Skills (shared by all platforms)
 commands/          4 slash commands (Claude Code, Cursor, Pi)
 agents/            subagents (Claude Code, Cursor); platforms/codex/agents = generated TOML
-skills/ux-doctor/references/rules.json   all 427 rules (188 playbook + 239 web), machine readable
+skills/ux-doctor/references/rules.json   all 441 rules (188 playbook + 253 web), machine readable
 reference/         editable sources: extracted/*.md (playbook), extracted-web/*.md (web layer); generated: page-coverage.md; git-ignored: PDF, render/, pages/, web/
 scripts/           build-knowledge.mjs, sync-platforms.mjs, validate.mjs, check-paraphrase.mjs (dev)  (measuring tools ship with the skill: skills/ux-doctor/scripts/contrast.mjs, cta-scan.mjs, slop-scan.mjs, rule.mjs)
 ```

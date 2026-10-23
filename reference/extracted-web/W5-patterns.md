@@ -2,7 +2,7 @@
 > Source: paraphrased from public writing on the generic look of AI-generated interfaces, added by the maintainer. Not part of the PDF playbook. Slugs: `frontend-design-skill` (Anthropic, github.com/anthropics/skills, skills/frontend-design/SKILL.md), `vercel-design-md` (vercel.com/design.md, "Reject generated-design reflexes"), `design-slop-score` (Adrian Krebs, adriankrebs.ch/blog/design-slop/), `ai-design-slop-review` (Ralabs, ralabs.org/blog/ai-design-slop-how-to-review-ai-generated-interfaces/), `slop-taxonomy` (Ad Astra Computing, github.com/Ad-Astra-Computing/ahd, docs/SLOP_TAXONOMY.md). These rules flag unchosen defaults, not AI authorship: a tell the brief or the project's tokens chose on purpose is not a finding. The hero tells are W1-80..W1-84 (`de-ai-landing-hero`); W5 adds the rest.
 ## Web patterns: AI-look tells
 ### W5-01 Report AI-look tells as a cluster, never one by one  (src: design-slop-score)
-- **Rule**: One default pattern on its own says nothing about how a page was made; count the tells from W1-80..W1-84 and W5 together and treat a page as generic only when several of them show up at once (the source's tiers: 0–1 low, 2–3 medium, 4 or more high).
+- **Rule**: One default pattern on its own says nothing about how a page was made; count the tells from W1-80..W1-84 and W5 together (except W5-04, a defect scored on its own) and treat a page as generic only when several of them show up at once (the source's tiers: 0–1 low, 2–3 medium, 4 or more high).
 - **Why**: Automated checks for these patterns misfire on a share of pages, and plenty of hand-made sites use one or two of them for good reasons.
 - **Do / Don't**: Do give one grouped "AI-look tells" line that lists the tells found. Don't raise a separate finding for each tell, and don't claim the page was AI-generated.
 - **Audit check**: Run `node scripts/slop-scan.mjs <url|file|dir>` or check the tells by hand; report the count and the tier. Below 3 tells, mention them as one `(general practice)` note; at 3 or more, one grouped finding at this rule's severity. Drop any tell the brief, `DESIGN.md` or the project tokens chose explicitly (Accepted by design).
@@ -19,7 +19,7 @@
 
 ### W5-03 Keep motion for user actions, not a fade-up on every section  (src: frontend-design-skill)
 - **Rule**: Motion the user did not trigger should be rare and should point at something; one orchestrated load or reveal works better than a fade-and-rise entrance on each section and a hover effect on every card, which is the generated default.
-- **Why**: Effects scattered across the page add noise, and decoration seen on every visit becomes friction.
+- **Why**: A single planned moment lands better than effects sprinkled everywhere, and a fade-up on each section is exactly what generated pages do by default.
 - **Do / Don't**: Do animate responses to the user (open, expand, confirm) and at most one entrance moment per page. Don't attach the same scroll entrance to every section.
 - **Audit check**: Count scroll-entrance hooks on section roots (`whileInView`, `data-aos`, `useInView`, `IntersectionObserver` + `opacity-0`/`translate-y-*`, `animate-*fade*`); flag 3 or more. Check that a `prefers-reduced-motion: reduce` path exists.
 - **Restyle fix**: Remove the per-section entrances, keep one page-level moment if it carries meaning, and gate all non-essential motion behind `@media (prefers-reduced-motion: no-preference)`.
@@ -27,7 +27,7 @@
 
 ### W5-04 Never hide content behind a scroll-triggered entrance  (src: ai-design-slop-review)
 - **Rule**: Content must be visible without its entrance animation: when a section starts transparent and waits for a scroll observer, a trigger that never fires leaves a blank section, which is a defect, not a matter of taste.
-- **Why**: Observers miss on fast scrolls, anchor jumps, print, reduced motion, slow scripts and some crawlers, and the content then never appears.
+- **Why**: When the trigger does not fire, the reader gets an empty section instead of the content; likely causes include fast scrolls, anchor jumps, printing, reduced-motion settings and slow or blocked scripts (inference).
 - **Do / Don't**: Do start content visible and add the animation as an enhancement. Don't ship sections whose resting style is `opacity: 0` until a script runs.
 - **Audit check**: grep for elements that start hidden (`opacity-0`, `opacity: 0`, `initial={{ opacity: 0`) and only become visible through `whileInView`, `data-aos` or an observer; render with JavaScript disabled, with `prefers-reduced-motion: reduce`, and after jumping to an anchor further down, and check every section shows its content.
 - **Restyle fix**: Make the visible state the default and apply the hidden start only when script and motion are allowed (e.g. a class set by JS inside `prefers-reduced-motion: no-preference`), or use a CSS view timeline whose resting state is visible (W3-52).
@@ -58,7 +58,7 @@
 - **Severity**: low ; **Tags**: copy, typography, craft
 
 ### W5-08 Don't mark cards with a coloured edge stripe  (src: design-slop-score)
-- **Rule**: A coloured border on just the left or top edge of ordinary content cards is, according to the designers the source asked, about as reliable a generated-design tell as em dashes are for generated text.
+- **Rule**: A coloured border on just the left or top edge of ordinary content cards is, in the words of a designer the source quotes, about as reliable a generated-design tell as em dashes are for generated text.
 - **Why**: The stripe adds colour without adding meaning and stands in for real hierarchy.
 - **Do / Don't**: Do separate cards with spacing, type and surface. Don't put a static accent stripe on every card (a hover edge cue on clickable cards, W1-79, and a status colour on alerts are different cases).
 - **Audit check**: grep cards for `border-l-[2-8]`/`border-t-[2-8]` with an accent colour, or `border-left: 3px+ solid <accent>` on rounded containers; ignore `blockquote` and status alerts whose colour encodes severity.
@@ -66,10 +66,10 @@
 - **Severity**: low ; **Tags**: cards, borders, color
 
 ### W5-09 Don't nest cards or box single lines to fake hierarchy  (src: vercel-design-md)
-- **Rule**: Cards inside cards, and borders drawn around single lines of text, are a reflex for repairing weak hierarchy; fix the hierarchy with spacing and type instead.
+- **Rule**: Cards inside cards, and borders added to prop up a weak hierarchy, are a generated reflex; fix the hierarchy with spacing and type instead.
 - **Why**: Every extra box adds edges to read past and claims a layer the content does not have.
-- **Do / Don't**: Do use one container level for a group (a shared region is fine, W2-06). Don't wrap a card in another card or put a bordered box around one line.
-- **Audit check**: Look for a bordered/shadowed rounded container inside another (`rounded-* border`/`shadow-*` or `Card` inside `Card`/`CardContent`), and for bordered boxes holding a single line of text.
+- **Do / Don't**: Do use one container level for a group (a shared region is fine, W2-06). Don't wrap a card in another card or add a border just to separate things that spacing could separate.
+- **Audit check**: Look for a bordered/shadowed rounded container inside another (`rounded-* border`/`shadow-*` or `Card` inside `Card`/`CardContent`), and for borders that separate items already separated by spacing (inference).
 - **Restyle fix**: Remove the inner container's border and shadow, group its contents with spacing and a heading, and keep the outer surface.
 - **Severity**: medium ; **Tags**: cards, hierarchy, borders
 
@@ -81,8 +81,8 @@
 - **Restyle fix**: Replace emoji with the project's icon set or nothing; swap generic icon tiles for product imagery (W1-84) or remove them and let the heading lead.
 - **Severity**: low ; **Tags**: icons, imagery, cards
 
-### W5-11 Write copy that could only belong to this product  (src: ai-design-slop-review)
-- **Rule**: Text can look as generic as the styling around it: stock lines like "build the future of", "ship faster", "AI-native", "seamless" or "effortless" could describe any product and say nothing about this one.
+### W5-11 Write copy that could only belong to this product  (src: slop-taxonomy)
+- **Rule**: Generated pages reuse the same SaaS slogans ("build the future of …", "ship faster", "your AI-native …") and hedge with "may"; lines like these could describe any product and say nothing about this one.
 - **Why**: Readers scan for what the product does for them, and stock phrases hide that answer.
 - **Do / Don't**: Do name the user, the task and the result in plain words. Don't fill sections with filler adjectives and slogans (the hero headline is W1-80; button labels are W2-67).
 - **Audit check**: grep visible copy for `seamless|effortless|supercharge|unleash|unlock|elevate|revolutioni[sz]e|game-?chang|cutting-edge|next-gen|empower|streamline|build the future|ship faster|AI-native|in today's`; flag 3 or more outside the hero.
@@ -90,10 +90,10 @@
 - **Severity**: medium ; **Tags**: copy
 
 ### W5-12 Don't ship a default palette cluster as the brand  (src: frontend-design-skill)
-- **Rule**: Generated pages gather around a few palettes regardless of subject: a purple-to-blue gradient, a warm cream page with a serif display and a terracotta accent, near-black with one acid-green or vermilion accent, and the UI kit's untouched default theme.
-- **Why**: These are defaults rather than choices, so they make unrelated products look alike; the cluster shifts over time (the purple gradient has already given way to the cream-and-serif look).
+- **Rule**: Generated pages gather around a few looks regardless of subject: a warm cream page with a serif display and a terracotta accent, near-black with one acid-green or vermilion accent, a broadsheet layout of hairline rules and square corners, and the card kit with grey shadows and decorative gradient washes.
+- **Why**: Each look can suit some brief, but reached for by default it shows up on unrelated products and makes them look alike. The purple gradient is covered by W1-81.
 - **Do / Don't**: Do use one of these looks when the brief explicitly requests it. Don't spend an open colour decision on one of them.
-- **Audit check**: Compare the page's background, accent and display face with the clusters above and with the framework's default tokens (unchanged shadcn/ui `--primary`/`--radius`, Tailwind `indigo-500`/`violet-500`); count a match as one tell under W5-01 only if no brief or token file chose it.
+- **Audit check**: Compare the page's background, accent and display face with the clusters above and with the framework's default tokens (unchanged shadcn/ui `--primary`/`--radius`; inference); count a match as one tell under W5-01 only if no brief or token file chose it.
 - **Restyle fix**: Needs a design decision: derive the accent and neutrals from the brand or product domain, then express them as tokens.
 - **Severity**: low ; **Tags**: color, craft
 
@@ -105,10 +105,10 @@
 - **Restyle fix**: Add truncation with full text on demand, wrap or clamp long strings, reserve width for numbers with tabular figures, and design the empty and overflow states.
 - **Severity**: medium ; **Tags**: states, layout
 
-### W5-14 Show metric rows only for real, sourced numbers  (src: vercel-design-md)
-- **Rule**: A row of repeated metric boxes (big number, small label) is a generated default; use it only for real, attributable figures, and prefer one composed comparison when it explains the point better.
-- **Why**: Unsourced or decorative numbers read as filler and cost trust, like the vague proof in W1-83.
-- **Do / Don't**: Do give each figure a source, period or comparison. Don't add a stat banner to fill space or repeat numbers shown elsewhere.
-- **Audit check**: Look for 3 or more sibling blocks each holding a large number and a short label (`text-3xl`+ followed by `text-sm`/`text-muted`), and check whether each figure is sourced or dated.
-- **Restyle fix**: Keep only sourced figures; merge the rest into one sentence or chart that compares them, or remove them.
+### W5-14 Show a metric row only when it is the clearest form  (src: vercel-design-md)
+- **Rule**: A row of repeated metric boxes (big number, small label) is a generated default; use one composed comparison when it makes the point more clearly, and keep each figure's unit, period and basis next to it.
+- **Why**: Boxes added to fill a gap in the evidence read as filler, like the vague proof in W1-83.
+- **Do / Don't**: Do show units, periods and the comparison a number belongs to. Don't add a stat banner to fill space or restate numbers shown elsewhere at equal weight.
+- **Audit check**: Look for 3 or more sibling blocks each holding a large number and a short label (`text-3xl`+ followed by `text-sm`/`text-muted`), and check whether each figure states its unit, period and basis.
+- **Restyle fix**: Keep figures that carry their unit, period and basis; merge the rest into one sentence or chart that compares them, or remove them.
 - **Severity**: low ; **Tags**: copy, hierarchy, craft

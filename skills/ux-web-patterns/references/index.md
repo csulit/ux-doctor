@@ -251,7 +251,7 @@
 | W5-08 | Don't mark cards with a coloured edge stripe | web:design-slop-score | low | cards, borders, color |
 | W5-09 | Don't nest cards or box single lines to fake hierarchy | web:vercel-design-md | medium | cards, hierarchy, borders |
 | W5-10 | Use icons that inform, not emoji bullets or stock icon tiles | web:slop-taxonomy | low | icons, imagery, cards |
-| W5-11 | Write copy that could only belong to this product | web:ai-design-slop-review | medium | copy |
+| W5-11 | Write copy that could only belong to this product | web:slop-taxonomy | medium | copy |
 | W5-12 | Don't ship a default palette cluster as the brand | web:frontend-design-skill | low | color, craft |
 | W5-13 | Test layouts with real content, not demo-sized content | web:ai-design-slop-review | medium | states, layout |
-| W5-14 | Show metric rows only for real, sourced numbers | web:vercel-design-md | low | copy, hierarchy, craft |
+| W5-14 | Show a metric row only when it is the clearest form | web:vercel-design-md | low | copy, hierarchy, craft |

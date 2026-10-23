@@ -8,25 +8,31 @@
 //         mdx, css, scss), skipping node_modules, build output, VCS and test/story files; symlinks are not followed
 //   -     reads stdin
 // Line-based heuristics (deterministic regexes on each line, plus a short window for multi-line headings and hidden
-// entrances). Every tell lists rule IDs, a hit count and up to 5 locations. Tier by distinct tells (W5-01, after the
+// entrances). Lines longer than 2000 characters (minified files) are cut into pieces at tag/rule boundaries, then into
+// 2000-character chunks; hits keep the original line number, and a pattern split across two chunks is missed.
+// Every tell lists rule IDs, a hit count and up to 5 locations. Tier by distinct tells (W5-01, after the
 // design-slop-score source): 0–1 low, 2–3 medium, 4+ high; report one grouped finding only at 3+ tells.
+// HIDDEN_UNTIL_SCROLL (W5-04) is a defect candidate, not a style tell: it is listed apart, outside the tell count, and
+// is scored on its own once a render without JS or with reduced motion confirms it.
 // Not checked (needs a render or a judgement): nested non-Card containers, stat rows (W5-14), demo-sized content
 // (W5-13), whether a look was chosen (W5-02). Inter is never a tell (the playbook recommends it, E-17).
-// Exit 0 = no tells, 1 = tells found, 2 = bad input, unreadable target, fetch failure or timeout.
+// Exit 0 = no tells or defect candidates, 1 = found, 2 = bad input, unreadable target, fetch failure or timeout.
+// --list prints every tell with its rule IDs as JSON (used by validate.mjs) and exits 0.
 // Writes nothing.
 import { readFileSync, readdirSync, lstatSync, existsSync } from "node:fs";
 import { join, relative, extname, basename } from "node:path";
 
-const USAGE = `usage: slop-scan.mjs <url|file|dir|-> [--json] [--max-files N] [--timeout s] [--help]
+const USAGE = `usage: slop-scan.mjs <url|file|dir|-> [--json] [--max-files N] [--timeout s] [--list] [--help]
   url        fetch one page's HTML (static; no JavaScript, no linked CSS)
   file|dir   scan one file or a source tree (symlinks not followed)
   -          read stdin
   --json     machine-readable output
   --max-files N   cap for directory scans (default 4000)
   --timeout s     overall watchdog in seconds (default 60)
-exit: 0 no tells, 1 tells found, 2 bad input / unreadable / fetch failure / timeout`;
+  --list     print every tell and its rule IDs as JSON, then exit 0
+exit: 0 nothing found, 1 tells or defect candidates found, 2 bad input / unreadable / fetch failure / timeout`;
 const die = (m) => { console.error(m); process.exit(2); };
-const argv = process.argv.slice(2), VALUED = ["--max-files", "--timeout"], BOOL = ["--json", "--help", "-h"];
+const argv = process.argv.slice(2), VALUED = ["--max-files", "--timeout"], BOOL = ["--json", "--list", "--help", "-h"];
 if (argv.includes("--help") || argv.includes("-h")) { console.log(USAGE); process.exit(0); }
 const positional = [];
 for (let i = 0; i < argv.length; i++) { const a = argv[i];
@@ -36,7 +42,8 @@ for (let i = 0; i < argv.length; i++) { const a = argv[i];
   else die(`unknown option ${a}\n${USAGE}`); }
 const opt = (k, d) => { const i = argv.indexOf(k); return i >= 0 ? argv[i + 1] : d; };
 const target = positional[0];
-if (!target) die(USAGE);
+const LIST = argv.includes("--list");
+if (!target && !LIST) die(USAGE);
 if (positional.length > 1) die(`one target at a time (got ${positional.length}: ${positional.join(", ")})`);
 const MAX_FILES = Number(opt("--max-files", "4000")), TIMEOUT_S = Number(opt("--timeout", "60"));
 if (!(Number.isInteger(MAX_FILES) && MAX_FILES > 0)) die(`--max-files needs a positive integer (got "${opt("--max-files")}")`);
@@ -70,7 +77,7 @@ const TELLS = [
     line: has(/trusted by\s{1,3}(?:over\s{1,3})?(?:[\d][\d,.]{0,12}\s?[kKmM+]|thousands|millions|teams|leading|the world)/i) },
   { id: "SCROLL_REVEAL", rules: ["W5-03"], label: "scroll-triggered entrance hooks", min: 3,
     line: has(/\bwhileInView\b|\bdata-aos=|\bAOS\.init\b|\buseInView\(|\bScrollReveal\(|\bdata-scroll-reveal\b|\banimate-on-scroll\b/) },
-  { id: "HIDDEN_UNTIL_SCROLL", rules: ["W5-04"], label: "content hidden until a scroll trigger fires (confirm: render without JS / reduced motion)", min: 1,
+  { id: "HIDDEN_UNTIL_SCROLL", rules: ["W5-04"], label: "content hidden until a scroll trigger fires (confirm: render without JS / reduced motion)", min: 1, defect: true,
     // AOS hides [data-aos] elements in its own CSS until its script runs; observer-based entrances need a hidden start nearby (±2 lines)
     near: 2, trigger: /\bdata-aos=|\bwhileInView\b|\buseInView\(|\bIntersectionObserver\b/,
     need: (l, w) => /\bdata-aos=/.test(l) || /\bopacity-0\b|opacity\s*:\s*0(?![.\d])|initial=\{\{\s*opacity\s*:\s*0\b/.test(w) },
@@ -78,7 +85,7 @@ const TELLS = [
     window: 6, start: /<h[12][\s>]/i, end: /<\/h[12]>/i,
     block: (w) => /<(?:em|i|span)\b[^>]{0,200}class(?:Name)?=["'{`][^"'`]{0,300}(?:\bitalic\b|\bfont-serif\b|\bbg-clip-text\b|\btext-(?:primary|accent|brand)\b|\btext-(?:purple|violet|indigo|fuchsia|blue|pink|orange|amber|emerald|teal|cyan|sky|rose|red|green|lime|yellow)-[3-7]00\b)/i.test(w) },
   { id: "EYEBROW_LABEL", rules: ["W5-06"], label: "tracked all-caps eyebrow labels", min: 3,
-    line: all(/\buppercase\b/, /\btracking-(?:wide|wider|widest|\[[\d.]+em\])\b/, /\btext-(?:xs|sm|\[1[0-3]px\])\b/) },
+    line: all(/\buppercase\b/, /\btracking-(?:wide|wider|widest|\[[\d.]+em\])(?![\w-])/, /\btext-(?:xs|sm|\[1[0-3]px\])(?![\w-])/) },
   { id: "ARROW_LABELS", rules: ["W5-07"], label: "arrow appended to link/button labels", min: 4, skipComments: true, ratio: 0.3, skipPath: /(?:^|\/)components\/ui\//,
     line: has(/(?:→|&rarr;|-&gt;)\s{0,3}<\/(?:a|button|Link|Button)>|<ArrowRight(?:Icon)?\b/) },
   { id: "EDGE_STRIPE", rules: ["W5-08"], label: "coloured left/top stripe on cards", min: 1,
@@ -99,8 +106,10 @@ const TELLS = [
     line: has(/--primary\s*:\s*(?:222\.2\s+47\.4%\s+11\.2%|oklch\(\s*0\.205\s+0\s+0\s*\))/) },
 ];
 
+if (LIST) { console.log(JSON.stringify(TELLS.map((t) => ({ tell: t.id, rules: t.rules, label: t.label, min: t.min, defect: !!t.defect })), null, 1)); process.exit(0); }
+
 // ---------- input ----------
-const files = []; let skippedLarge = 0, truncatedWalk = false, totalBytes = 0;
+const files = []; let skippedLarge = 0, unreadable = 0, truncatedWalk = false, totalBytes = 0;
 function walk(dir) {
   let ents; try { ents = readdirSync(dir, { withFileTypes: true }); } catch { return; }
   ents.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
@@ -125,10 +134,12 @@ if (/^https?:\/\//i.test(target)) {
 } else if (target === "-") sources.push({ name: "stdin", text: readFileSync(0, "utf8").slice(0, MAX_TOTAL_BYTES) });
 else {
   if (!existsSync(target)) die(`no such file or directory: ${target}`);
-  const st = lstatSync(target);
+  let st; try { st = lstatSync(target); } catch (e) { die(`cannot read ${target} (${e.code || e.message})`); }
   if (st.isDirectory()) { walk(target); if (!files.length) die(`no scannable source files under ${target} (extensions: ${[...EXT].join(" ")})`);
-    for (const f of files) { try { sources.push({ name: relative(target, f) || basename(f), text: readFileSync(f, "utf8") }); } catch {} } }
-  else if (st.isFile()) { if (st.size > MAX_TOTAL_BYTES) die(`file too large: ${target}`); sources.push({ name: basename(target), text: readFileSync(target, "utf8") }); }
+    for (const f of files) { try { sources.push({ name: relative(target, f) || basename(f), text: readFileSync(f, "utf8") }); } catch { unreadable++; } } }
+  else if (st.isFile()) { if (st.size > MAX_TOTAL_BYTES) die(`file too large: ${target}`);
+    let text; try { text = readFileSync(target, "utf8"); } catch (e) { die(`cannot read ${target} (${e.code || e.message})`); }
+    sources.push({ name: basename(target), text }); }
   else die(`not a file or directory: ${target}`);
 }
 
@@ -136,17 +147,23 @@ else {
 const hits = Object.fromEntries(TELLS.map((t) => [t.id, []]));
 const excerpt = (s) => s.trim().replace(/\s+/g, " ").slice(0, 120);
 for (const { name, text } of sources) {
-  // minified single-line files: split long lines on tag boundaries so per-line tests stay meaningful
-  const lines = text.split(/\r?\n/).flatMap((l) => (l.length > MAX_LINE ? l.replace(/></g, ">\n<").split("\n") : [l])).map((l) => l.slice(0, MAX_LINE));
+  // minified single-line files: cut long lines at tag/rule boundaries, then into MAX_LINE chunks; `lns` keeps each
+  // piece's original line number so reported file:line anchors stay exact
+  const lines = [], lns = [];
+  text.split(/\r?\n/).forEach((l, i) => {
+    const parts = l.length > MAX_LINE ? l.split(/(?<=>)(?=<)|(?<=[;}])/) : [l];
+    for (const p of parts) for (let k = 0; k < Math.max(1, p.length); k += MAX_LINE) { lines.push(p.slice(k, k + MAX_LINE)); lns.push(i + 1); } });
   for (const t of TELLS) {
     if (t.nesting) { // <Card ...> depth tracking (JSX/Vue/Svelte component names only)
       let depth = 0;
       lines.forEach((l, i) => { for (const m of l.matchAll(/<(\/?)Card(?=[\s>/])([^>]{0,300}?)(\/?)>/g)) {
-        if (m[1]) depth = Math.max(0, depth - 1); else if (!m[3]) { if (depth >= 1) hits[t.id].push({ file: name, line: i + 1, text: excerpt(l) }); depth++; } } });
+        if (m[1]) { depth = Math.max(0, depth - 1); continue; }
+        if (depth >= 1) hits[t.id].push({ file: name, line: lns[i], text: excerpt(l) }); // an inner <Card> or <Card /> inside an open <Card>
+        if (!m[3]) depth++; } });
       continue;
     }
     if (t.near) { // trigger line + its neighbours (multi-line JSX props)
-      lines.forEach((l, i) => { if (t.trigger.test(l) && t.need(l, lines.slice(Math.max(0, i - t.near), i + t.near + 1).join("\n"))) hits[t.id].push({ file: name, line: i + 1, text: excerpt(l) }); });
+      lines.forEach((l, i) => { if (t.trigger.test(l) && t.need(l, lines.slice(Math.max(0, i - t.near), i + t.near + 1).join("\n"))) hits[t.id].push({ file: name, line: lns[i], text: excerpt(l) }); });
       continue;
     }
     if (t.window) { // a block that starts on a `start` line and runs to `end` or `window` lines (multi-line headings)
@@ -154,34 +171,38 @@ for (const { name, text } of sources) {
         if (!t.start.test(lines[i])) continue;
         let w = lines[i];
         for (let k = 1; k < t.window && i + k < lines.length && !t.end.test(w); k++) w += "\n" + lines[i + k];
-        if (t.block(w)) hits[t.id].push({ file: name, line: i + 1, text: excerpt(lines[i]) });
+        if (t.block(w)) hits[t.id].push({ file: name, line: lns[i], text: excerpt(lines[i]) });
       }
       continue;
     }
     if (t.skipPath && t.skipPath.test(name.replaceAll("\\", "/"))) continue;
-    lines.forEach((l, i) => { if (t.skipComments && isComment(l)) return; if (t.line(l)) hits[t.id].push({ file: name, line: i + 1, text: excerpt(l) }); });
+    lines.forEach((l, i) => { if (t.skipComments && isComment(l)) return; if (t.line(l)) hits[t.id].push({ file: name, line: lns[i], text: excerpt(l) }); });
   }
 }
 // ARROW_LABELS counts only when arrows sit on a sizeable share of the links/buttons scanned (W5-07: "on every control")
 const controls = sources.reduce((n, s) => n + (s.text.match(/<(?:a|button|Link|Button)\b/g) || []).length, 0);
 // ICON_TILE also counts when a single tile line sits in a file with a 3-column grid (one mapped component renders the row)
 const gridFiles = new Set(sources.filter((s) => /\b(?:[a-z0-9]+:)?grid-cols-3\b/.test(s.text)).map((s) => s.name));
-const tells = TELLS.map((t) => ({ t, h: hits[t.id] }))
+const found = TELLS.map((t) => ({ t, h: hits[t.id] }))
   .filter(({ t, h }) => (h.length >= t.min && (!t.ratio || h.length >= t.ratio * controls)) || (t.id === "ICON_TILE" && h.some((x) => gridFiles.has(x.file))))
-  .map(({ t, h }) => ({ tell: t.id, rules: t.rules, label: t.label, count: h.length, where: h.slice(0, 5) }));
-const below = TELLS.filter((t) => hits[t.id].length && !tells.some((x) => x.tell === t.id)).map((t) => ({ tell: t.id, count: hits[t.id].length, min: t.min, ...(t.ratio ? { ofControls: controls } : {}) }));
+  .map(({ t, h }) => ({ tell: t.id, rules: t.rules, label: t.label, count: h.length, where: h.slice(0, 5), defect: !!t.defect }));
+const tells = found.filter((x) => !x.defect), defects = found.filter((x) => x.defect);
+const below = TELLS.filter((t) => hits[t.id].length && !found.some((x) => x.tell === t.id)).map((t) => ({ tell: t.id, count: hits[t.id].length, min: t.min, ...(t.ratio ? { ofControls: controls } : {}) }));
 const n = tells.length, tier = n >= 4 ? "high" : n >= 2 ? "medium" : "low";
 const verdict = n >= 3 ? "report one grouped \"AI-look tells\" finding (W5-01); drop tells the brief or project tokens chose on purpose"
   : n ? "mention as one (general practice) note, not a scored finding (W5-01)" : "no tells";
 const scanned = sources.length;
 
-if (argv.includes("--json")) console.log(JSON.stringify({ target, filesScanned: scanned, skippedLarge, truncated: truncatedWalk, tells: n, tier, verdict, flags: tells, belowThreshold: below }, null, 1));
+const defectNote = "defect candidate (W5-04): not a style tell and not in the count; confirm with a render without JS or with reduced motion, then score it on its own";
+if (argv.includes("--json")) console.log(JSON.stringify({ target, filesScanned: scanned, skippedLarge, unreadable, truncated: truncatedWalk, tells: n, tier, verdict, flags: tells, defects: defects.map((d) => ({ ...d, note: defectNote })), belowThreshold: below }, null, 1));
 else {
-  console.log(`slop-scan ${target}\nfiles scanned: ${scanned}${skippedLarge ? ` (skipped ${skippedLarge} over 1 MB)` : ""}${truncatedWalk ? " (walk truncated: raise --max-files)" : ""}`);
+  console.log(`slop-scan ${target}\nfiles scanned: ${scanned}${skippedLarge ? ` (skipped ${skippedLarge} over 1 MB)` : ""}${unreadable ? ` (${unreadable} unreadable)` : ""}${truncatedWalk ? " (walk truncated: raise --max-files)" : ""}`);
   console.log(`AI-look tells: ${n}  tier: ${tier}  → ${verdict}\n`);
   for (const x of tells) { console.log(`[${x.tell}] ${x.label} ×${x.count}  rules: ${x.rules.join(", ")}`);
+    for (const w of x.where) console.log(`    ${w.file}:${w.line}  ${w.text}`); }
+  for (const x of defects) { console.log(`\nDEFECT CANDIDATE [${x.tell}] ${x.label} ×${x.count}  rules: ${x.rules.join(", ")}\n    ${defectNote}`);
     for (const w of x.where) console.log(`    ${w.file}:${w.line}  ${w.text}`); }
   if (below.length) console.log(`\nbelow threshold (not counted): ${below.map((b) => `${b.tell} ${b.count} hit(s), needs ${b.min}${b.ofControls != null ? ` and ≥30% of ${b.ofControls} links/buttons` : ""}`).join("; ")}`);
   console.log("\nHeuristic hints, not verdicts: confirm each against the code or a render. Not checked: stat rows (W5-14), demo-sized content (W5-13), whether the look was chosen (W5-02). Inter is never a tell (E-17).");
 }
-process.exit(n ? 1 : 0);
+process.exit(n || defects.length ? 1 : 0);

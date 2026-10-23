@@ -3,7 +3,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, writeFileSync, mkdirSync, rmSync, symlinkSync } from "node:fs";
+import { mkdtempSync, writeFileSync, mkdirSync, rmSync, symlinkSync, chmodSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -15,18 +15,60 @@ const run = (args, input) => spawnSync(process.execPath, [SCRIPT, ...args, "--ti
 const json = (r) => JSON.parse(r.stdout);
 const ok = (r) => r.error == null && [0, 1, 2].includes(r.status) && !/at .*\.mjs:\d+/.test(r.stderr);
 
-test("AI-look fixture: exit 1, tier high, every static tell found", () => {
+test("AI-look fixture: exit 1, tier high, every static tell found, W5-04 listed apart as a defect", () => {
   const r = run([FIX("ai-slop.html"), "--json"]);
   assert.equal(r.status, 1, r.stderr);
   const j = json(r);
   assert.equal(j.tier, "high");
   const found = new Set(j.flags.map((f) => f.tell));
-  for (const t of ["GRADIENT_TEXT", "BLUR_BLOB", "PURPLE_GRADIENT", "BUZZWORD_COPY", "TRUSTED_BY_COUNT", "SCROLL_REVEAL", "HIDDEN_UNTIL_SCROLL",
+  for (const t of ["GRADIENT_TEXT", "BLUR_BLOB", "PURPLE_GRADIENT", "BUZZWORD_COPY", "TRUSTED_BY_COUNT", "SCROLL_REVEAL",
     "ACCENT_WORD", "EYEBROW_LABEL", "ARROW_LABELS", "EDGE_STRIPE", "EMOJI_ICONS", "ICON_TILE", "DEFAULT_KIT_THEME"]) assert.ok(found.has(t), `missing ${t}`);
-  for (const f of j.flags) assert.ok(f.rules.every((id) => /^(W1-8[0-4]|W5-\d\d)$/.test(id)), `${f.tell} cites ${f.rules}`);
+  assert.equal(j.tells, j.flags.length);
+  assert.deepEqual(j.defects.map((d) => d.tell), ["HIDDEN_UNTIL_SCROLL"]);
+  for (const f of [...j.flags, ...j.defects]) assert.ok(f.rules.every((id) => /^(W1-8[0-4]|W5-\d\d)$/.test(id)), `${f.tell} cites ${f.rules}`);
 });
 
-test("plain fixture: Inter, a quote with a left border and real copy are not tells", () => {
+test("a lone hidden-until-scroll section exits 1 as a defect, not a general-practice note", () => {
+  const j = json(run(["-", "--json"], '<section data-aos="fade-up"><h2>Pricing</h2></section>'));
+  assert.equal(j.tells, 0);
+  assert.equal(j.defects[0].tell, "HIDDEN_UNTIL_SCROLL");
+  assert.match(j.defects[0].note, /score it on its own/);
+  assert.equal(run(["-"], '<section data-aos="fade-up"><h2>Pricing</h2></section>').status, 1);
+});
+
+test("--list names every tell with rule IDs and exits 0", () => {
+  const r = run(["--list"]);
+  assert.equal(r.status, 0, r.stderr);
+  const l = JSON.parse(r.stdout);
+  assert.ok(l.length >= 15 && l.every((t) => t.rules.length && t.rules.every((id) => /^W\d-\d\d$/.test(id))));
+});
+
+test("line numbers survive long minified lines; content past 2000 characters is still scanned", () => {
+  const svg = "<svg>" + "<path d=\"M0 0\"/>".repeat(300) + "</svg>";
+  const css = "<style>" + ".a{color:red}".repeat(400) + ".t{-webkit-background-clip:text}</style>";
+  const j = json(run(["-", "--json"], [svg, css, "<p>ok</p>", "<h1 class=\"bg-clip-text text-transparent\">x</h1>"].join("\n")));
+  const g = j.flags.find((f) => f.tell === "GRADIENT_TEXT");
+  assert.deepEqual(g.where.map((w) => w.line), [2, 4]);
+});
+
+test("eyebrows with Tailwind arbitrary values count", () => {
+  const html = Array.from({ length: 3 }, (_, i) => `<p class="uppercase tracking-[0.2em] text-[11px]">Label ${i}</p>`).join("\n");
+  assert.ok(json(run(["-", "--json"], html)).flags.some((f) => f.tell === "EYEBROW_LABEL"));
+});
+
+test("a self-closing <Card /> inside a <Card> is nesting", () => {
+  assert.ok(json(run(["-", "--json"], "<Card>\n  <Card />\n</Card>")).flags.some((f) => f.tell === "NESTED_CARD"));
+  assert.equal(run(["-"], "<Card />\n<Card>x</Card>").status, 0);
+});
+
+test("an unreadable file exits 2 without a stack trace", { skip: process.platform === "win32" || process.getuid?.() === 0 }, () => {
+  const d = mkdtempSync(join(tmpdir(), "slop-scan-"));
+  try { const f = join(d, "locked.html"); writeFileSync(f, "<p>x</p>"); chmodSync(f, 0o000);
+    const r = run([f]); assert.equal(r.status, 2); assert.ok(ok(r), r.stderr); assert.match(r.stderr, /cannot read/);
+  } finally { rmSync(d, { recursive: true, force: true }); }
+});
+
+test("plain fixture: Inter, a rounded quote with a left border and real copy are not tells", () => {
   const r = run([FIX("plain-landing.html"), "--json"]);
   assert.equal(r.status, 0, r.stdout);
   assert.equal(json(r).tells, 0);
@@ -40,10 +82,10 @@ test("JSX via stdin: nested Card, hidden-until-scroll and accent word across lin
     "  whileInView={{ opacity: 1 }}>",
     "<h2 className=\"text-4xl\">Close books",
     "  <em className=\"font-serif italic\">faster</em></h2>",
-    "<Card><Card /></Card>", // self-closing inner card still nests
+    "<Card><Card /></Card>", // self-closing inner card nests too (also tested alone below)
   ].join("\n");
   const j = json(run(["-", "--json"], src));
-  const found = new Set(j.flags.map((f) => f.tell));
+  const found = new Set([...j.flags, ...j.defects].map((f) => f.tell));
   for (const t of ["NESTED_CARD", "HIDDEN_UNTIL_SCROLL", "ACCENT_WORD"]) assert.ok(found.has(t), `missing ${t}`);
 });
 

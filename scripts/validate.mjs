@@ -87,7 +87,9 @@ else {
   if (!existsSync(join(scriptDir, "slop-scan.mjs")) || !existsSync(slop) || !existsSync(plain)) errs.push("slop-scan.mjs or reference/fixtures/{ai-slop,plain-landing}.html missing");
   else { const r = run("slop-scan.mjs", [slop, "--json"]); let j = null; try { j = JSON.parse(r.stdout); } catch {}
     if (r.status !== 1 || j?.tier !== "high") errs.push(`slop-scan on ai-slop.html: expected exit 1 and tier high, got exit ${r.status} tier ${j?.tier} ${r.stderr.slice(0, 200)}`);
-    for (const id of new Set((j?.flags ?? []).flatMap((f) => f.rules))) if (!ids.has(id)) errs.push(`slop-scan cites unknown rule ${id}`);
+    const l = run("slop-scan.mjs", ["--list"]); let tells = null; try { tells = JSON.parse(l.stdout); } catch {}
+    if (l.status !== 0 || !Array.isArray(tells) || !tells.length) errs.push(`slop-scan --list: expected exit 0 and a JSON list, got exit ${l.status}`);
+    else for (const id of new Set(tells.flatMap((t) => t.rules))) if (!ids.has(id)) errs.push(`slop-scan cites unknown rule ${id}`);
     const c = run("slop-scan.mjs", [plain]); if (c.status !== 0) errs.push(`slop-scan on plain-landing.html: expected exit 0 (no tells), got ${c.status}`);
     const m = run("slop-scan.mjs", [join(root, "reference/fixtures/no-such-file.html")]); if (m.status !== 2) errs.push(`slop-scan on a missing file: expected exit 2, got ${m.status}`); } }
 if (!existsSync(join(scriptDir, "contrast.mjs"))) errs.push("contrast.mjs missing");
