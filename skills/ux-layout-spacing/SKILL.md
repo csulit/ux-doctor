@@ -5,7 +5,7 @@ description: "Knowledge on alignment, whitespace, spacing scales, layout grids, 
 
 # UI Layout, Spacing & Consistency
 
-Covers alignment (A-21..A-28, B-01), whitespace and spacing systems (B-13..B-17), layout (B-18..B-23), balance (C-02..C-06), consistency (C-07..C-16) and wide-screen form containment (H-05, H-06).
+Covers alignment (A-21..A-28, B-01), whitespace and spacing systems (B-13..B-16), layout (B-18..B-23), balance (C-02..C-05), consistency (C-07..C-16) and wide-screen form containment (H-05, H-06).
 Use it to find misaligned, cramped, off-scale or inconsistent UI and to prescribe token-based fixes.
 
 ## How to use
@@ -15,12 +15,12 @@ Use it to find misaligned, cramped, off-scale or inconsistent UI and to prescrib
 
 ## Top checks
 - B-15 — any margin/padding/gap off the project's own base-unit scale (playbook accepts multiples of 2, 4 or 6; e.g. 4/8/16/24/32) → snap to nearest scale token; reuse one value per relationship. (high, p.28)
-- B-17 — arbitrary values such as 7, 19, 21, 31px → round (19→16/20/24, 31→32, 7→8). (p.29)
+- B-15 — arbitrary values such as 7, 19, 21, 31px → round (19→16/20/24, 31→32, 7→8). (p.29)
 - B-16 — gap inside a group must be smaller than gap between groups, same value everywhere (e.g. label→input 8, between fields 24, between sections 40) → define intra-group / between-field / between-section tokens. (p.29)
 - B-13 — nav/list rows and groups run together, dividers with ~no margin → raise row height/padding; make group gaps larger than in-group gaps. (high, p.25-26)
 - B-14 — rows <~8px apart (inference; the playbook gives no px threshold), tooltip colliding with title, button touching content (or the opposite: huge disconnecting gaps) → start generous, step down the scale until groups are clear. (p.26-27)
 - C-07 — same component role (title, button, input) differs in size/radius/colour/padding across screens → consolidate to one shared component/token; vary only content/imagery. (high, p.38)
-- C-09 — more than 1 primary-button fill per screen (e.g. buttons tinted per card image) → one primary + one secondary style everywhere (playbook: dark fill main, light grey secondary). (high, p.40-41)
+- C-09 — more than 1 primary-button fill per screen (e.g. buttons tinted per card image) → one primary + one secondary style everywhere (playbook: dark fill main, light grey secondary). Includes equivalent alternatives in one group (sign-in providers, payment methods) styled differently, e.g. a brand-filled "Continue with Facebook" beside an outlined "Continue with Google" → one shared style, identity in the logo (inference). (high, p.40-41)
 - C-08 — mixed radii (0 beside rounded-full, round images + square buttons) → one radius family via tokens for cards, buttons, media, avatars. (p.39)
 - B-01 / A-22 / A-23 — siblings mix `text-center` and left, body/button not on title/icon left edge, list items with different x/width → one alignment strategy per component; icon+title header row, body/button on the common left edge; identical x/width for list items. (p.17-18, p.20)
 - A-24 / A-25 / A-26 — centred or right-aligned paragraphs; left/centred numeric columns; long centred copy → left-align body and lists; right-align numbers (and RTL); centre only short titles/CTAs. (p.18)
@@ -31,7 +31,7 @@ Use it to find misaligned, cramped, off-scale or inconsistent UI and to prescrib
 - B-21 — card order not image → name → description → price → CTA (price above image, description after CTA) → reorder. (p.32)
 
 ## Code signals
-- Off-scale spacing: `grep -nE '\b(p|m|gap|space-[xy])[trblxy]?-\[[0-9]+px\]'`; CSS `(margin|padding|gap)[^;]*\b(7|19|21|31)px`; any px value off the project's own base-unit scale, e.g. not a multiple of 2, 4 or 6 (B-15, B-17).
+- Off-scale spacing: `grep -nE '\b(p|m|gap|space-[xy])[trblxy]?-\[[0-9]+px\]'`; CSS `(margin|padding|gap)[^;]*\b(7|19|21|31)px`; any px value off the project's own base-unit scale, e.g. not a multiple of 2, 4 or 6 (B-15).
 - Positioning hacks instead of flex/grid: `position:\s*absolute` with manual `top/left`, stacked `margin-top` nudges, `relative top-[..]` (A-28).
 - Mixed alignment inside one container: `text-center` on some children and `text-left` or none on siblings; stray `items-center` on single children (B-01, A-26).
 - Paragraph/list with `text-center`/`text-right`; numeric `<td>`/columns without `text-right` (A-24, A-25).
@@ -54,7 +54,7 @@ Use it to find misaligned, cramped, off-scale or inconsistent UI and to prescrib
 - Card: `flex flex-col h-full`, CTA wrapper `mt-auto`; grid stretches equal height; trim copy to same line count where possible (C-11, C-12, C-13).
 - Form: narrow centred card (white fill, radius, soft shadow) on tinted page; card ≈ a third of page width at 1440px per the playbook visual (H-05, H-06). No px max stated in playbook; `max-w-sm`–`max-w-md` (~384–448px) is (general practice).
 - Product/visual cards: single column, large image, then title, description, price, CTA; no divider lines, use spacing (B-19, B-21).
-- Accent colour on the CTA only; light neutral/complementary tints for large surfaces (C-06, C-03).
+- Accent colour on the CTA only; light neutral/complementary tints for large surfaces (C-03).
 - Icons: one outline set, one size and stroke; filled variant only for the active tab (C-14, C-15).
 - Option lists with structured data (name, quantity, price) → selectable cards with distinct selected state (B-22).
 

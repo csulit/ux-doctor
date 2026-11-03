@@ -50,16 +50,16 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Rule**: Decision time rises with the number and complexity of choices. Reduce options; highlight a smaller set of recommended/popular items.
 - **Why**: Hick's Law — fewer choices → faster decisions.
 - **Do / Don't**: Do (Uber Eats, from visual): curated horizontal carousels "Popular near you" and "New on Uber Eats" (4 cards each visible, "See all" links) instead of a list of hundreds of restaurants; filters (sort, price range, dietary) in a left sidebar. Don't dump hundreds of items/menu entries at once.
-- **Audit check**: Count of equal-weight options presented at once (nav items, cards, menu items, filters); is there a recommended/popular/curated subset?
-- **Restyle fix**: Group into curated sets, show top N with "See all", progressively disclose the rest.
+- **Audit check**: Count of equal-weight options presented at once (nav items, cards, menu items, filters); is there a recommended/popular/curated subset? For single-choice answer lists (onboarding, survey, filter ranges), are the options finer than the product uses the answer for, e.g. six one-hour sleep ranges where four bands drive the same outcome (inference)? Do adjacent ranges share a boundary ("6 to 7", "7 to 8"), so a value fits two options (inference)?
+- **Restyle fix**: Group into curated sets, show top N with "See all", progressively disclose the rest. Merge answer options to the granularity the result is used at and write ranges that neither overlap nor leave gaps ("Under 6 h", "6 h to under 7.5 h", "7.5 to 9 h", "Over 9 h") (inference).
 - **Severity**: high ; **Tags**: interaction-cost, hierarchy, layout
 
 ### F-26 Use working memory well: chunk information into ≈7 (±2) manageable groups  (p.101-102)
 - **Rule**: People hold about seven items (give or take a couple) in working memory (George Miller). Organise information into meaningful, manageable chunks with clear headings.
 - **Why**: Chunking reduces memory load.
 - **Do / Don't**: Do (Airbnb listing, from visual): page split into separate boxed chunks — host summary ("Entire home hosted by… 10 guests · 4 bedrooms · 5 beds · 4 bathrooms"), highlights (Dedicated workspace, Unwind in the hot tub), description with "Show more", and "What this place offers" amenities grid with "Show all 21 amenities" — plus a sticky booking card (price £1,597/night, dates, guests, Reserve button, fee breakdown). Don't present a wall of text about the rental.
-- **Audit check**: Long undivided text blocks; lists/menus/nav with >~7 ungrouped items; missing section headings.
-- **Restyle fix**: Add headings, split into groups of ≲7, use "Show more"/"Show all N" to truncate long lists.
+- **Audit check**: Long undivided text blocks; lists/menus/nav with >~7 ungrouped items; missing section headings; cards or panels whose full description is shown when a short summary would let users scan (inference).
+- **Restyle fix**: Add headings, split into groups of ≲7, use "Show more"/"Show all N" to truncate long lists; clamp secondary descriptions to a few lines with a "Read more" toggle that expands in place (inference). Don't truncate text users need to decide (price, terms, errors).
 - **Severity**: medium ; **Tags**: interaction-cost, layout, hierarchy
 
 ### F-27 Reduce distractions  (p.103)

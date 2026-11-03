@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Look up playbook/web rules without opening the whole rules file.
 // Usage: node scripts/rule.mjs <ID | tag | keyword...> [--limit 5] [--json]
-//   ID       exact rule ID, case-insensitive (F-06, e-22, W2-71); several IDs may be given
+//   ID       exact rule ID, case-insensitive (F-06, e-22, W2-71); several IDs may be given; a retired ID (F-13) resolves to the rule it was merged into
 //   tag      exact tag (typography, contrast, navigation, ...)
 //   keyword  every word must appear in title + rule + auditCheck (case-insensitive)
 // Order: playbook rules before web-pattern rules, then best title match, then severity.
@@ -35,7 +35,9 @@ const webNote = (r) => (r.source === "web" ? { url: r.url || null, pageNote: "no
 const SEV = { critical: 0, high: 1, medium: 2, low: 3 };
 let hits = [], by = "";
 const ids = words.map(low);
-if (ids.every((w) => rules.some((r) => low(r.id) === w))) { by = "id"; hits = ids.map((w) => rules.find((r) => low(r.id) === w)); }
+const byId = (w) => rules.find((r) => low(r.id) === w) || rules.find((r) => (r.aliases || []).some((a) => low(a) === w));
+let mergedFrom = [];
+if (ids.every((w) => byId(w))) { by = "id"; hits = ids.map(byId); mergedFrom = ids.map((w, i) => (low(hits[i].id) === w ? null : w.toUpperCase())); }
 else {
   const tag = low(words.join("-")), tag1 = low(words.join(" ")).replace(/\s+/g, "-");
   const t = words.length === 1 ? [low(words[0])] : [tag, tag1];
@@ -52,8 +54,8 @@ else {
 if (by !== "id") hits = hits.map((r, i) => [r, i]).sort(([a, i], [b, j]) => ((a.source === "playbook" ? 0 : 1) - (b.source === "playbook" ? 0 : 1)) || (by === "tag" ? (SEV[a.severity] ?? 9) - (SEV[b.severity] ?? 9) : 0) || i - j).map(([r]) => r);
 if (!hits.length) { console.error(`no rule matches "${words.join(" ")}" (tried ID, tag, keyword)`); process.exit(1); }
 const total = hits.length, shown = by === "id" ? hits : hits.slice(0, limit);
-if (json) console.log(JSON.stringify({ matchedBy: by, total, rules: shown.map((r) => ({ id: r.id, title: r.title, citation: cite(r), ...webNote(r), severity: r.severity, tags: r.tags, rule: r.rule, doDont: r.doDont, auditCheck: r.auditCheck, restyleFix: r.restyleFix })) }, null, 1));
+if (json) console.log(JSON.stringify({ matchedBy: by, total, rules: shown.map((r, i) => ({ id: r.id, ...(mergedFrom[i] ? { mergedFrom: mergedFrom[i] } : {}), title: r.title, citation: cite(r), ...webNote(r), severity: r.severity, tags: r.tags, rule: r.rule, doDont: r.doDont, auditCheck: r.auditCheck, restyleFix: r.restyleFix })) }, null, 1));
 else {
-  for (const r of shown) console.log(`${r.id}  ${r.title}\n  cite: ${cite(r)} | severity: ${r.severity} | tags: ${(r.tags || []).join(", ")}\n${r.source === "web" ? `  no page${r.url ? ` | url: ${r.url}` : ""}\n` : ""}  rule: ${r.rule}\n  do/don't: ${r.doDont}\n  audit: ${r.auditCheck}\n  restyle: ${r.restyleFix}\n`);
+  for (const [i, r] of shown.entries()) console.log(`${mergedFrom[i] ? `(${mergedFrom[i]} was merged into ${r.id})\n` : ""}${r.id}  ${r.title}\n  cite: ${cite(r)} | severity: ${r.severity} | tags: ${(r.tags || []).join(", ")}\n${r.source === "web" ? `  no page${r.url ? ` | url: ${r.url}` : ""}\n` : ""}  rule: ${r.rule}\n  do/don't: ${r.doDont}\n  audit: ${r.auditCheck}\n  restyle: ${r.restyleFix}\n`);
   if (total > shown.length) console.log(`(${total - shown.length} more match by ${by}; raise --limit or narrow the query)`);
 }

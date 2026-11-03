@@ -5,7 +5,7 @@
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/15792/badge)](https://www.bestpractices.dev/projects/15792)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Audit, design-review and restyle UIs against **188 rules extracted page-by-page from *The UI/UX Playbook*** (uxpeak, 144 pp) plus a secondary layer of 253 web-pattern tips (paraphrased from public UX pattern pages and published guidance on generic AI-generated UI). One canonical source, packaged for **Claude Code, Codex, Cursor and Pi**.
+Audit, design-review and restyle UIs against **177 rules extracted page-by-page from *The UI/UX Playbook*** (uxpeak, 144 pp) plus a secondary layer of 256 web-pattern tips (paraphrased from public UX pattern pages and published guidance on generic AI-generated UI). One canonical source, packaged for **Claude Code, Codex, Cursor and Pi**.
 
 ## Commands (4)
 | Command | What it does | Writes files? |
@@ -25,7 +25,7 @@ Restyle command per platform: `/ux-restyle --from-audit` (Pi, Cursor), `/ux-doct
 
 ## Skills (12) and agents (3)
 - Workflow skills: `audit-method`, `review-method`, `restyle-method`; core `ux-doctor` (severity, scoring, finding format).
-- Knowledge skills (progressive disclosure: `SKILL.md` → `references/index.md` → `references/rules.md`): `ux-hierarchy-clarity`, `ux-layout-spacing`, `ux-depth-craft`, `ux-color`, `ux-typography`, `ux-interaction-cost`, `ux-ui-patterns`, and `ux-web-patterns` (secondary: 253 paraphrased tips from public UX pattern pages and published AI-look guidance — states, motion, focus/touch, tokens, AI-look tells; labelled `source: web`).
+- Knowledge skills (progressive disclosure: `SKILL.md` → `references/index.md` → `references/rules.md`): `ux-hierarchy-clarity`, `ux-layout-spacing`, `ux-depth-craft`, `ux-color`, `ux-typography`, `ux-interaction-cost`, `ux-ui-patterns`, and `ux-web-patterns` (secondary: 256 paraphrased tips from public UX pattern pages and published AI-look guidance — states, motion, focus/touch, tokens, AI-look tells; labelled `source: web`).
 - Agents: `ux-auditor` (read-only, run ×4 in parallel by dimension group), `ux-reviewer` (read-only), `ux-restyler` (edits one approved batch).
 
 ## Install
@@ -45,7 +45,7 @@ Requirements: Node ≥ 20.1 for the bundled scripts; `cta-scan.mjs --render` nee
 skills/            Agent Skills (shared by all platforms)
 commands/          4 slash commands (Claude Code, Cursor, Pi)
 agents/            subagents (Claude Code, Cursor); platforms/codex/agents = generated TOML
-skills/ux-doctor/references/rules.json   all 441 rules (188 playbook + 253 web), machine readable
+skills/ux-doctor/references/rules.json   all 433 rules (177 playbook + 256 web), machine readable
 reference/         editable sources: extracted/*.md (playbook), extracted-web/*.md (web layer); generated: page-coverage.md; git-ignored: PDF, render/, pages/, web/
 scripts/           build-knowledge.mjs, sync-platforms.mjs, validate.mjs, check-paraphrase.mjs (dev)  (measuring tools ship with the skill: skills/ux-doctor/scripts/contrast.mjs, cta-scan.mjs, slop-scan.mjs, rule.mjs)
 ```

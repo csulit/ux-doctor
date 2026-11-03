@@ -60,8 +60,8 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Rule**: "Checkout" = primary: vibrant green filled button, easy to spot. "Continue shopping" = secondary: same size as Checkout but grey (light grey fill, dark text) so it demands less attention. "Remove" = least prominent: only red/pink coloured text with underline, no filled background.
 - **Why**: Clear action ranking tells users what to do next.
 - **Do / Don't**: Good (thumbs-up, right): green filled Checkout, light-grey filled Continue shopping (same size), small underlined pink/red "Remove" text link under each item. Rows keep price at right; unchanged layout otherwise.
-- **Audit check**: Per action group: exactly one filled saturated button; secondary buttons use neutral/grey/outline; per-row destructive/repeated actions are text links (small, underlined or coloured text), not filled buttons.
-- **Restyle fix**: Primary = brand-coloured solid; secondary = neutral grey fill (same size is fine); tertiary/destructive-in-row = underlined text link in red.
+- **Audit check**: Per action group: exactly one filled saturated button; secondary buttons use neutral/grey/outline; per-row destructive/repeated actions are text links (small, underlined or coloured text), not filled buttons. Zero filled buttons is also a violation when the group has a main action: a primary or only action rendered as a small text link (e.g. an onboarding "Get started" link under the copy) is easy to miss (inference).
+- **Restyle fix**: Primary = brand-coloured solid; secondary = neutral grey fill (same size is fine); tertiary/destructive-in-row = underlined text link in red. Promote a link-styled main action to the filled primary button.
 - **Severity**: high ; **Tags**: [hierarchy, buttons, color]
 
 ### A-08 Don't let imagery overpower the key details  (p.9)
@@ -96,12 +96,13 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Restyle fix**: Label: small (~12px), muted; value: large (~2x), bold, white/high-contrast; keep trend indicator small and coloured.
 - **Severity**: high ; **Tags**: [hierarchy, typography, cards]
 
-### A-12 Darker/stronger text for the title, lighter for supporting text  (p.11)
+### A-12 Darker/stronger text for the title, lighter for supporting text  (p.11, reaffirmed p.96-97)
 - **Rule**: Darker colours draw more attention and signal importance; lighter colours recede. Title should be dark black, supporting paragraph grey – not the reverse.
 - **Why**: A grey title with black body undermines the title's importance.
 - **Do / Don't**: Bad (thumbs-down, left card): title "Personal Injury Law" in grey, paragraph ("Attorneys in this field handle cases related to accidents, injuries, and wrongful deaths, seeking compensation for victims") in dark black. Good (right card): title in near-black, paragraph in mid-grey. Both cards have two small round icons (scales, gavel) on top.
-- **Audit check**: Compare contrast ratio/lightness of heading vs body in the same block: heading contrast must be ≥ body contrast (heading colour darker than body on light themes; lighter on dark themes).
+- **Audit check**: Compare contrast ratio/lightness of heading vs body in the same block: heading contrast must be ≥ body contrast (heading colour darker than body on light themes; lighter on dark themes). The same colour for heading and paragraph is a violation; the paragraph must still reach 4.5:1.
 - **Restyle fix**: Heading → text-primary (near-black); body → text-secondary (grey, still accessible).
+- **Also cited as**: F-14 (p.96-97, typography checklist)
 - **Severity**: high ; **Tags**: [hierarchy, contrast, color, typography]
 
 ### A-13 Use a vibrant colour to highlight the key action  (p.11)

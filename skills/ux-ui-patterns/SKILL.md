@@ -5,7 +5,7 @@ description: "Component-pattern knowledge for forms, passwords, OTP and card fie
 
 # UI patterns: forms, dialogs, states, mobile, navigation
 
-Scope: concrete component patterns (C-01, G-02..G-16, H-01..H-04, H-09..H-18) from the playbook.
+Scope: concrete component patterns (G-02..G-16, H-01..H-04, H-09..H-18) from the playbook.
 Covers input fields, passwords, confirm dialogs, product-page content, mobile CTAs, empty/error states, dropdowns.
 
 ## How to use
@@ -25,12 +25,12 @@ Severity high first.
 - G-05 (p.114-115) — fixed-length code (OTP/PIN) is one single-line input at body size → N equal boxes (example uses 4), large digits, auto-advance focus, visible active/cursor state.
 - G-06 (p.115-116) — short fields (CVC 3-4 digits, MM/YY, zip, quantity) rendered full width in a tall single column → short width proportional to content ("about 1/3 to 1/2" is an inference; playbook gives no fraction); pair Expiry+CVC and Country+Zip; card number and name stay full width.
 - G-02 (p.111-112) — home/discover uses big "Explore now" banners instead of items; real content must be visible with no extra tap (0 taps, inferred from the rule; playbook example shows 3 cards) → row/grid of real item cards (image, title, key metadata) plus a "View all" link at the right of the section header.
-- G-13 (p.123) — product description as one dense paragraph (bad example ~15+ lines in a narrow column; a "5-6 lines" cut-off is an inference) with bold as the only scan aid → short intro, "Key features" list (check icon + bold title + one-line description), short outro (G-14).
+- E-29 (pp.81, 123; typography dimension) — product description as one dense paragraph (bad example ~15+ lines in a narrow column; a "5-6 lines" cut-off is an inference) with bold as the only scan aid → short intro, "Key features" list (check icon + bold title + one-line description), short outro (G-14).
 - H-17 (p.141-142) — multi-group dropdown ("6+ items" is an inference) has no group labels → add small category headings (Products / Use cases / Resources).
 
 - (general practice) persistent navigation — a sticky/fixed header or nav on a long marketing page is fine only if it stays compact. Whenever it is sticky, verify: `scroll-margin-top` / `scroll-padding-top` so in-page anchors are not hidden under it; `z-index` vs skip link, modals and menus (W3-32: fix with stacking contexts, not bigger numbers); mobile menu usable on short screens (scrolls, reachable close button); contrast of a transparent/blurred header over content in both themes; reduced height on scroll. Also flag a duplicate CTA created by header + hero (see ux-hierarchy-clarity same-destination test; W3-17). Related web rules: W2-71 (bottom tabs on mobile / persistent sidebar on desktop), W2-72 (keep primary navigation out of the hamburger), W2-73 (breadcrumbs only for deeper hierarchies).
 
-Lower severity (medium/low) worth a pass: G-03 curated "Top N" list in first viewport; G-04 field widths follow data type; G-08 eye/eye-slash toggle with accessible label; G-09 live strength meter (4 bars, "Weak" in red); G-14/G-15 icons and 2-column features (2×2 in the example; "4+ features" threshold is an inference); H-02 every block answers a user question; H-04 side image has no text/button/link; H-10 (p.135-136) stack Sign in + Sign up full width at the bottom; H-14 404 keeps global header and gives helpful links or search (example has 6 links; "4-6" is an inference); H-16 consistent line icons in dropdowns; H-18 thumbnails only in a featured panel; C-01 creation forms mirror the output layout; H-01/G-16 add social proof/comparison as stakeholder proposals.
+Lower severity (medium/low) worth a pass: G-03 curated "Top N" list in first viewport; G-04 field widths follow data type; G-08 eye/eye-slash toggle with accessible label; G-09 live strength meter (4 bars, "Weak" in red); G-14/G-15 icons and 2-column features (2×2 in the example; "4+ features" threshold is an inference); H-02 every block answers a user question; H-04 side image has no text/button/link; H-10 (p.135-136) stack Sign in + Sign up full width at the bottom; H-14 404 keeps global header and gives helpful links or search (example has 6 links; "4-6" is an inference); H-16 consistent line icons in dropdowns; H-18 thumbnails only in a featured panel; B-23 (layout dimension) creation forms mirror the output layout; H-01/G-16 add social proof/comparison as stakeholder proposals.
 
 ## Code signals
 (General inspection hints; the rule each maps to is cited.)
@@ -47,7 +47,7 @@ Lower severity (medium/low) worth a pass: G-03 curated "Top N" list in first vie
 - Sticky/fixed header (persistent navigation, general practice): `position:\s*(sticky|fixed)`, `sticky top-0`, `fixed top-0`, `top:\s*0`, `scroll-padding-top`, `scroll-margin-top`, `z-index` / `z-[0-9]+` values on header, skip link, modal and menu layers; `backdrop-filter|backdrop-blur` or `bg-*/[0-9]+` on the header; header height change on scroll.
 - Mobile (H-09, H-10): `fixed|absolute top-* right-*` auth/action buttons at small breakpoints; primary CTA not in a bottom-anchored container (`fixed bottom-0`, `sticky bottom-0`, `bottom-*`).
 - Dropdowns (H-16, H-17, H-18): menu item components with no icon slot, no section label elements, `<img>` in every item row.
-- Feature lists (G-13, G-15): long `<p>` of features; single-column list of 4+ short items with unused horizontal space (no `grid-cols-2`).
+- Feature lists (E-29, G-15): long `<p>` of features; single-column list of 4+ short items with unused horizontal space (no `grid-cols-2`).
 - Screenshots/Figma: look for the same patterns visually — tall single-column payment forms, green Delete, Delete left of Cancel, text-only empty screens.
 
 ## Restyle defaults
@@ -61,7 +61,7 @@ Lower severity (medium/low) worth a pass: G-03 curated "Top N" list in first vie
 - Home/discover: row of real item cards (example shows 3) with image, title, metadata; "View all" link in header (G-02); curated "Top N" list (G-03).
 - Product page: intro → "Key features" list (check icon, bold title, one-line description) → short outro; stars + score + count row under the title (G-14); `grid grid-cols-2 gap-*` for short features with divider lines (G-15); bar comparison for the main quantitative claim, product bar long and saturated, others short and pale (G-16).
 - Dropdowns: consistent line icons in light-tinted circles (H-16); small accent-colour group labels (H-17); thumbnails only in a featured panel with an "all posts" link (H-18).
-- Creation forms: editable preview of the output — image slot on top, title/price in one row, description, location, tags; thin dividers (C-01).
+- Creation forms: editable preview of the output — image slot on top, title/price in one row, description, location, tags; thin dividers (B-23, scored under layout).
 - (general practice) Keep touch targets about 44-48px and give OTP/password inputs correct `autocomplete`, `inputmode` and `aria-label` attributes; destructive dialogs should focus Cancel by default.
 - (general practice) Contrast of red danger buttons and strength text should meet WCAG AA 4.5:1 for text (external standard, not from the playbook).
 

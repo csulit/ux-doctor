@@ -13,7 +13,7 @@
 | A-09 | Don't emphasise secondary information (e.g. quantity) over primary information | p.9 | medium | hierarchy, typography, contrast |
 | A-10 | Rank elements by user importance before designing | p.10 | high | hierarchy, craft |
 | A-11 | In metric cards make the value bigger than the label | p.10 | high | hierarchy, typography, cards |
-| A-12 | Darker/stronger text for the title, lighter for supporting text | p.11 | high | hierarchy, contrast, color, typography |
+| A-12 | Darker/stronger text for the title, lighter for supporting text | p.11, reaffirmed p.96-97 | high | hierarchy, contrast, color, typography |
 | A-13 | Use a vibrant colour to highlight the key action | p.11 | medium | hierarchy, color, buttons |
 | A-14 | Differentiate information by size, weight, colour and icons instead of uniform label:value lists | p.12 | high | hierarchy, typography, icons, cards |
 | A-15 | Group related items closely and separate unrelated ones (Law of Proximity) | p.13 | high | spacing, forms, layout |

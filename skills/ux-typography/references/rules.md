@@ -52,12 +52,13 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Restyle fix**: Replace with an open-licensed (Google Fonts) alternative.
 - **Severity**: medium ; **Tags**: typography, craft
 
-### E-19 Use at most 2 different fonts per UI  (p.75-76)
-- **Rule**: Never use more than two font families. More than two looks cluttered, confusing and off-brand.
+### E-19 Use at most 2 different fonts per UI  (p.75-76, reaffirmed p.96-97)
+- **Rule**: Never use more than two font families. More than two looks cluttered, confusing and off-brand. Best practice (p.96-97): one family with different weights and sizes; experienced designers can pair two (e.g. Playfair Display headings + Roboto paragraphs). Avoid fonts that compromise readability.
 - **Why**: Messy and harder to look at; one or two fonts feel clean.
 - **Do / Don't**: Don't: music app screen with four families – Poppins (title) + Open Sans (subtitle), Times (track titles), Telex (button, UPPERCASE "DISCOVER MORE"). Do: same screen all Inter ("Music", "Special edition", track titles, "Discover more").
-- **Audit check**: Count distinct `font-family` values (excluding icon/mono fallbacks) in CSS/Figma text styles: > 2 → flag.
+- **Audit check**: Count distinct `font-family` values (excluding icon/mono fallbacks) in CSS/Figma text styles: > 2 → flag. Also flag a display/script font used for body text or UI labels.
 - **Restyle fix**: Consolidate to 1 (ideally) or 2 families; remap all text styles.
+- **Also cited as**: F-18 (p.96-97, typography checklist)
 - **Severity**: high ; **Tags**: typography, craft, hierarchy
 
 ### E-20 Best practice: one versatile font, vary weight and size for dynamics  (p.76)
@@ -132,13 +133,14 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Restyle fix**: Set a max-width that gives ≤75 real characters per line (about 30–36em for proportional UI fonts, inference – verify per font; `ch` only for monospace), keep left alignment with the hero's left edge.
 - **Severity**: medium ; **Tags**: typography, layout, alignment
 
-### E-29 Break long paragraphs into shorter chunks  (p.81)
+### E-29 Break long paragraphs into shorter chunks  (p.81, reaffirmed p.123)
 - **Rule**: In content-heavy sections use shorter paragraphs; split long blocks into bite-sized chunks with visible space between them.
 - **Why**: Long blocks overwhelm users, hard to absorb and stay engaged; breaks make content easier to scan/digest, give natural stopping points, highlight crucial info, make reading more interactive.
-- **Do / Don't**: Don't: "GreenMeal" card with one dense ~9-line paragraph block. Do: same text split into three short paragraphs (~3-4 lines each) with a blank gap (paragraph spacing) between them.
-- **Audit check**: Paragraphs longer than ~5-6 lines (≈ 80-100 words – inferred) without breaks; no margin between paragraphs.
-- **Restyle fix**: Split at sentence/idea boundaries; add paragraph spacing (e.g. ~0.75-1em, inferred).
-- **Severity**: medium ; **Tags**: typography, layout, spacing
+- **Do / Don't**: Don't: "GreenMeal" card with one dense ~9-line paragraph block. Do: same text split into three short paragraphs (~3-4 lines each) with a blank gap (paragraph spacing) between them. Product pages (p.123): don't present product information as one dense paragraph, e.g. the UltraClean Vacuum Cleaner card with a ~15-line block of small grey text where a few bold phrases are the only scan aid; users scan rather than read word for word (cited: Nielsen Norman Group).
+- **Audit check**: Paragraphs longer than ~5-6 lines (≈ 80-100 words – inferred) without breaks; no margin between paragraphs. In product/description areas also flag copy with no headings, lists or icons, where bolding is the only scan aid.
+- **Restyle fix**: Split at sentence/idea boundaries; add paragraph spacing (e.g. ~0.75-1em, inferred). On product pages break the block into a short intro, a labelled list of key features and a closing sentence (G-14).
+- **Also cited as**: G-13 (p.123)
+- **Severity**: medium ; **Tags**: typography, layout, spacing, hierarchy, copy
 
 ### E-30 Add subheadings (with icons/lines/space) to shorter paragraphs  (p.82)
 - **Rule**: Give each short paragraph a subheading – a roadmap to the content. Make sections stand out further with icons, lines (dividers) or extra space.
@@ -148,12 +150,13 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Restyle fix**: Add descriptive subheadings (semibold, slightly larger than body), optional icons, dividers (1px light line) and increased spacing between sections.
 - **Severity**: medium ; **Tags**: typography, hierarchy, layout, spacing
 
-### E-31 Avoid pure black (#000000) text on white, and pure white (#FFFFFF) on dark  (p.83)
+### E-31 Avoid pure black (#000000) text on white, and pure white (#FFFFFF) on dark  (p.83, reaffirmed p.96)
 - **Rule**: Don't use #000000 text on white backgrounds or #FFFFFF text on dark backgrounds. Use off-black/dark grey for headings and a lighter grey for body text.
 - **Why**: Pure extremes are hard on the eyes and disrupt visual harmony; a softer scheme is soothing, sophisticated and balanced; dark grey headings say "this is significant" without screaming; lighter grey text stays readable without overwhelming.
-- **Do / Don't**: Don't: dark card Heading #FFFFFF / Body #FFFFFF on black; light card Heading #000000 / Body #000000 on white. Do: see E-32.
+- **Do / Don't**: Don't: dark card Heading #FFFFFF / Body #FFFFFF on black; light card Heading #000000 / Body #000000 on white. Do: see E-32. The p.96 checklist repeats it: the p.95 good card uses #1B000D for headings and #5E5458 for paragraphs instead of #000000 for both.
 - **Audit check**: Grep CSS/tokens for `color: #000`, `#000000`, `black`, `#fff`/`#ffffff`/`white` used as text colour on respective extremes (`text-black`, `text-white` on `bg-black`/`bg-white`/very dark).
-- **Restyle fix**: Replace with off-black/dark-grey tokens and lighter grey body (E-32 values).
+- **Restyle fix**: Replace with off-black/dark-grey tokens and lighter grey body (E-32 values, or #1B000D heading / #5E5458 body from p.95) that still passes 4.5:1.
+- **Also cited as**: F-13 (p.96, typography checklist)
 - **Severity**: medium ; **Tags**: contrast, color, typography, dark-mode
 
 ### E-32 Use graded greys: darker heading, lighter body text (reference values)  (p.83)
@@ -164,12 +167,13 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Restyle fix**: Set text tokens: light — heading #1A1A1A, body #4E4E4E; dark — heading #F2F2F2, body #CACACA.
 - **Severity**: medium ; **Tags**: contrast, color, typography, hierarchy, dark-mode
 
-### E-33 Use heavier weights for headings and lighter for body  (p.84)
+### E-33 Use heavier weights for headings and lighter for body  (p.84, reaffirmed p.96-97)
 - **Rule**: Headings: bold, semibold or medium; paragraphs: regular, sometimes light. Don't use the same weight for heading and body.
 - **Why**: Weight adds visual interest and tells users what is most important; thin body weights stay readable and don't compete with headings.
 - **Do / Don't**: Don't: card "The canine connection" with heading Regular and body Regular – hard to tell what's important. Do: heading Bold, body Regular – clear what to focus on and what to skim.
-- **Audit check**: Compare `font-weight` of headings vs body: equal (e.g. 400/400) → flag. Headings should be ≥500 (medium/semibold/bold), body 300-400.
+- **Audit check**: Compare `font-weight` of headings vs body: equal (e.g. 400/400) → flag. Headings should be ≥500 (medium/semibold/bold), body 300-400. Heading weight ≤ body weight is a violation unless the heading is clearly larger than the body (F-01); body weight < 400 → see F-03.
 - **Restyle fix**: Set headings to 500-700 and body to 400 (or 300).
+- **Also cited as**: F-15 (p.96-97, typography checklist)
 - **Severity**: high ; **Tags**: typography, hierarchy
 
 ## Typography: exceptions and extremes to avoid (p.85-87)
@@ -238,6 +242,7 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Do / Don't**: "Unveiling the wonders…" card. Bad: heading Line-height 160% and paragraph Line-height 120% (inverted: airy heading, cramped body). Good: heading 120%, paragraph 160%.
 - **Audit check**: Compare the computed heading line-height ratio with the paragraph ratio of the same context. Violation = heading line-height ≥ paragraph line-height (playbook: never bigger), or heading lines visibly colliding/clipped (inference). The heading ratio shrinks as size grows (playbook: 120% in the card example, ~1.3 for a 36px heading), so a fixed "> 1.3" cut-off is not a failure test: large display type (≥ ~56px) at 1.0–1.15 is not a violation by itself (inference), and a 1.3 multi-line heading beside 1.6 body passes.
 - **Restyle fix**: Headings `line-height` ≈ 1.2-1.3; paragraphs 1.5-1.6.
+- **Also cited as**: F-16 (p.96-97, typography checklist)
 - **Severity**: medium ; **Tags**: typography, spacing, hierarchy
 
 ### F-09 Ensure text/background contrast of at least 4.5:1 (WCAG AA)  (p.93, reaffirmed p.96-97)
@@ -247,14 +252,6 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Audit check**: Contrast ratio of each text/background pair < 4.5:1 → fail (normal text). Check text over tinted/coloured card backgrounds and over images.
 - **Restyle fix**: Darken text (or lighten/darken background) until ≥4.5:1; on mid-tone coloured backgrounds use dark text instead of white.
 - **Severity**: high ; **Tags**: contrast, accessibility, color
-
-### F-10 Left-align text; reserve centre/right for special cases  (p.94, reaffirmed p.97)
-- **Rule**: Left-aligned text is generally best for readability, especially longer paragraphs, lists and long-form content (consistent starting point per line; matches left-to-right reading). Centre alignment is OK for titles or short text meant to grab attention, and right/centre for decorative or artistic elements.
-- **Why**: Consistent line start makes it easier to follow lines; ragged left edges slow reading.
-- **Do / Don't**: Dark navy "The Critical Role of Sleep…" card twice. Bad: heading and paragraph centred ("Text alignment: Center"). Good: heading and paragraph left-aligned ("Text alignment: Left").
-- **Audit check**: `text-align: center|right` (Tailwind `text-center`/`text-right`) on multi-line paragraphs (>2-3 lines (inference)), lists or long descriptions → violation. Centre on short titles/hero lines OK.
-- **Restyle fix**: Set `text-align: left` (`text-left`) on body paragraphs and multi-line copy; keep centre only for short titles.
-- **Severity**: medium ; **Tags**: typography, alignment
 
 ## Typography: putting it together (p.95)
 
@@ -276,53 +273,13 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 
 ## Typography: "Things to avoid" and "Things to do" checklists (p.96-97)
 
-### F-13 Don't use pure black (#000000) or pure white (#FFFFFF) for both headings and paragraphs  (p.96)
-- **Rule**: Avoid pure #000000 / #FFFFFF as the colour of both headings and paragraphs. (Good card in p.95 uses #1B000D for headings and #5E5458 for paragraph instead of #000000 for both.)
-- **Why**: Using the same extreme colour everywhere removes differentiation between content types (and is the failing pattern in the p.95 bad card).
-- **Do / Don't**: Don't #000 text everywhere (bad card). Do slightly tinted near-black for headings, softer grey for paragraphs.
-- **Audit check**: Text colour == #000000 or #FFFFFF for both heading and body (`text-black`, `text-white` on both) → flag.
-- **Restyle fix**: Heading → near-black tint (e.g. #1B000D); body → softer dark grey (e.g. #5E5458) that still passes 4.5:1. On dark mode use off-white for headings and a dimmer light-grey for paragraphs (extension of rule, not stated).
-- **Severity**: medium ; **Tags**: typography, color, contrast
-
-### F-14 Use darker colour for headings and lighter colour for paragraphs  (p.96-97)
-- **Rule**: Differentiate content types: headings in darker colour, paragraphs in lighter colour (but still accessible). Avoid the same colour for headings and paragraphs.
-- **Why**: Guides the user's eye and distinguishes types of content.
-- **Do / Don't**: Do heading #1B000D vs paragraph #5E5458 (p.95). Don't same colour (#000000 both).
-- **Audit check**: Heading colour == paragraph colour → violation. Lightness gap should be visible while paragraph still ≥4.5:1.
-- **Restyle fix**: Introduce a secondary text token for paragraphs lighter than the heading token.
-- **Severity**: medium ; **Tags**: hierarchy, color, typography
-
-### F-15 Use thicker weights for headings and thinner weights for paragraphs  (p.96-97)
-- **Rule**: Headings: bold, semibold or medium. Paragraphs: regular (sometimes light). Do not use the same weight for headings and paragraphs.
-- **Why**: Clearly distinguishes hierarchical elements.
-- **Do / Don't**: Do heading Bold / paragraph Regular (p.95 good card). Don't heading and paragraph at same weight (bad card heading Medium vs body Regular is the weak case; hierarchy relies on size).
-- **Audit check**: heading `font-weight` ≤ body `font-weight` → violation (see F-01 exception if the heading is clearly larger than body). Body weight < 400 → see F-03.
-- **Restyle fix**: Headings 500-700, body 400.
-- **Severity**: medium ; **Tags**: typography, hierarchy
-
-### F-16 Don't give headings a bigger line-height than paragraphs (checklist form)  (p.96-97)
-- **Rule**: "Things to avoid": bigger line-height for headings than for paragraphs. "Things to do": smaller line-height for headings and larger for paragraphs for balanced visual flow and easier scanning. (Detail and numbers in F-08.)
-- **Why**: Balanced flow, easier scanning.
-- **Do / Don't**: Heading 120% / paragraph 160% good; heading 160-170% / paragraph 110-120% bad.
-- **Audit check**: heading LH ratio > paragraph LH ratio.
-- **Restyle fix**: See F-08.
-- **Severity**: medium ; **Tags**: typography, spacing
-
 ### F-17 Use sans-serif typefaces for body copy  (p.97)
 - **Rule**: Prefer sans-serif for body copy: Open Sans, Inter, Roboto are generally more readable than serifs such as Times New Roman or Georgia. Fonts can still define the brand, but readability comes first.
 - **Why**: Readability.
-- **Do / Don't**: Do Open Sans / Inter / Roboto body. Don't Times New Roman / Georgia for body text. (Serif headings, e.g. Playfair Display, are acceptable per F-18.)
+- **Do / Don't**: Do Open Sans / Inter / Roboto body. Don't Times New Roman / Georgia for body text. (Serif headings, e.g. Playfair Display, are acceptable per E-19.)
 - **Audit check**: Body `font-family` resolves to a serif (Times New Roman, Georgia, `font-serif`) → flag.
 - **Restyle fix**: Switch body to Inter / Open Sans / Roboto; keep serif only for display headings if brand demands.
 - **Severity**: low ; **Tags**: typography
-
-### F-18 Use no more than two fonts (ideally one family with weights and sizes)  (p.96-97)
-- **Rule**: Max two different fonts. Best practice: one font with different weights and sizes. Experienced designers can pair two, e.g. Playfair Display for headings + Roboto for paragraphs. Avoid fonts that compromise aesthetics or readability.
-- **Why**: Consistency, readability and aesthetics.
-- **Do / Don't**: Do one family (or a deliberate heading/body pair). Don't use 3+ typefaces or decorative fonts that hurt readability.
-- **Audit check**: Count distinct `font-family` values in the CSS/Figma styles: >2 → violation. Check any display/script font used for body or UI labels.
-- **Restyle fix**: Consolidate to a single family (e.g. Inter) using weight/size for hierarchy; or a max of one heading font + one body font.
-- **Severity**: medium ; **Tags**: typography, craft
 
 ### F-19 Give long text blocks adequate space between paragraphs  (p.97)
 - **Rule**: Ensure longer text blocks have adequate space between paragraphs so they look more appealing and are easier to read. (No numeric value given.)
