@@ -18,7 +18,7 @@
 | E-26 | Don't let body text span the full page width | p.78 | high | typography, layout |
 | E-27 | Narrow centered text column (≤75 chars) is a valid fix | p.79 | medium | typography, layout, alignment |
 | E-28 | Narrow left-aligned text column (≤75 chars) is the other valid fix | p.80 | medium | typography, layout, alignment |
-| E-29 | Break long paragraphs into shorter chunks | p.81, reaffirmed p.123 | medium | typography, layout, spacing |
+| E-29 | Break long paragraphs into shorter chunks | p.81, reaffirmed p.123 | medium | typography, layout, spacing, hierarchy, copy |
 | E-30 | Add subheadings (with icons/lines/space) to shorter paragraphs | p.82 | medium | typography, hierarchy, layout, spacing |
 | E-31 | Avoid pure black (#000000) text on white, and pure white (#FFFFFF) on dark | p.83, reaffirmed p.96 | medium | contrast, color, typography, dark-mode |
 | E-32 | Use graded greys: darker heading, lighter body text (reference values) | p.83 | medium | contrast, color, typography, hierarchy, dark-mode |

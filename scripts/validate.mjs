@@ -35,9 +35,9 @@ if (ids.size !== rules.length) errs.push("duplicate rule IDs");
 // only the generated reference files are skipped
 const GENERATED = new Set(["rules.md", "index.md", "numeric-cheatsheet.md", "rules.json"]);
 const handMd = (dir) => readdirSync(join(root, dir), { recursive: true }).map((n) => n.replaceAll("\\", "/")).filter((n) => /\.md$/.test(n) && !(/(^|\/)references\//.test(n) && GENERATED.has(n.split("/").pop()))); // "/" paths on Windows too
+const aliasOf = new Map(rules.flatMap((r) => (r.aliases || []).map((a) => [a, r.id])));
 for (const dir of ["skills", "commands", "agents"]) for (const f of handMd(dir)) {
   const txt = readFileSync(join(root, dir, f), "utf8");
-  const aliasOf = new Map(rules.flatMap((r) => (r.aliases || []).map((a) => [a, r.id])));
   const mapped = new Set([...txt.matchAll(/\b([A-H]-\d{2}|W\d-\d{2}) → ([A-H]-\d{2}|W\d-\d{2})\b/g)].filter((m) => aliasOf.get(m[1]) === m[2]).map((m) => m.index));
   for (const m of txt.matchAll(/\b([A-H]-\d{2}|W\d-\d{2})\b/g)) if (!ids.has(m[1]) && !mapped.has(m.index) && !/^[A-H]-00$/.test(m[1])) errs.push(`${dir}/${f}: unknown rule ${m[1]}${aliasOf.has(m[1]) ? ` (merged into ${aliasOf.get(m[1])}; cite that, or write "${m[1]} → ${aliasOf.get(m[1])}")` : ""}`);
 }
@@ -60,8 +60,8 @@ for (const s of skills.filter((x) => existsSync(join(root, "skills", x, "referen
 }
 // every PDF page 3..142 appears in at least one rule's pages
 const covered = new Set();
-for (const r of rules) { if (!/^[\d,\s-]+$/.test(r.pages)) continue;
-for (const part of r.pages.split(",")) { const [a, b] = part.trim().split("-").map(Number); for (let i = a; i <= (b || a); i++) covered.add(i); } }
+for (const r of rules.filter((x) => x.source === "playbook"))
+  for (const [, a, b] of String(r.pages).matchAll(/(\d+)(?:-(\d+))?/g)) for (let i = Number(a); i <= Number(b || a); i++) covered.add(i);
 for (const m of readFileSync(join(root, "reference/page-coverage.md"), "utf8").matchAll(/(?:^|\n)\s*[-*|]\s*\**p\.?\s*(\d+)/g)) covered.add(Number(m[1]));
 const gaps = []; for (let p = 3; p <= 142; p++) if (!covered.has(p)) gaps.push(p);
 if (gaps.length) errs.push(`pages with neither a rule entry nor a coverage line: ${gaps.join(",")}`);

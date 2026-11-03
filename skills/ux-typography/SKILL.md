@@ -1,12 +1,12 @@
 ---
 name: ux-typography
-description: "Knowledge of typography rules from the UI/UX playbook: font choice and count, type scale, body size, line-height, line length, weight, text colour and contrast, alignment. Use when auditing, reviewing or restyling font-family, font-size, line-height, font-weight, text colour, max-width of text or button-label contrast."
+description: "Knowledge of typography rules from the UI/UX playbook: font choice and count, type scale, body size, line-height, line length, weight, text colour and contrast. Use when auditing, reviewing or restyling font-family, font-size, line-height, font-weight, text colour, max-width of text or button-label contrast."
 ---
 
 # UX Typography
 
 Scope: choosing and setting type so text is readable, hierarchical and accessible.
-Rules E-13…E-33 and F-01…F-19, with the p.96-97 checklist folded into the rules it repeats (E-19, E-31, E-33, F-08, A-12, A-24) (playbook pp.72-97).
+Rules E-13…E-33 and F-01…F-19, with the p.96-97 checklist folded into the rules it repeats: E-19, E-31, E-33 and F-08 here, A-12 in ux-hierarchy-clarity and A-24 in ux-layout-spacing (playbook pp.72-97).
 
 ## How to use
 Read references/index.md first; open references/rules.md only for the rule IDs relevant to the current finding (search by ID, e.g. `grep -n '^### F-07' references/rules.md`). Cite rule IDs and pages in every finding.
@@ -25,7 +25,7 @@ Read references/index.md first; open references/rules.md only for the rule IDs r
 - F-01 (p.85) — Light heading (≤ 400) relies mostly on size: it must be clearly, visibly larger than body; a colour darker than body is a reinforcement, not a requirement → else raise weight or size. No numeric size ratio in the playbook (a ≥ ~2x rule of thumb would be an inference).
 - F-04 / F-05 (pp.88-89) — Heading size ≈ body size, or a secondary message larger than the critical one → clear size step. Playbook examples: 32px title vs 16px body (p.90 card, = 2x computed) and 28px heading vs 18px body (p.95, ≈ 1.55x computed); no minimum ratio is stated.
 - E-19 (pp.75-76, 96-97) — More than 2 distinct `font-family` values (excluding icon/mono) → 1 family (ideal) or max 2 split heading/body (E-20, E-21).
-- E-31 / A-12 (pp.83, 11, 96-97) — `#000000` / `#FFFFFF` for both heading and body, or identical heading/body colour → graded off-black/off-white, heading darker than body.
+- E-31 (pp.83, 96) — `#000000` / `#FFFFFF` text → graded off-black/off-white. An identical heading and body colour is A-12 (pp.11, 96-97): report it under hierarchy, not here.
 - E-16 (p.74, high) — Decorative/blackletter/condensed/novelty face for body, buttons or UI labels → neutral legible typeface.
 - A-24 (pp.18, 94; layout dimension) — `text-align: center|right` on multi-line paragraphs or lists → left-align; centre only short titles.
 
@@ -36,7 +36,7 @@ Read references/index.md first; open references/rules.md only for the rule IDs r
 - Measure: `max-w-none`, `w-full` or absent `max-width` on paragraph containers; `max-w-(prose|[0-9]xl)`, `[0-9]+ch` (do not convert `ch` into a character count; `max-w-prose` = 65ch is not 65 characters in a proportional font); measure real characters per line at desktop and mobile widths in the rendered page (E-22, E-23, E-26).
 - Weights: `font-weight:\s*[1-3]00`, `font-thin|font-extralight|font-light`, headings with `font-normal` (E-33, F-03).
 - Colours: `color:\s*#(000|000000|fff|ffffff)\b`, `text-(black|white)`, `text-gray-(300|400)`, `opacity-(40|50|60)` on text, placeholder-grey used as content; run a contrast check for every text/background pair and button label/fill pair (E-31, F-02, F-09, F-12).
-- Alignment: `text-center|text-right|text-align:\s*(center|right)` on multi-line blocks (A-24).
+- Alignment: `text-center|text-right|text-align:\s*(center|right)` on multi-line blocks (A-24, scored under layout).
 - Paragraph spacing: `<p>` with `margin:0` / `m-0` / no gap in long-form text (E-29, F-19).
 - Body font resolves to serif: `font-serif`, Times New Roman, Georgia (F-17).
 - Screenshots: walls of full-width text, wall-of-paragraph without subheads (E-30), faint grey copy, tiny captions, white labels on pastel buttons.

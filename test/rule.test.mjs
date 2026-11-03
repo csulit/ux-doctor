@@ -14,24 +14,21 @@ test("a retired ID resolves to the rule it was merged into and says so", () => {
   assert.match(r.stdout, /^\(F-13 was merged into E-31\)\nE-31 /);
 });
 
-test("--json marks the merged ID and keeps live IDs unmarked", () => {
-  const r = run("f-10", "E-19", "--json");
-  assert.equal(r.status, 0, r.stderr);
-  const [a, b] = JSON.parse(r.stdout).rules;
-  assert.deepEqual([a.id, a.mergedFrom], ["A-24", "F-10"]);
-  assert.equal(b.id, "E-19");
-  assert.equal("mergedFrom" in b, false);
-});
-
-test("every alias resolves to its owner and none shadows a live ID", () => {
-  const ids = new Set(RULES.map((r) => r.id));
+test("every alias resolves to its owner in one call, and a live owner ID in the same call stays unmarked", () => {
   const aliases = RULES.flatMap((r) => (r.aliases || []).map((a) => [a, r.id]));
   assert.ok(aliases.length >= 11);
-  for (const [a, owner] of aliases) {
-    assert.equal(ids.has(a), false, `${a} is still live`);
-    const j = JSON.parse(run(a, "--json").stdout);
-    assert.deepEqual([j.rules[0].id, j.rules[0].mergedFrom], [owner, a]);
-  }
+  const [, firstOwner] = aliases[0];
+  const r = run(firstOwner, ...aliases.map(([a]) => a.toLowerCase()), "--json");
+  assert.equal(r.status, 0, r.stderr);
+  const [live, ...merged] = JSON.parse(r.stdout).rules;
+  assert.deepEqual([live.id, "mergedFrom" in live], [firstOwner, false]);
+  assert.deepEqual(merged.map((x) => [x.mergedFrom, x.id]), aliases);
+});
+
+test("text mode notes the merge only above the retired lookup", () => {
+  const out = run("E-31", "F-13").stdout;
+  assert.equal(out.match(/was merged into/g).length, 1);
+  assert.match(out, /^E-31 .*[\s\S]*\(F-13 was merged into E-31\)\nE-31 /);
 });
 
 test("an unknown ID still exits 1", () => {

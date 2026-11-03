@@ -36,8 +36,8 @@ const SEV = { critical: 0, high: 1, medium: 2, low: 3 };
 let hits = [], by = "";
 const ids = words.map(low);
 const byId = (w) => rules.find((r) => low(r.id) === w) || rules.find((r) => (r.aliases || []).some((a) => low(a) === w));
-const aliasHit = new Map();
-if (ids.every((w) => byId(w))) { by = "id"; hits = ids.map((w) => { const r = byId(w); if (low(r.id) !== w) aliasHit.set(r.id, w.toUpperCase()); return r; }); }
+let mergedFrom = [];
+if (ids.every((w) => byId(w))) { by = "id"; hits = ids.map(byId); mergedFrom = ids.map((w, i) => (low(hits[i].id) === w ? null : w.toUpperCase())); }
 else {
   const tag = low(words.join("-")), tag1 = low(words.join(" ")).replace(/\s+/g, "-");
   const t = words.length === 1 ? [low(words[0])] : [tag, tag1];
@@ -54,8 +54,8 @@ else {
 if (by !== "id") hits = hits.map((r, i) => [r, i]).sort(([a, i], [b, j]) => ((a.source === "playbook" ? 0 : 1) - (b.source === "playbook" ? 0 : 1)) || (by === "tag" ? (SEV[a.severity] ?? 9) - (SEV[b.severity] ?? 9) : 0) || i - j).map(([r]) => r);
 if (!hits.length) { console.error(`no rule matches "${words.join(" ")}" (tried ID, tag, keyword)`); process.exit(1); }
 const total = hits.length, shown = by === "id" ? hits : hits.slice(0, limit);
-if (json) console.log(JSON.stringify({ matchedBy: by, total, rules: shown.map((r) => ({ id: r.id, ...(aliasHit.has(r.id) ? { mergedFrom: aliasHit.get(r.id) } : {}), title: r.title, citation: cite(r), ...webNote(r), severity: r.severity, tags: r.tags, rule: r.rule, doDont: r.doDont, auditCheck: r.auditCheck, restyleFix: r.restyleFix })) }, null, 1));
+if (json) console.log(JSON.stringify({ matchedBy: by, total, rules: shown.map((r, i) => ({ id: r.id, ...(mergedFrom[i] ? { mergedFrom: mergedFrom[i] } : {}), title: r.title, citation: cite(r), ...webNote(r), severity: r.severity, tags: r.tags, rule: r.rule, doDont: r.doDont, auditCheck: r.auditCheck, restyleFix: r.restyleFix })) }, null, 1));
 else {
-  for (const r of shown) console.log(`${aliasHit.has(r.id) ? `(${aliasHit.get(r.id)} was merged into ${r.id})\n` : ""}${r.id}  ${r.title}\n  cite: ${cite(r)} | severity: ${r.severity} | tags: ${(r.tags || []).join(", ")}\n${r.source === "web" ? `  no page${r.url ? ` | url: ${r.url}` : ""}\n` : ""}  rule: ${r.rule}\n  do/don't: ${r.doDont}\n  audit: ${r.auditCheck}\n  restyle: ${r.restyleFix}\n`);
+  for (const [i, r] of shown.entries()) console.log(`${mergedFrom[i] ? `(${mergedFrom[i]} was merged into ${r.id})\n` : ""}${r.id}  ${r.title}\n  cite: ${cite(r)} | severity: ${r.severity} | tags: ${(r.tags || []).join(", ")}\n${r.source === "web" ? `  no page${r.url ? ` | url: ${r.url}` : ""}\n` : ""}  rule: ${r.rule}\n  do/don't: ${r.doDont}\n  audit: ${r.auditCheck}\n  restyle: ${r.restyleFix}\n`);
   if (total > shown.length) console.log(`(${total - shown.length} more match by ${by}; raise --limit or narrow the query)`);
 }

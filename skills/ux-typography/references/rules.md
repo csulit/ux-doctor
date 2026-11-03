@@ -140,7 +140,7 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Audit check**: Paragraphs longer than ~5-6 lines (≈ 80-100 words – inferred) without breaks; no margin between paragraphs. In product/description areas also flag copy with no headings, lists or icons, where bolding is the only scan aid.
 - **Restyle fix**: Split at sentence/idea boundaries; add paragraph spacing (e.g. ~0.75-1em, inferred). On product pages break the block into a short intro, a labelled list of key features and a closing sentence (G-14).
 - **Also cited as**: G-13 (p.123)
-- **Severity**: medium ; **Tags**: typography, layout, spacing
+- **Severity**: medium ; **Tags**: typography, layout, spacing, hierarchy, copy
 
 ### E-30 Add subheadings (with icons/lines/space) to shorter paragraphs  (p.82)
 - **Rule**: Give each short paragraph a subheading – a roadmap to the content. Make sections stand out further with icons, lines (dividers) or extra space.

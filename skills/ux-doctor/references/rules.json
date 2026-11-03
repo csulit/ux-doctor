@@ -2265,7 +2265,9 @@
   "tags": [
    "typography",
    "layout",
-   "spacing"
+   "spacing",
+   "hierarchy",
+   "copy"
   ],
   "rule": "In content-heavy sections use shorter paragraphs; split long blocks into bite-sized chunks with visible space between them.",
   "why": "Long blocks overwhelm users, hard to absorb and stay engaged; breaks make content easier to scan/digest, give natural stopping points, highlight crucial info, make reading more interactive.",
@@ -8296,7 +8298,7 @@
   "rule": "Split a screen's colour by area into three roles: a dominant base (page background, about 60%), a secondary tone for surfaces such as cards, inputs and bars (about 30%), and an accent kept to actions and active states (about 10%). The numbers are a balance heuristic, not a measurement target.",
   "why": "One colour in charge, one supporting tier and a small accent give the screen a clear structure and make the accent easy to find; an even split leaves no colour in charge.",
   "doDont": "Do give surfaces their own tone one step from the background and keep the accent on buttons, links and selection. Don't fill large areas with the accent or build the screen from two tones with no surface tier.",
-  "auditCheck": "On a screenshot, estimate the area share of background, surface and accent colours. Flag an accent covering clearly more than about 10% of the screen or sitting on non-interactive blocks, two roles at a near-equal share, or no distinct surface tier (cards and inputs indistinguishable from the page, see B-07) (inference).",
+  "auditCheck": "On a screenshot, estimate the area share of background, surface and accent colours. Flag an accent covering clearly more than about 10% of the screen or sitting on non-interactive blocks, two roles at a near-equal share, or no distinct surface tier (cards and inputs indistinguishable from the page, see D-11) (inference).",
   "restyleFix": "Assign tokens per role (background, surface, accent), move the accent off decorative areas onto actions and active states, and add a surface tone one step lighter or darker than the background. (On conflict the playbook wins: the 10% is a ceiling, E-03 keeps the primary colour on interactive elements and E-04 keeps the palette small.)"
  },
  {

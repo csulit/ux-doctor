@@ -24,7 +24,7 @@ Claude Code namespaces plugin commands (`/ux-doctor:ux-audit` …). On Codex (no
 | `ux-layout-spacing` | alignment, whitespace, layout, balance, consistency | 35 |
 | `ux-depth-craft` | shadows, outlines, borders, glass, imagery | 19 |
 | `ux-color` | palette, backgrounds, dark mode, status colours | 11 |
-| `ux-typography` | fonts, sizes, line-height, text contrast, alignment | 34 |
+| `ux-typography` | fonts, sizes, line-height, text contrast | 34 |
 | `ux-interaction-cost` | clicks, effort, friction | 16 |
 | `ux-ui-patterns` | forms, passwords, dialogs, product pages, mobile, states, nav | 28 |
 | `ux-web-patterns` | *(secondary, web)* UI states, motion, focus/touch, tokens, dark mode, overlays, data, AI-look tells | 256 (W-) |

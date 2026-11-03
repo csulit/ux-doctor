@@ -53,7 +53,7 @@ for (const [src, f] of srcDirs.filter((d) => existsSync(d)).flatMap((d) => readd
       const field = (n) => (e.match(new RegExp(`- \\*\\*${n}\\*\\*: ([\\s\\S]*?)(?=\\n- \\*\\*|\\n\\n|$)`)) || [])[1]?.trim() ?? "";
       const sev = (e.match(/\*\*Severity\*\*: *(high|medium|low)/) || [])[1];
       const tags = ((e.match(/\*\*Tags\*\*: *\[?([^\]\n]*)\]?/) || [])[1] || "").split(",").map((t) => t.trim()).filter(Boolean);
-      const aliases = [...field("Also cited as").matchAll(/\b([A-H]-\d{2}|W\d-\d{2})\b/g)].map((x) => x[1]);
+      const aliases = field("Also cited as").replace(/\([^)]*\)/g, "").split(/[,;]/).map((x) => (x.trim().match(/^([A-H]-\d{2}|W\d-\d{2})\b/) || [])[1]).filter(Boolean);
       rules.push({ id: h[1], title: h[2], source: h[1].startsWith("W") ? "web" : "playbook", pages: h[3], citation: h[1].startsWith("W") ? `web:${h[3]}` : `p.${h[3]}`, section: title, skill, severity: sev, tags,
         rule: field("Rule"), why: field("Why"), doDont: field("Do / Don't"), auditCheck: field("Audit check"), restyleFix: field("Restyle fix"), ...(aliases.length ? { aliases } : {}) });
     }
