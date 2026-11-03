@@ -15,7 +15,7 @@ Read references/index.md first; open references/rules.md only for the rule IDs r
 - D-18 (p.64, high) — Text/controls on translucent or blurred panels must stay legible, effect "modern but not overbearing"; secondary text vanishing over a bright backdrop = fail → darker tint / higher fill opacity / stronger blur, or darken the image; keep a faint 1px light border.
 - E-01 (p.65) — Glass (`backdrop-filter`, rgba alpha < 1) over a too-light background = fail; measure contrast against the actual backdrop → darken backdrop, raise opacity, or use a solid surface.
 - D-05 (p.52) — Shadow must be soft: bad `X0 Y0 Blur48 #9F9F9F` (dark halo); good `X0 Y12 Blur48 #E9E9E9` (light, offset down) → add positive Y, lighten colour/alpha.
-- D-06 / D-07 (pp.53-54) — Neutral grey/black shadow (R=G=B) on a coloured background = flag → tint to the background hue: `0 19px 56px #CFC9DD` on light purple; `0 12px 48px #E3D5B2` on cream.
+- D-06 (pp.53-54) — Neutral grey/black shadow (R=G=B) on a coloured background = flag → tint to the background hue: `0 19px 56px #CFC9DD` on light purple; `0 12px 48px #E3D5B2` on cream.
 - D-03 (pp.50-51) — Dropdown, popover, menu, tooltip, modal with `box-shadow: none` over content → add subtle diffuse shadow.
 - D-04 (p.51) — Chips/controls over maps, images, video, charts with no shadow/border/opaque fill → add a small soft (sm-tier) shadow.
 - D-08 (p.55) — Count distinct `box-shadow` values; many one-off near-duplicates → consolidate to named tokens (xs, sm, md, lg, xl, 2xl) with monotonic Y offset and blur.
@@ -29,7 +29,7 @@ Read references/index.md first; open references/rules.md only for the rule IDs r
 
 ## Code signals
 - `grep -rnE "box-shadow:\s*[^;]+" ` then count unique values; also Tailwind arbitrary `shadow-\[` and `drop-shadow-\[` (D-08).
-- Shadow colour alpha: `rgba\(0,\s*0,\s*0,\s*0?\.(1[5-9]|[2-9])` (inference: D-05 says roughly 10-15% black, not an exact cut-off) or `#000`/`black` inside a shadow value (D-05, D-07).
+- Shadow colour alpha: `rgba\(0,\s*0,\s*0,\s*0?\.(1[5-9]|[2-9])` (inference: D-05 says roughly 10-15% black, not an exact cut-off) or `#000`/`black` inside a shadow value (D-05, D-06).
 - `0 0 \d+px` (Y = 0 halo) combined with a dark colour (D-05).
 - Overlays (`position:\s*(absolute|fixed)`, `z-index`, dropdown/popover/modal/tooltip components) with `shadow-none` or no shadow (D-03).
 - `backdrop-filter|backdrop-blur|bg-(white|black)/\d+|rgba\([^)]*,\s*0?\.\d+\)` surfaces: check backdrop brightness and text contrast (D-18, E-01). Figma: layers with "Background blur".
@@ -40,7 +40,7 @@ Read references/index.md first; open references/rules.md only for the rule IDs r
 
 ## Restyle defaults
 - Soft shadow: `0 12px 48px #E9E9E9` on neutral light backgrounds (D-05).
-- Tinted shadows: purple surface `0 19px 56px #CFC9DD` (D-06); cream surface `0 12px 48px #E3D5B2` (D-07). Derive a desaturated mid-tone of the surface hue for other colours (D-06).
+- Tinted shadows: purple surface `0 19px 56px #CFC9DD` (D-06); cream surface `0 12px 48px #E3D5B2` (D-06). Derive a desaturated mid-tone of the surface hue for other colours (D-06).
 - Shadow tokens `--shadow-xs … --shadow-2xl`, Y offset and blur rising with tier; ≥3 tiers mapped by purpose (D-08, D-09). Variants such as a tinted warning shadow and a very subtle input shadow (D-10).
 - Layering: light-grey page + pure white cards (D-11; exact grey not given in playbook, ~#F5F5F7 is a visual estimate). Or `1px solid` light-grey outlines (D-12, D-14).
 - Prefer spacing and a light grey input fill over extra borders (D-13).

@@ -5,7 +5,7 @@ description: "Core of the ux-doctor plugin. Defines the severity scale, scoring,
 
 # ux-doctor — core
 
-Evidence-based UI auditing, review and restyling. All design judgements come from the playbook rules in the `ux-*` knowledge skills (188 playbook rules with IDs like `E-12` and a PDF page, + 256 web-pattern rules). Sources: playbook rules (IDs `A-01`…`H-18`, PDF pages) are primary; `W1-…W5-…` rules (skill `ux-web-patterns`, 256 paraphrased tips from public UX pattern pages and published guidance on generic AI-generated UI) are secondary and must be labelled `source: web`; on conflict the playbook wins. Do not give taste-based advice without a rule ID; if no rule fits, label it `(general practice)`; label anything that is an estimate rather than a playbook claim `(inference)`.
+Evidence-based UI auditing, review and restyling. All design judgements come from the playbook rules in the `ux-*` knowledge skills (177 playbook rules with IDs like `E-12` and a PDF page, + 256 web-pattern rules). Sources: playbook rules (IDs `A-01`…`H-18`, PDF pages) are primary; `W1-…W5-…` rules (skill `ux-web-patterns`, 256 paraphrased tips from public UX pattern pages and published guidance on generic AI-generated UI) are secondary and must be labelled `source: web`; on conflict the playbook wins. Do not give taste-based advice without a rule ID; if no rule fits, label it `(general practice)`; label anything that is an estimate rather than a playbook claim `(inference)`.
 
 ## Workflows (pick one)
 | Intent | Skill | Command (Claude Code / Cursor / Pi) |
@@ -21,15 +21,15 @@ Claude Code namespaces plugin commands (`/ux-doctor:ux-audit` …). On Codex (no
 | Skill | Covers | Rules |
 |---|---|---|
 | `ux-hierarchy-clarity` | hierarchy, proximity, clarity, contrast, simplicity, visual cues | 34 |
-| `ux-layout-spacing` | alignment, whitespace, layout, balance, consistency | 37 |
-| `ux-depth-craft` | shadows, outlines, borders, glass, imagery | 20 |
+| `ux-layout-spacing` | alignment, whitespace, layout, balance, consistency | 35 |
+| `ux-depth-craft` | shadows, outlines, borders, glass, imagery | 19 |
 | `ux-color` | palette, backgrounds, dark mode, status colours | 11 |
-| `ux-typography` | fonts, sizes, line-height, text contrast, alignment | 40 |
+| `ux-typography` | fonts, sizes, line-height, text contrast, alignment | 34 |
 | `ux-interaction-cost` | clicks, effort, friction | 16 |
-| `ux-ui-patterns` | forms, passwords, dialogs, product pages, mobile, states, nav | 30 |
+| `ux-ui-patterns` | forms, passwords, dialogs, product pages, mobile, states, nav | 28 |
 | `ux-web-patterns` | *(secondary, web)* UI states, motion, focus/touch, tokens, dark mode, overlays, data, AI-look tells | 256 (W-) |
 
-Full rule database: `references/rules.json` (in the ux-doctor skill folder; each rule has a `citation`: playbook `p.N`, web `web:<slug>`). Query it compactly with `node scripts/rule.mjs <ID|tag|keyword>`. Numbers: `references/numeric-cheatsheet.md`. Method for the checks, scoring and report template: `references/finding-format.md`. Known pairs of rules that pull against each other: `references/rule-tensions.md`.
+Full rule database: `references/rules.json` (in the ux-doctor skill folder; each rule has a `citation`: playbook `p.N`, web `web:<slug>`). Query it compactly with `node scripts/rule.mjs <ID|tag|keyword>`. Numbers: `references/numeric-cheatsheet.md`. Method for the checks, scoring and report template: `references/finding-format.md`. Known pairs of rules that pull against each other, and rules that restate each other (count once): `references/rule-tensions.md`. A retired ID in an old report (e.g. F-13 → E-31) still resolves with `rule.mjs` to the rule it was merged into.
 
 ## Severity
 Rule severities (high/medium/low) in the rule database are ux-doctor's own judgement made during extraction — the playbook does not rate severity. Final finding severity = rule severity × placement. This table is the **default**:

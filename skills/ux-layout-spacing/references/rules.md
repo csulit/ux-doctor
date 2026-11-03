@@ -28,12 +28,13 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Restyle fix**: Use one container with consistent padding and `flex-col` with `align-items: stretch`; same icon size & gap.
 - **Severity**: medium ; **Tags**: [alignment, navigation, layout]
 
-### A-24 Left-align most text, especially long text and lists  (p.18)
-- **Rule**: Left alignment is the go-to for most text; it creates a clean left edge that's easy to read, especially for paragraphs and lists.
+### A-24 Left-align most text, especially long text and lists  (p.18, reaffirmed p.94, p.97)
+- **Rule**: Left alignment is the go-to for most text; it creates a clean left edge that's easy to read, especially for paragraphs and lists. It matches left-to-right reading with a consistent start for every line; centre suits short titles or text meant to grab attention (A-26), right/centre decorative or artistic elements (p.94).
 - **Why**: Clean, consistent starting edge speeds reading.
-- **Do / Don't**: Text guidance only.
-- **Audit check**: Paragraphs/lists with `text-align: center` or right (in LTR).
+- **Do / Don't**: Dark navy "The Critical Role of Sleep…" card twice (p.94). Bad: heading and paragraph centred ("Text alignment: Center"). Good: heading and paragraph left-aligned ("Text alignment: Left").
+- **Audit check**: `text-align: center|right` (Tailwind `text-center`/`text-right`) in LTR on multi-line paragraphs (>2-3 lines (inference)), lists or long descriptions → violation. Centre on short titles/hero lines is fine.
 - **Restyle fix**: Set `text-align: left` (`text-left`) for body text and lists.
+- **Also cited as**: F-10 (p.94, reaffirmed p.97)
 - **Severity**: medium ; **Tags**: [alignment, typography]
 
 ### A-25 Right-align numbers (and RTL languages)  (p.18)
@@ -96,12 +97,13 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Restyle fix**: Increase spacing first to a generous level, then step down along the spacing scale until groups are clear but related items still read as related.
 - **Severity**: medium ; **Tags**: spacing, layout, craft
 
-### B-15 Establish a spacing and sizing system on a base unit  (p.28)
-- **Rule**: Choose a base unit and work in multiples of it. Example: multiples of 4 → 4px, 8px, 16px, 24px, 32px, and so on. Systems based on multiples of 2, 4 or 6 are fine.
+### B-15 Establish a spacing and sizing system on a base unit  (p.28, reaffirmed p.29)
+- **Rule**: Choose a base unit and work in multiples of it. Example: multiples of 4 → 4px, 8px, 16px, 24px, 32px, and so on. Systems based on multiples of 2, 4 or 6 are fine. Don't use arbitrary, non-multiplicative values such as 31px or 19px (p.29): they disrupt rhythm and are hard to remember and reapply.
 - **Why**: A standardised system gives consistent look and feel, speeds up design adjustments while keeping everything proportional, and reduces cognitive load because users' eyes/brain don't have to adjust to new spacing rules.
 - **Do / Don't**: Contact form "Let's level up together" (subtitle "You can reach us anytime via hello@uxpeak.com", fields First name / Email / Message, checkbox "You agree to our friendly privacy policy.", "Send message" button). **Do** (thumbs-up): measured gaps annotated **16, 40, 8, 24, 24, 24, 40** (title→subtitle 16; subtitle→first field 40; label→input 8; between fields 24; between message and checkbox 24; checkbox→button 40) – all multiples of 8/4, with the same value reused for the same relationship. **Don't**: gaps **7, 19, 8, 19, 19, 21, 19** – arbitrary values with inconsistent relationships. (from visual; PDF text lists 16, 40, 40, 8, 24, 24, 24 and 7, 19, 19, 19, 19, 8, 21)
-- **Audit check**: Extract all margin/padding/gap values; flag any not on the chosen grid (e.g. not multiples of 4). In Tailwind, flag arbitrary values like `p-[19px]`, `mt-[7px]`; in Figma flag spacing not from tokens.
-- **Restyle fix**: Snap all spacing to the nearest scale step (4/8/16/24/32/40…); define spacing tokens; reuse one value per relationship type.
+- **Audit check**: Extract all margin/padding/gap values; flag any not on the chosen grid (e.g. not multiples of 4). In Tailwind, flag arbitrary values like `p-[19px]`, `mt-[7px]`; in Figma flag spacing not from tokens; typical offenders are 7, 19, 21, 31px.
+- **Restyle fix**: Snap all spacing to the nearest scale step (4/8/16/24/32/40…); define spacing tokens; reuse one value per relationship type (e.g. 19→16 or 20/24, 31→32, 7→8).
+- **Also cited as**: B-17 (p.29)
 - **Severity**: high ; **Tags**: spacing, craft, layout
 
 ### B-16 Tie the spacing system to the Law of Proximity (fixed value for related items)  (p.29)
@@ -111,14 +113,6 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Audit check**: Is the gap within a group (e.g. label→input) always smaller than the gap between groups, and is the same value used everywhere for the same relationship?
 - **Restyle fix**: Define tokens: e.g. intra-group 8px, between-field 24px, between-section 40px (values from visual of the form) and apply consistently.
 - **Severity**: medium ; **Tags**: spacing, hierarchy, layout
-
-### B-17 Avoid random, non-multiplicative spacing numbers  (p.29)
-- **Rule**: Don't use arbitrary spacing such as 31px or 19px.
-- **Why**: Odd non-multiplicative numbers throw off harmony, disrupt rhythm, make the interface feel disjointed, and are harder to remember and reapply consistently.
-- **Do / Don't**: Bad form from B-15 uses 7, 19, 21 etc.
-- **Audit check**: Search CSS/Tailwind/Figma for spacing values like 7, 19, 21, 31px (not divisible by the base unit 4).
-- **Restyle fix**: Round to the nearest scale value (e.g. 19→16 or 20/24, 31→32, 7→8).
-- **Severity**: medium ; **Tags**: spacing, craft
 
 ## Layout (p.30-34)
 
@@ -162,12 +156,13 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Restyle fix**: Make each option a card with label chip, key figure emphasised (big number), price secondary, a radio/check indicator, and a distinct selected state (border colour + scale/elevation).
 - **Severity**: low ; **Tags**: layout, cards, forms, states
 
-### B-23 Design form layout after the final output  (p.34)
-- **Rule**: Take cues from how the submitted information will be displayed or used: structure and order the form fields/groups to mirror the final output.
+### B-23 Design form layout after the final output  (p.34, reaffirmed p.35)
+- **Rule**: Take cues from how the submitted information will be displayed or used: structure and order the form fields/groups to mirror the final output. For content users create (e.g. a marketplace listing), don't default to a linear stack of labelled fields: arrange the form the way the result will look (p.35).
 - **Why**: Forms are critical touchpoints that are often dull; aligning them with the final result makes the process more interesting, intuitive and aligned with the user's goals.
-- **Do / Don't**: "Final display" shows a classified-listing card: Image on top; "Toyota Rav4 Hybrid" + "$32,034" (Product & Price); description ("A 2023 Toyota RAV4 Hybrid, an eco-friendly, sleek SUV…") with "Posted 1 day ago"; Location row "Manchester, UK" with "View map" link; Tags/Categories chips (Hybrid car, Toyota, SUV). Labels with arrows map each region (Image, Product & Price, Description, Location, Tags/Categories) – i.e. the form should have those sections in that order/shape. The corresponding form is on the next page (outside this range).
-- **Audit check**: Does the order and grouping of form fields match how the data will be shown (e.g. image upload first, title+price together, description, location, tags)? Flag forms whose structure is arbitrary relative to the output.
-- **Restyle fix**: Reorder/group fields to mirror the final card; place related fields side by side as they appear in the output (e.g. name and price on one row).
+- **Do / Don't**: "Final display" shows a classified-listing card: Image on top; "Toyota Rav4 Hybrid" + "$32,034" (Product & Price); description ("A 2023 Toyota RAV4 Hybrid, an eco-friendly, sleek SUV…") with "Posted 1 day ago"; Location row "Manchester, UK" with "View map" link; Tags/Categories chips (Hybrid car, Toyota, SUV). Labels with arrows map each region (Image, Product & Price, Description, Location, Tags/Categories) – i.e. the form should have those sections in that order/shape. The corresponding form (p.35): Don't, a plain "Create new listing" card with a vertical list of label + empty input pairs (Item, Price, Description, Categories, Location, Images with "Browse"). Do (from visual), a card that looks like the finished listing: large grey image placeholder ("Add an image") at top, "Item" and "Price" in one row split by a divider, then Description, Location and an "Add tag +" pill, with inline-placeholder fields separated by thin dividers.
+- **Audit check**: Does the order and grouping of form fields match how the data will be shown (e.g. image upload first, title+price together, description, location, tags)? Flag forms whose structure is arbitrary relative to the output, and "create/list/post" forms built as a generic label-over-input stack although a known output layout (listing, profile, card, post) exists.
+- **Restyle fix**: Reorder/group fields to mirror the final card; place related fields side by side as they appear in the output (e.g. name and price on one row). For creation forms, rebuild as an editable preview of the output: image slot on top, title/price in one row, description, location, tags, with thin dividers instead of boxed inputs.
+- **Also cited as**: C-01 (p.35)
 - **Severity**: low ; **Tags**: forms, layout, interaction-cost
 
 ## Balance and harmony (p.36-37)
@@ -180,12 +175,13 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Restyle fix**: Scale down the dominant element until the heading, body and CTA each remain easy to see without any of them dominating.
 - **Severity**: medium ; **Tags**: hierarchy, layout, craft
 
-### C-03 Use colour harmony – don't overuse a single colour  (p.36)
+### C-03 Use colour harmony – don't overuse a single colour  (p.36, reaffirmed p.37)
 - **Rule**: Overusing one colour makes a design feel monotonous or overwhelming. Use complementary or analogous colours to bring variation and emotional balance.
 - **Why**: Variation creates emotional balance; a single colour everywhere is monotonous/overwhelming.
-- **Do / Don't**: See C-06 (kiwi example).
-- **Audit check**: Is one hue used for image background, CTA and small accents all at once? Is the palette limited to a single hue with no complementary/analogous partner?
+- **Do / Don't**: Kiwi-ice-cream card (p.37). Don't (from visual): saturated green circle behind the image, green decorative bits and a big green CTA. Do (from visual): image on a pale peach/cream circle with small pink/green confetti shapes; only the "Get now" button carries the green (lime) accent.
+- **Audit check**: Is one hue used for image background, CTA and small accents all at once? Is the palette limited to a single hue with no complementary/analogous partner? Count surfaces sharing the same saturated accent within one component; flag the accent on both a large background shape and the CTA.
 - **Restyle fix**: Reserve the strong accent for the primary action; use a softer/neutral or analogous/complementary tint for backgrounds and decorative elements.
+- **Also cited as**: C-06 (p.37)
 - **Severity**: medium ; **Tags**: color, hierarchy
 
 ### C-04 Keep consistent spacing, typography and element sizes between components  (p.36)
@@ -203,14 +199,6 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Audit check**: Is the CTA full-width/very tall on a content card when it is not a mobile footer bar? Is the hero image taking the dominant share of card area while the description and rating text are tiny (compare description/rating size to the heading and the image)? Does the secondary content get visually lost?
 - **Restyle fix**: Reduce image diameter/height, shrink CTA to content-width pill with normal padding, bump the description and rating text size (the heading can stay about the same) so the card reads heading → description → rating → CTA.
 - **Severity**: medium ; **Tags**: hierarchy, buttons, imagery, layout
-
-### C-06 Don't paint everything the same colour (single-colour overuse)  (p.37)
-- **Rule**: Don't use one colour (e.g. green) for the image background, the CTA and smaller elements simultaneously; distribute colours more evenly.
-- **Why**: Overuse of a single colour makes the interface feel monotonous and a bit overwhelming.
-- **Do / Don't**: Don't (from visual): saturated green circle behind the image, green decorative bits and a big green CTA. Do (from visual): image sits on a pale peach/cream circle with small pink/green confetti shapes; only the "Get now" button carries the green (lime) accent. Colours more even, not leaning on one hue.
-- **Audit check**: Count surfaces/elements sharing the same saturated accent hue within one component; flag if the accent is on both a large background shape and the CTA (and other small items).
-- **Restyle fix**: Replace large saturated backgrounds with a light neutral/complementary tint; keep the saturated accent for the CTA only.
-- **Severity**: medium ; **Tags**: color, hierarchy
 
 ## Consistency (p.38-46)
 

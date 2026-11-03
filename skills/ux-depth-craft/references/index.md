@@ -7,7 +7,6 @@
 | D-04 | Add shadows to elements overlapping dynamic/complex backgrounds | p.51 | medium | depth, shadows, imagery, contrast |
 | D-05 | Use soft, diffuse shadows – never harsh/tight dark ones | p.52 | medium | shadows, depth, craft |
 | D-06 | Tint the shadow colour to match a coloured background | p.53-54 | medium | shadows, color, depth, craft |
-| D-07 | Never use pure grey or black shadows on coloured backgrounds (yellow example) | p.54 | medium | shadows, color, depth |
 | D-08 | Define a shadow system (named elevation scale) and use it consistently | p.55 | medium | shadows, depth, craft, cards |
 | D-09 | Have at least three shadow tiers mapped to element purpose | p.56 | low | shadows, depth, hierarchy |
 | D-10 | Create variations of shadow styles for specific needs | p.56 | low | shadows, color, forms, states |

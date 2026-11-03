@@ -40,7 +40,7 @@ Read `references/index.md` (ID | rule | pattern slug | severity | tags), pick th
 - W1-12..W1-14 — decorative muted greys failing contrast; colour-only cues.
 
 ## Conflicts
-- **W vs playbook**: the playbook wins. Entries carry an explicit "see <ID>" where they are known to differ (e.g. golden-ratio spacing W2-08 vs base-unit multiples B-15/B-17; dialog action order W1-92 vs G-12; tight dark shadow W3-25 vs D-05; 13px dense text W3-30 vs F-06 — valid only for dense tool UIs).
+- **W vs playbook**: the playbook wins. Entries carry an explicit "see <ID>" where they are known to differ (e.g. golden-ratio spacing W2-08 vs base-unit multiples B-15; dialog action order W1-92 vs G-12; tight dark shadow W3-25 vs D-05; 13px dense text W3-30 vs F-06 — valid only for dense tool UIs).
 - **AI-look tells vs other rules**: see `../ux-doctor/references/rule-tensions.md` (Inter and one radius language are playbook-endorsed, E-17 and C-08, so never tells; W1-79 hover edge vs W5-08 static stripe; W1-82 one arrow link vs W5-07 arrows everywhere; W2-03 list cascade vs W5-03 section fade-ups).
 - **W vs W**: prefer the more specific/safer rule and say so in the finding. Known pairs: submit/Next buttons (W1-94 keep enabled, validate on click; also W3-11) → W1-94 wins; card hover (W3-26 lift) vs W1-77 → never scale the card container, use translate + shadow; springs (W2-02 allows one restrained spring on presses/modals; W1-05 keeps long bouncy motion for attention moments) → both hold; skeleton timing (W1-97 vs W2-62) → no loader under ≈300ms, skeleton beyond.
 

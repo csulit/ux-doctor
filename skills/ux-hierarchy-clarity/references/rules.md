@@ -96,12 +96,13 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Restyle fix**: Label: small (~12px), muted; value: large (~2x), bold, white/high-contrast; keep trend indicator small and coloured.
 - **Severity**: high ; **Tags**: [hierarchy, typography, cards]
 
-### A-12 Darker/stronger text for the title, lighter for supporting text  (p.11)
+### A-12 Darker/stronger text for the title, lighter for supporting text  (p.11, reaffirmed p.96-97)
 - **Rule**: Darker colours draw more attention and signal importance; lighter colours recede. Title should be dark black, supporting paragraph grey – not the reverse.
 - **Why**: A grey title with black body undermines the title's importance.
 - **Do / Don't**: Bad (thumbs-down, left card): title "Personal Injury Law" in grey, paragraph ("Attorneys in this field handle cases related to accidents, injuries, and wrongful deaths, seeking compensation for victims") in dark black. Good (right card): title in near-black, paragraph in mid-grey. Both cards have two small round icons (scales, gavel) on top.
-- **Audit check**: Compare contrast ratio/lightness of heading vs body in the same block: heading contrast must be ≥ body contrast (heading colour darker than body on light themes; lighter on dark themes).
+- **Audit check**: Compare contrast ratio/lightness of heading vs body in the same block: heading contrast must be ≥ body contrast (heading colour darker than body on light themes; lighter on dark themes). The same colour for heading and paragraph is a violation; the paragraph must still reach 4.5:1.
 - **Restyle fix**: Heading → text-primary (near-black); body → text-secondary (grey, still accessible).
+- **Also cited as**: F-14 (p.96-97, typography checklist)
 - **Severity**: high ; **Tags**: [hierarchy, contrast, color, typography]
 
 ### A-13 Use a vibrant colour to highlight the key action  (p.11)

@@ -45,18 +45,11 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 ### D-06 Tint the shadow colour to match a coloured background  (p.53-54)
 - **Rule**: Match shadow colour to the background hue instead of using neutral grey. Example on a light purple background: grey shadow (X 0, Y 19, Blur 48, #C7C7C7) vs purple-tinted shadow (X 0, Y 19, Blur 56, #CFC9DD).
 - **Why**: Colour matters as much as softness/depth; grey looks like a safe bet but clashes with the purple background, breaking visual harmony and feeling jarring. A tinted shadow blends seamlessly and makes the design more cohesive.
-- **Do / Don't**: Don't: "Be You, Only Better" card (woman with purple-lit image, yellow "Get flawless today" button) on pale purple page with a grey #C7C7C7 shadow. Do: same card with a purple-tinted #CFC9DD shadow and slightly larger blur (56 vs 48). Described as a "pro tip many junior designers don't know".
-- **Audit check**: On any non-neutral page/section background, is the shadow colour a neutral grey/black (R=G=B) rather than a darker, low-saturation version of the background hue? Compare shadow hue with background hue.
-- **Restyle fix**: Set shadow colour to a desaturated mid-tone of the background hue (e.g. #CFC9DD for a light purple surface) and keep it soft; optionally widen blur a few px.
+- **Do / Don't**: Don't: "Be You, Only Better" card (woman with purple-lit image, yellow "Get flawless today" button) on pale purple page with a grey #C7C7C7 shadow. Do: same card with a purple-tinted #CFC9DD shadow and slightly larger blur (56 vs 48). Described as a "pro tip many junior designers don't know". Second example (p.54): "Only natural ingredients" card on a cream background; the neutral #D8D8D8 shadow (Y 20, blur 60) looks dirty, a warm beige #E3D5B2 shadow (Y 12, blur 48) sits naturally.
+- **Audit check**: On any non-neutral page/section background, is the shadow colour a neutral grey/black (R=G=B) rather than a darker, low-saturation version of the background hue? Compare shadow hue with background hue; any shadow with equal R/G/B channels (e.g. rgba(0,0,0,x)) over a tinted section background is a violation.
+- **Restyle fix**: Set shadow colour to a desaturated mid-tone of the background hue (e.g. #CFC9DD for a light purple surface) and keep it soft; optionally widen blur a few px; on warm backgrounds use a warm tint (e.g. #E3D5B2 on cream).
+- **Also cited as**: D-07 (p.54)
 - **Severity**: medium ; **Tags**: shadows, color, depth, craft
-
-### D-07 Never use pure grey or black shadows on coloured backgrounds (yellow example)  (p.54)
-- **Rule**: Once you know the tinting trick, don't use pure grey/black shadows on coloured backgrounds. Second worked example on a pale yellow/cream background: grey shadow (X 0, Y 20, Blur 60, #D8D8D8) vs warm-tinted shadow (X 0, Y 12, Blur 48, #E3D5B2).
-- **Why**: Creates more coherent and engaging UIs; an easy but impactful improvement.
-- **Do / Don't**: Don't: "Only natural ingredients" card (amber bottles-and-arch image, yellow "Learn more" button) on a cream background with neutral grey shadow, which looks dirty against the warm tone. Do: same card with a warm beige shadow (#E3D5B2) that sits naturally in the cream background.
-- **Audit check**: Any shadow with equal R/G/B channels (grey/black, e.g. rgba(0,0,0,x)) over a tinted section background.
-- **Restyle fix**: Swap neutral shadow for a warm/hue-matched tint (e.g. #E3D5B2 on cream) at similar softness; note the tinted version also used smaller Y (12 vs 20) and blur (48 vs 60).
-- **Severity**: medium ; **Tags**: shadows, color, depth
 
 ## Shadow system (p.55-56)
 

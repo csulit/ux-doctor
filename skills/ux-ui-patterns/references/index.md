@@ -2,7 +2,6 @@
 
 | ID | Rule | Page/Src (p.N = playbook PDF page; web:slug = web rule, no page) | Severity | Tags |
 |---|---|---|---|---|
-| C-01 | Lay out creation forms to mirror the final result | p.35 | low | forms, layout, interaction-cost |
 | G-02 | Don't hide content behind promotional banners that need a tap | p.111, p.112 | medium | interaction-cost, layout, cards, imagery, hierarchy |
 | G-03 | Show a curated, relevant list immediately (e.g. "Top 10 easy recommended recipes") | p.113 | medium | interaction-cost, copy, layout |
 | G-04 | Design each input field for the type of data it collects | p.114 | medium | forms, interaction-cost |
@@ -14,7 +13,6 @@
 | G-10 | Make the destructive confirm button red (not green) | p.120 | high | color, buttons, states, dark-mode |
 | G-11 | Give users a way back: always include a Cancel option | p.121 | high | buttons, states, interaction-cost, accessibility |
 | G-12 | Place Cancel on the left and the destructive action on the right | p.122 | medium | buttons, layout, alignment, interaction-cost |
-| G-13 | Avoid long, monolithic blocks of text | p.123 | medium | typography, layout, hierarchy, copy |
 | G-14 | Divide content into logical sections with icons (checkmarks, stars) | p.124 | medium | icons, hierarchy, typography, layout, cards |
 | G-15 | Lay features out in two columns | p.125 | low | layout, cards, spacing, hierarchy |
 | G-16 | Go beyond the given content: add extra content types (colour-coded icons, comparison visual) | p.126 | low | craft, icons, hierarchy, imagery |

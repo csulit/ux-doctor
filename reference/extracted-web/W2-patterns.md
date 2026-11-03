@@ -66,7 +66,7 @@
 - **Why**: One ratio gives gaps and hierarchy a common rhythm and removes guesswork.
 - **Do / Don't**: Do derive scales from one base and ratio, rounded to usable pixels. Don't choose sizes ad hoc or force the ratio against an existing 8px grid.
 - **Audit check**: Collect distinct font sizes and spacing values (`text-[..px]`, `gap-[..]`, `p-[..]`); flag many one-off values with no consistent step ratio.
-- **Restyle fix**: Replace arbitrary sizes with a tokenized scale such as 8/13/21/34/55 and 16/26/42/68, rounded to your grid. (On conflict the playbook wins: see B-15/B-17, base-unit multiples.)
+- **Restyle fix**: Replace arbitrary sizes with a tokenized scale such as 8/13/21/34/55 and 16/26/42/68, rounded to your grid. (On conflict the playbook wins: see B-15, base-unit multiples.)
 - **Severity**: medium ; **Tags**: spacing, typography, hierarchy
 
 ### W2-09 Split layouts roughly 62% / 38%  (src: golden-ratio)

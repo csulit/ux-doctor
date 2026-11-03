@@ -221,8 +221,8 @@
   "id": "A-12",
   "title": "Darker/stronger text for the title, lighter for supporting text",
   "source": "playbook",
-  "pages": "11",
-  "citation": "p.11",
+  "pages": "11, reaffirmed p.96-97",
+  "citation": "p.11, reaffirmed p.96-97",
   "section": "Visual hierarchy (p.7-12)",
   "skill": "ux-hierarchy-clarity",
   "severity": "high",
@@ -235,8 +235,11 @@
   "rule": "Darker colours draw more attention and signal importance; lighter colours recede. Title should be dark black, supporting paragraph grey – not the reverse.",
   "why": "A grey title with black body undermines the title's importance.",
   "doDont": "Bad (thumbs-down, left card): title \"Personal Injury Law\" in grey, paragraph (\"Attorneys in this field handle cases related to accidents, injuries, and wrongful deaths, seeking compensation for victims\") in dark black. Good (right card): title in near-black, paragraph in mid-grey. Both cards have two small round icons (scales, gavel) on top.",
-  "auditCheck": "Compare contrast ratio/lightness of heading vs body in the same block: heading contrast must be ≥ body contrast (heading colour darker than body on light themes; lighter on dark themes).",
-  "restyleFix": "Heading → text-primary (near-black); body → text-secondary (grey, still accessible)."
+  "auditCheck": "Compare contrast ratio/lightness of heading vs body in the same block: heading contrast must be ≥ body contrast (heading colour darker than body on light themes; lighter on dark themes). The same colour for heading and paragraph is a violation; the paragraph must still reach 4.5:1.",
+  "restyleFix": "Heading → text-primary (near-black); body → text-secondary (grey, still accessible).",
+  "aliases": [
+   "F-14"
+  ]
  },
  {
   "id": "A-13",
@@ -465,8 +468,8 @@
   "id": "A-24",
   "title": "Left-align most text, especially long text and lists",
   "source": "playbook",
-  "pages": "18",
-  "citation": "p.18",
+  "pages": "18, reaffirmed p.94, p.97",
+  "citation": "p.18, reaffirmed p.94, p.97",
   "section": "Alignment (p.17-19)",
   "skill": "ux-layout-spacing",
   "severity": "medium",
@@ -474,11 +477,14 @@
    "alignment",
    "typography"
   ],
-  "rule": "Left alignment is the go-to for most text; it creates a clean left edge that's easy to read, especially for paragraphs and lists.",
+  "rule": "Left alignment is the go-to for most text; it creates a clean left edge that's easy to read, especially for paragraphs and lists. It matches left-to-right reading with a consistent start for every line; centre suits short titles or text meant to grab attention (A-26), right/centre decorative or artistic elements (p.94).",
   "why": "Clean, consistent starting edge speeds reading.",
-  "doDont": "Text guidance only.",
-  "auditCheck": "Paragraphs/lists with `text-align: center` or right (in LTR).",
-  "restyleFix": "Set `text-align: left` (`text-left`) for body text and lists."
+  "doDont": "Dark navy \"The Critical Role of Sleep…\" card twice (p.94). Bad: heading and paragraph centred (\"Text alignment: Center\"). Good: heading and paragraph left-aligned (\"Text alignment: Left\").",
+  "auditCheck": "`text-align: center|right` (Tailwind `text-center`/`text-right`) in LTR on multi-line paragraphs (>2-3 lines (inference)), lists or long descriptions → violation. Centre on short titles/hero lines is fine.",
+  "restyleFix": "Set `text-align: left` (`text-left`) for body text and lists.",
+  "aliases": [
+   "F-10"
+  ]
  },
  {
   "id": "A-25",
@@ -847,8 +853,8 @@
   "id": "B-15",
   "title": "Establish a spacing and sizing system on a base unit",
   "source": "playbook",
-  "pages": "28",
-  "citation": "p.28",
+  "pages": "28, reaffirmed p.29",
+  "citation": "p.28, reaffirmed p.29",
   "section": "Whitespace (p.25-29)",
   "skill": "ux-layout-spacing",
   "severity": "high",
@@ -857,11 +863,14 @@
    "craft",
    "layout"
   ],
-  "rule": "Choose a base unit and work in multiples of it. Example: multiples of 4 → 4px, 8px, 16px, 24px, 32px, and so on. Systems based on multiples of 2, 4 or 6 are fine.",
+  "rule": "Choose a base unit and work in multiples of it. Example: multiples of 4 → 4px, 8px, 16px, 24px, 32px, and so on. Systems based on multiples of 2, 4 or 6 are fine. Don't use arbitrary, non-multiplicative values such as 31px or 19px (p.29): they disrupt rhythm and are hard to remember and reapply.",
   "why": "A standardised system gives consistent look and feel, speeds up design adjustments while keeping everything proportional, and reduces cognitive load because users' eyes/brain don't have to adjust to new spacing rules.",
   "doDont": "Contact form \"Let's level up together\" (subtitle \"You can reach us anytime via hello@uxpeak.com\", fields First name / Email / Message, checkbox \"You agree to our friendly privacy policy.\", \"Send message\" button). **Do** (thumbs-up): measured gaps annotated **16, 40, 8, 24, 24, 24, 40** (title→subtitle 16; subtitle→first field 40; label→input 8; between fields 24; between message and checkbox 24; checkbox→button 40) – all multiples of 8/4, with the same value reused for the same relationship. **Don't**: gaps **7, 19, 8, 19, 19, 21, 19** – arbitrary values with inconsistent relationships. (from visual; PDF text lists 16, 40, 40, 8, 24, 24, 24 and 7, 19, 19, 19, 19, 8, 21)",
-  "auditCheck": "Extract all margin/padding/gap values; flag any not on the chosen grid (e.g. not multiples of 4). In Tailwind, flag arbitrary values like `p-[19px]`, `mt-[7px]`; in Figma flag spacing not from tokens.",
-  "restyleFix": "Snap all spacing to the nearest scale step (4/8/16/24/32/40…); define spacing tokens; reuse one value per relationship type."
+  "auditCheck": "Extract all margin/padding/gap values; flag any not on the chosen grid (e.g. not multiples of 4). In Tailwind, flag arbitrary values like `p-[19px]`, `mt-[7px]`; in Figma flag spacing not from tokens; typical offenders are 7, 19, 21, 31px.",
+  "restyleFix": "Snap all spacing to the nearest scale step (4/8/16/24/32/40…); define spacing tokens; reuse one value per relationship type (e.g. 19→16 or 20/24, 31→32, 7→8).",
+  "aliases": [
+   "B-17"
+  ]
  },
  {
   "id": "B-16",
@@ -882,25 +891,6 @@
   "doDont": "See B-15 (label→input always 8; fields apart 24; sections apart 40).",
   "auditCheck": "Is the gap within a group (e.g. label→input) always smaller than the gap between groups, and is the same value used everywhere for the same relationship?",
   "restyleFix": "Define tokens: e.g. intra-group 8px, between-field 24px, between-section 40px (values from visual of the form) and apply consistently."
- },
- {
-  "id": "B-17",
-  "title": "Avoid random, non-multiplicative spacing numbers",
-  "source": "playbook",
-  "pages": "29",
-  "citation": "p.29",
-  "section": "Whitespace (p.25-29)",
-  "skill": "ux-layout-spacing",
-  "severity": "medium",
-  "tags": [
-   "spacing",
-   "craft"
-  ],
-  "rule": "Don't use arbitrary spacing such as 31px or 19px.",
-  "why": "Odd non-multiplicative numbers throw off harmony, disrupt rhythm, make the interface feel disjointed, and are harder to remember and reapply consistently.",
-  "doDont": "Bad form from B-15 uses 7, 19, 21 etc.",
-  "auditCheck": "Search CSS/Tailwind/Figma for spacing values like 7, 19, 21, 31px (not divisible by the base unit 4).",
-  "restyleFix": "Round to the nearest scale value (e.g. 19→16 or 20/24, 31→32, 7→8)."
  },
  {
   "id": "B-18",
@@ -1008,8 +998,8 @@
   "id": "B-23",
   "title": "Design form layout after the final output",
   "source": "playbook",
-  "pages": "34",
-  "citation": "p.34",
+  "pages": "34, reaffirmed p.35",
+  "citation": "p.34, reaffirmed p.35",
   "section": "Layout (p.30-34)",
   "skill": "ux-layout-spacing",
   "severity": "low",
@@ -1018,31 +1008,14 @@
    "layout",
    "interaction-cost"
   ],
-  "rule": "Take cues from how the submitted information will be displayed or used: structure and order the form fields/groups to mirror the final output.",
+  "rule": "Take cues from how the submitted information will be displayed or used: structure and order the form fields/groups to mirror the final output. For content users create (e.g. a marketplace listing), don't default to a linear stack of labelled fields: arrange the form the way the result will look (p.35).",
   "why": "Forms are critical touchpoints that are often dull; aligning them with the final result makes the process more interesting, intuitive and aligned with the user's goals.",
-  "doDont": "\"Final display\" shows a classified-listing card: Image on top; \"Toyota Rav4 Hybrid\" + \"$32,034\" (Product & Price); description (\"A 2023 Toyota RAV4 Hybrid, an eco-friendly, sleek SUV…\") with \"Posted 1 day ago\"; Location row \"Manchester, UK\" with \"View map\" link; Tags/Categories chips (Hybrid car, Toyota, SUV). Labels with arrows map each region (Image, Product & Price, Description, Location, Tags/Categories) – i.e. the form should have those sections in that order/shape. The corresponding form is on the next page (outside this range).",
-  "auditCheck": "Does the order and grouping of form fields match how the data will be shown (e.g. image upload first, title+price together, description, location, tags)? Flag forms whose structure is arbitrary relative to the output.",
-  "restyleFix": "Reorder/group fields to mirror the final card; place related fields side by side as they appear in the output (e.g. name and price on one row)."
- },
- {
-  "id": "C-01",
-  "title": "Lay out creation forms to mirror the final result",
-  "source": "playbook",
-  "pages": "35",
-  "citation": "p.35",
-  "section": "Forms: mirror the final output (p.35)",
-  "skill": "ux-ui-patterns",
-  "severity": "low",
-  "tags": [
-   "forms",
-   "layout",
-   "interaction-cost"
-  ],
-  "rule": "When users create content that will be displayed later (e.g. a marketplace listing), do not default to a standard linear stack of labelled fields. Arrange the form fields the way the information will appear on the final page (e.g. image area on top, item name and price side by side, then description, location, tag chip).",
-  "why": "Gives users a sense of how the listing will look and function, making form-filling more relatable and engaging.",
-  "doDont": "Don't (thumbs-down): a plain white card titled \"Create new listing\" with a vertical list of label + empty input pairs (Item, Price, Description, Categories, Location, Images with a \"Browse\" button). Do (thumbs-up, from visual): a card that looks like the finished listing, with a large grey image placeholder (\"Add an image\") at top, \"Item\" (\"What are you selling?\") and \"Price\" (\"$0\") in one row separated by a divider, then \"Description\" (\"Describe what you're selling in more detail ...\"), \"Location\" (\"Enter your address\"), and an \"Add tag +\" pill at the bottom. Fields are inline-placeholder style, separated by thin dividers.",
-  "auditCheck": "Is a \"create/list/post\" form a generic linear label-over-input stack even though a known output layout (listing, profile, card, post) exists? Does field order/grouping differ from the order in which the data is shown on the result page?",
-  "restyleFix": "Rebuild the form as an editable preview of the output: image slot at the top, title/price in one row, description below, location, tags; use placeholder text as labels where appropriate and thin dividers instead of boxed inputs."
+  "doDont": "\"Final display\" shows a classified-listing card: Image on top; \"Toyota Rav4 Hybrid\" + \"$32,034\" (Product & Price); description (\"A 2023 Toyota RAV4 Hybrid, an eco-friendly, sleek SUV…\") with \"Posted 1 day ago\"; Location row \"Manchester, UK\" with \"View map\" link; Tags/Categories chips (Hybrid car, Toyota, SUV). Labels with arrows map each region (Image, Product & Price, Description, Location, Tags/Categories) – i.e. the form should have those sections in that order/shape. The corresponding form (p.35): Don't, a plain \"Create new listing\" card with a vertical list of label + empty input pairs (Item, Price, Description, Categories, Location, Images with \"Browse\"). Do (from visual), a card that looks like the finished listing: large grey image placeholder (\"Add an image\") at top, \"Item\" and \"Price\" in one row split by a divider, then Description, Location and an \"Add tag +\" pill, with inline-placeholder fields separated by thin dividers.",
+  "auditCheck": "Does the order and grouping of form fields match how the data will be shown (e.g. image upload first, title+price together, description, location, tags)? Flag forms whose structure is arbitrary relative to the output, and \"create/list/post\" forms built as a generic label-over-input stack although a known output layout (listing, profile, card, post) exists.",
+  "restyleFix": "Reorder/group fields to mirror the final card; place related fields side by side as they appear in the output (e.g. name and price on one row). For creation forms, rebuild as an editable preview of the output: image slot on top, title/price in one row, description, location, tags, with thin dividers instead of boxed inputs.",
+  "aliases": [
+   "C-01"
+  ]
  },
  {
   "id": "C-02",
@@ -1068,8 +1041,8 @@
   "id": "C-03",
   "title": "Use colour harmony – don't overuse a single colour",
   "source": "playbook",
-  "pages": "36",
-  "citation": "p.36",
+  "pages": "36, reaffirmed p.37",
+  "citation": "p.36, reaffirmed p.37",
   "section": "Balance and harmony (p.36-37)",
   "skill": "ux-layout-spacing",
   "severity": "medium",
@@ -1079,9 +1052,12 @@
   ],
   "rule": "Overusing one colour makes a design feel monotonous or overwhelming. Use complementary or analogous colours to bring variation and emotional balance.",
   "why": "Variation creates emotional balance; a single colour everywhere is monotonous/overwhelming.",
-  "doDont": "See C-06 (kiwi example).",
-  "auditCheck": "Is one hue used for image background, CTA and small accents all at once? Is the palette limited to a single hue with no complementary/analogous partner?",
-  "restyleFix": "Reserve the strong accent for the primary action; use a softer/neutral or analogous/complementary tint for backgrounds and decorative elements."
+  "doDont": "Kiwi-ice-cream card (p.37). Don't (from visual): saturated green circle behind the image, green decorative bits and a big green CTA. Do (from visual): image on a pale peach/cream circle with small pink/green confetti shapes; only the \"Get now\" button carries the green (lime) accent.",
+  "auditCheck": "Is one hue used for image background, CTA and small accents all at once? Is the palette limited to a single hue with no complementary/analogous partner? Count surfaces sharing the same saturated accent within one component; flag the accent on both a large background shape and the CTA.",
+  "restyleFix": "Reserve the strong accent for the primary action; use a softer/neutral or analogous/complementary tint for backgrounds and decorative elements.",
+  "aliases": [
+   "C-06"
+  ]
  },
  {
   "id": "C-04",
@@ -1123,25 +1099,6 @@
   "doDont": "Don't (from visual): kiwi-ice-cream card with a very large circle image, tiny description and rating text, and a full-card-width tall pill \"Get now\" button. Do (from visual): the image is smaller, the heading stays about the same size, the description and rating text are larger and more readable (the description grows relative to the heading), the rating row sits under it and the \"Get now\" button is a small, compact pill (not full width), the card is shorter.",
   "auditCheck": "Is the CTA full-width/very tall on a content card when it is not a mobile footer bar? Is the hero image taking the dominant share of card area while the description and rating text are tiny (compare description/rating size to the heading and the image)? Does the secondary content get visually lost?",
   "restyleFix": "Reduce image diameter/height, shrink CTA to content-width pill with normal padding, bump the description and rating text size (the heading can stay about the same) so the card reads heading → description → rating → CTA."
- },
- {
-  "id": "C-06",
-  "title": "Don't paint everything the same colour (single-colour overuse)",
-  "source": "playbook",
-  "pages": "37",
-  "citation": "p.37",
-  "section": "Balance and harmony (p.36-37)",
-  "skill": "ux-layout-spacing",
-  "severity": "medium",
-  "tags": [
-   "color",
-   "hierarchy"
-  ],
-  "rule": "Don't use one colour (e.g. green) for the image background, the CTA and smaller elements simultaneously; distribute colours more evenly.",
-  "why": "Overuse of a single colour makes the interface feel monotonous and a bit overwhelming.",
-  "doDont": "Don't (from visual): saturated green circle behind the image, green decorative bits and a big green CTA. Do (from visual): image sits on a pale peach/cream circle with small pink/green confetti shapes; only the \"Get now\" button carries the green (lime) accent. Colours more even, not leaning on one hue.",
-  "auditCheck": "Count surfaces/elements sharing the same saturated accent hue within one component; flag if the accent is on both a large background shape and the CTA (and other small items).",
-  "restyleFix": "Replace large saturated backgrounds with a light neutral/complementary tint; keep the saturated accent for the CTA only."
  },
  {
   "id": "C-07",
@@ -1508,29 +1465,12 @@
   ],
   "rule": "Match shadow colour to the background hue instead of using neutral grey. Example on a light purple background: grey shadow (X 0, Y 19, Blur 48, #C7C7C7) vs purple-tinted shadow (X 0, Y 19, Blur 56, #CFC9DD).",
   "why": "Colour matters as much as softness/depth; grey looks like a safe bet but clashes with the purple background, breaking visual harmony and feeling jarring. A tinted shadow blends seamlessly and makes the design more cohesive.",
-  "doDont": "Don't: \"Be You, Only Better\" card (woman with purple-lit image, yellow \"Get flawless today\" button) on pale purple page with a grey #C7C7C7 shadow. Do: same card with a purple-tinted #CFC9DD shadow and slightly larger blur (56 vs 48). Described as a \"pro tip many junior designers don't know\".",
-  "auditCheck": "On any non-neutral page/section background, is the shadow colour a neutral grey/black (R=G=B) rather than a darker, low-saturation version of the background hue? Compare shadow hue with background hue.",
-  "restyleFix": "Set shadow colour to a desaturated mid-tone of the background hue (e.g. #CFC9DD for a light purple surface) and keep it soft; optionally widen blur a few px."
- },
- {
-  "id": "D-07",
-  "title": "Never use pure grey or black shadows on coloured backgrounds (yellow example)",
-  "source": "playbook",
-  "pages": "54",
-  "citation": "p.54",
-  "section": "Shadow quality and colour (p.52-54)",
-  "skill": "ux-depth-craft",
-  "severity": "medium",
-  "tags": [
-   "shadows",
-   "color",
-   "depth"
-  ],
-  "rule": "Once you know the tinting trick, don't use pure grey/black shadows on coloured backgrounds. Second worked example on a pale yellow/cream background: grey shadow (X 0, Y 20, Blur 60, #D8D8D8) vs warm-tinted shadow (X 0, Y 12, Blur 48, #E3D5B2).",
-  "why": "Creates more coherent and engaging UIs; an easy but impactful improvement.",
-  "doDont": "Don't: \"Only natural ingredients\" card (amber bottles-and-arch image, yellow \"Learn more\" button) on a cream background with neutral grey shadow, which looks dirty against the warm tone. Do: same card with a warm beige shadow (#E3D5B2) that sits naturally in the cream background.",
-  "auditCheck": "Any shadow with equal R/G/B channels (grey/black, e.g. rgba(0,0,0,x)) over a tinted section background.",
-  "restyleFix": "Swap neutral shadow for a warm/hue-matched tint (e.g. #E3D5B2 on cream) at similar softness; note the tinted version also used smaller Y (12 vs 20) and blur (48 vs 60)."
+  "doDont": "Don't: \"Be You, Only Better\" card (woman with purple-lit image, yellow \"Get flawless today\" button) on pale purple page with a grey #C7C7C7 shadow. Do: same card with a purple-tinted #CFC9DD shadow and slightly larger blur (56 vs 48). Described as a \"pro tip many junior designers don't know\". Second example (p.54): \"Only natural ingredients\" card on a cream background; the neutral #D8D8D8 shadow (Y 20, blur 60) looks dirty, a warm beige #E3D5B2 shadow (Y 12, blur 48) sits naturally.",
+  "auditCheck": "On any non-neutral page/section background, is the shadow colour a neutral grey/black (R=G=B) rather than a darker, low-saturation version of the background hue? Compare shadow hue with background hue; any shadow with equal R/G/B channels (e.g. rgba(0,0,0,x)) over a tinted section background is a violation.",
+  "restyleFix": "Set shadow colour to a desaturated mid-tone of the background hue (e.g. #CFC9DD for a light purple surface) and keep it soft; optionally widen blur a few px; on warm backgrounds use a warm tint (e.g. #E3D5B2 on cream).",
+  "aliases": [
+   "D-07"
+  ]
  },
  {
   "id": "D-08",
@@ -2121,8 +2061,8 @@
   "id": "E-19",
   "title": "Use at most 2 different fonts per UI",
   "source": "playbook",
-  "pages": "75-76",
-  "citation": "p.75-76",
+  "pages": "75-76, reaffirmed p.96-97",
+  "citation": "p.75-76, reaffirmed p.96-97",
   "section": "Typography (p.72-84)",
   "skill": "ux-typography",
   "severity": "high",
@@ -2131,11 +2071,14 @@
    "craft",
    "hierarchy"
   ],
-  "rule": "Never use more than two font families. More than two looks cluttered, confusing and off-brand.",
+  "rule": "Never use more than two font families. More than two looks cluttered, confusing and off-brand. Best practice (p.96-97): one family with different weights and sizes; experienced designers can pair two (e.g. Playfair Display headings + Roboto paragraphs). Avoid fonts that compromise readability.",
   "why": "Messy and harder to look at; one or two fonts feel clean.",
   "doDont": "Don't: music app screen with four families – Poppins (title) + Open Sans (subtitle), Times (track titles), Telex (button, UPPERCASE \"DISCOVER MORE\"). Do: same screen all Inter (\"Music\", \"Special edition\", track titles, \"Discover more\").",
-  "auditCheck": "Count distinct `font-family` values (excluding icon/mono fallbacks) in CSS/Figma text styles: > 2 → flag.",
-  "restyleFix": "Consolidate to 1 (ideally) or 2 families; remap all text styles."
+  "auditCheck": "Count distinct `font-family` values (excluding icon/mono fallbacks) in CSS/Figma text styles: > 2 → flag. Also flag a display/script font used for body text or UI labels.",
+  "restyleFix": "Consolidate to 1 (ideally) or 2 families; remap all text styles.",
+  "aliases": [
+   "F-18"
+  ]
  },
  {
   "id": "E-20",
@@ -2314,8 +2257,8 @@
   "id": "E-29",
   "title": "Break long paragraphs into shorter chunks",
   "source": "playbook",
-  "pages": "81",
-  "citation": "p.81",
+  "pages": "81, reaffirmed p.123",
+  "citation": "p.81, reaffirmed p.123",
   "section": "Typography (p.72-84)",
   "skill": "ux-typography",
   "severity": "medium",
@@ -2326,9 +2269,12 @@
   ],
   "rule": "In content-heavy sections use shorter paragraphs; split long blocks into bite-sized chunks with visible space between them.",
   "why": "Long blocks overwhelm users, hard to absorb and stay engaged; breaks make content easier to scan/digest, give natural stopping points, highlight crucial info, make reading more interactive.",
-  "doDont": "Don't: \"GreenMeal\" card with one dense ~9-line paragraph block. Do: same text split into three short paragraphs (~3-4 lines each) with a blank gap (paragraph spacing) between them.",
-  "auditCheck": "Paragraphs longer than ~5-6 lines (≈ 80-100 words – inferred) without breaks; no margin between paragraphs.",
-  "restyleFix": "Split at sentence/idea boundaries; add paragraph spacing (e.g. ~0.75-1em, inferred)."
+  "doDont": "Don't: \"GreenMeal\" card with one dense ~9-line paragraph block. Do: same text split into three short paragraphs (~3-4 lines each) with a blank gap (paragraph spacing) between them. Product pages (p.123): don't present product information as one dense paragraph, e.g. the UltraClean Vacuum Cleaner card with a ~15-line block of small grey text where a few bold phrases are the only scan aid; users scan rather than read word for word (cited: Nielsen Norman Group).",
+  "auditCheck": "Paragraphs longer than ~5-6 lines (≈ 80-100 words – inferred) without breaks; no margin between paragraphs. In product/description areas also flag copy with no headings, lists or icons, where bolding is the only scan aid.",
+  "restyleFix": "Split at sentence/idea boundaries; add paragraph spacing (e.g. ~0.75-1em, inferred). On product pages break the block into a short intro, a labelled list of key features and a closing sentence (G-14).",
+  "aliases": [
+   "G-13"
+  ]
  },
  {
   "id": "E-30",
@@ -2355,8 +2301,8 @@
   "id": "E-31",
   "title": "Avoid pure black (#000000) text on white, and pure white (#FFFFFF) on dark",
   "source": "playbook",
-  "pages": "83",
-  "citation": "p.83",
+  "pages": "83, reaffirmed p.96",
+  "citation": "p.83, reaffirmed p.96",
   "section": "Typography (p.72-84)",
   "skill": "ux-typography",
   "severity": "medium",
@@ -2368,9 +2314,12 @@
   ],
   "rule": "Don't use #000000 text on white backgrounds or #FFFFFF text on dark backgrounds. Use off-black/dark grey for headings and a lighter grey for body text.",
   "why": "Pure extremes are hard on the eyes and disrupt visual harmony; a softer scheme is soothing, sophisticated and balanced; dark grey headings say \"this is significant\" without screaming; lighter grey text stays readable without overwhelming.",
-  "doDont": "Don't: dark card Heading #FFFFFF / Body #FFFFFF on black; light card Heading #000000 / Body #000000 on white. Do: see E-32.",
+  "doDont": "Don't: dark card Heading #FFFFFF / Body #FFFFFF on black; light card Heading #000000 / Body #000000 on white. Do: see E-32. The p.96 checklist repeats it: the p.95 good card uses #1B000D for headings and #5E5458 for paragraphs instead of #000000 for both.",
   "auditCheck": "Grep CSS/tokens for `color: #000`, `#000000`, `black`, `#fff`/`#ffffff`/`white` used as text colour on respective extremes (`text-black`, `text-white` on `bg-black`/`bg-white`/very dark).",
-  "restyleFix": "Replace with off-black/dark-grey tokens and lighter grey body (E-32 values)."
+  "restyleFix": "Replace with off-black/dark-grey tokens and lighter grey body (E-32 values, or #1B000D heading / #5E5458 body from p.95) that still passes 4.5:1.",
+  "aliases": [
+   "F-13"
+  ]
  },
  {
   "id": "E-32",
@@ -2398,8 +2347,8 @@
   "id": "E-33",
   "title": "Use heavier weights for headings and lighter for body",
   "source": "playbook",
-  "pages": "84",
-  "citation": "p.84",
+  "pages": "84, reaffirmed p.96-97",
+  "citation": "p.84, reaffirmed p.96-97",
   "section": "Typography (p.72-84)",
   "skill": "ux-typography",
   "severity": "high",
@@ -2410,8 +2359,11 @@
   "rule": "Headings: bold, semibold or medium; paragraphs: regular, sometimes light. Don't use the same weight for heading and body.",
   "why": "Weight adds visual interest and tells users what is most important; thin body weights stay readable and don't compete with headings.",
   "doDont": "Don't: card \"The canine connection\" with heading Regular and body Regular – hard to tell what's important. Do: heading Bold, body Regular – clear what to focus on and what to skim.",
-  "auditCheck": "Compare `font-weight` of headings vs body: equal (e.g. 400/400) → flag. Headings should be ≥500 (medium/semibold/bold), body 300-400.",
-  "restyleFix": "Set headings to 500-700 and body to 400 (or 300)."
+  "auditCheck": "Compare `font-weight` of headings vs body: equal (e.g. 400/400) → flag. Headings should be ≥500 (medium/semibold/bold), body 300-400. Heading weight ≤ body weight is a violation unless the heading is clearly larger than the body (F-01); body weight < 400 → see F-03.",
+  "restyleFix": "Set headings to 500-700 and body to 400 (or 300).",
+  "aliases": [
+   "F-15"
+  ]
  },
  {
   "id": "F-01",
@@ -2569,7 +2521,10 @@
   "why": "Tight headings look compact and impactful (\"this is important\"); open paragraphs are inviting and easier to read; creates balanced visual flow and easier scanning.",
   "doDont": "\"Unveiling the wonders…\" card. Bad: heading Line-height 160% and paragraph Line-height 120% (inverted: airy heading, cramped body). Good: heading 120%, paragraph 160%.",
   "auditCheck": "Compare the computed heading line-height ratio with the paragraph ratio of the same context. Violation = heading line-height ≥ paragraph line-height (playbook: never bigger), or heading lines visibly colliding/clipped (inference). The heading ratio shrinks as size grows (playbook: 120% in the card example, ~1.3 for a 36px heading), so a fixed \"> 1.3\" cut-off is not a failure test: large display type (≥ ~56px) at 1.0–1.15 is not a violation by itself (inference), and a 1.3 multi-line heading beside 1.6 body passes.",
-  "restyleFix": "Headings `line-height` ≈ 1.2-1.3; paragraphs 1.5-1.6."
+  "restyleFix": "Headings `line-height` ≈ 1.2-1.3; paragraphs 1.5-1.6.",
+  "aliases": [
+   "F-16"
+  ]
  },
  {
   "id": "F-09",
@@ -2590,25 +2545,6 @@
   "doDont": "\"The Pawsome World of Dogs\" card with purple/lilac background. Bad: white/light text on lilac → \"WCAG AA: Fail, AAA: Fail\". Good: dark purple/near-black heading and body text on same lilac background → AA Pass, AAA Pass.",
   "auditCheck": "Contrast ratio of each text/background pair < 4.5:1 → fail (normal text). Check text over tinted/coloured card backgrounds and over images.",
   "restyleFix": "Darken text (or lighten/darken background) until ≥4.5:1; on mid-tone coloured backgrounds use dark text instead of white."
- },
- {
-  "id": "F-10",
-  "title": "Left-align text; reserve centre/right for special cases",
-  "source": "playbook",
-  "pages": "94, reaffirmed p.97",
-  "citation": "p.94, reaffirmed p.97",
-  "section": "Typography: size, line-height, contrast, alignment (p.88-94)",
-  "skill": "ux-typography",
-  "severity": "medium",
-  "tags": [
-   "typography",
-   "alignment"
-  ],
-  "rule": "Left-aligned text is generally best for readability, especially longer paragraphs, lists and long-form content (consistent starting point per line; matches left-to-right reading). Centre alignment is OK for titles or short text meant to grab attention, and right/centre for decorative or artistic elements.",
-  "why": "Consistent line start makes it easier to follow lines; ragged left edges slow reading.",
-  "doDont": "Dark navy \"The Critical Role of Sleep…\" card twice. Bad: heading and paragraph centred (\"Text alignment: Center\"). Good: heading and paragraph left-aligned (\"Text alignment: Left\").",
-  "auditCheck": "`text-align: center|right` (Tailwind `text-center`/`text-right`) on multi-line paragraphs (>2-3 lines (inference)), lists or long descriptions → violation. Centre on short titles/hero lines OK.",
-  "restyleFix": "Set `text-align: left` (`text-left`) on body paragraphs and multi-line copy; keep centre only for short titles."
  },
  {
   "id": "F-11",
@@ -2652,84 +2588,6 @@
   "restyleFix": "Switch the label to a near-black (e.g. #141B12) and increase to semibold, or darken the button fill."
  },
  {
-  "id": "F-13",
-  "title": "Don't use pure black (#000000) or pure white (#FFFFFF) for both headings and paragraphs",
-  "source": "playbook",
-  "pages": "96",
-  "citation": "p.96",
-  "section": "Typography: \"Things to avoid\" and \"Things to do\" checklists (p.96-97)",
-  "skill": "ux-typography",
-  "severity": "medium",
-  "tags": [
-   "typography",
-   "color",
-   "contrast"
-  ],
-  "rule": "Avoid pure #000000 / #FFFFFF as the colour of both headings and paragraphs. (Good card in p.95 uses #1B000D for headings and #5E5458 for paragraph instead of #000000 for both.)",
-  "why": "Using the same extreme colour everywhere removes differentiation between content types (and is the failing pattern in the p.95 bad card).",
-  "doDont": "Don't #000 text everywhere (bad card). Do slightly tinted near-black for headings, softer grey for paragraphs.",
-  "auditCheck": "Text colour == #000000 or #FFFFFF for both heading and body (`text-black`, `text-white` on both) → flag.",
-  "restyleFix": "Heading → near-black tint (e.g. #1B000D); body → softer dark grey (e.g. #5E5458) that still passes 4.5:1. On dark mode use off-white for headings and a dimmer light-grey for paragraphs (extension of rule, not stated)."
- },
- {
-  "id": "F-14",
-  "title": "Use darker colour for headings and lighter colour for paragraphs",
-  "source": "playbook",
-  "pages": "96-97",
-  "citation": "p.96-97",
-  "section": "Typography: \"Things to avoid\" and \"Things to do\" checklists (p.96-97)",
-  "skill": "ux-typography",
-  "severity": "medium",
-  "tags": [
-   "hierarchy",
-   "color",
-   "typography"
-  ],
-  "rule": "Differentiate content types: headings in darker colour, paragraphs in lighter colour (but still accessible). Avoid the same colour for headings and paragraphs.",
-  "why": "Guides the user's eye and distinguishes types of content.",
-  "doDont": "Do heading #1B000D vs paragraph #5E5458 (p.95). Don't same colour (#000000 both).",
-  "auditCheck": "Heading colour == paragraph colour → violation. Lightness gap should be visible while paragraph still ≥4.5:1.",
-  "restyleFix": "Introduce a secondary text token for paragraphs lighter than the heading token."
- },
- {
-  "id": "F-15",
-  "title": "Use thicker weights for headings and thinner weights for paragraphs",
-  "source": "playbook",
-  "pages": "96-97",
-  "citation": "p.96-97",
-  "section": "Typography: \"Things to avoid\" and \"Things to do\" checklists (p.96-97)",
-  "skill": "ux-typography",
-  "severity": "medium",
-  "tags": [
-   "typography",
-   "hierarchy"
-  ],
-  "rule": "Headings: bold, semibold or medium. Paragraphs: regular (sometimes light). Do not use the same weight for headings and paragraphs.",
-  "why": "Clearly distinguishes hierarchical elements.",
-  "doDont": "Do heading Bold / paragraph Regular (p.95 good card). Don't heading and paragraph at same weight (bad card heading Medium vs body Regular is the weak case; hierarchy relies on size).",
-  "auditCheck": "heading `font-weight` ≤ body `font-weight` → violation (see F-01 exception if the heading is clearly larger than body). Body weight < 400 → see F-03.",
-  "restyleFix": "Headings 500-700, body 400."
- },
- {
-  "id": "F-16",
-  "title": "Don't give headings a bigger line-height than paragraphs (checklist form)",
-  "source": "playbook",
-  "pages": "96-97",
-  "citation": "p.96-97",
-  "section": "Typography: \"Things to avoid\" and \"Things to do\" checklists (p.96-97)",
-  "skill": "ux-typography",
-  "severity": "medium",
-  "tags": [
-   "typography",
-   "spacing"
-  ],
-  "rule": "\"Things to avoid\": bigger line-height for headings than for paragraphs. \"Things to do\": smaller line-height for headings and larger for paragraphs for balanced visual flow and easier scanning. (Detail and numbers in F-08.)",
-  "why": "Balanced flow, easier scanning.",
-  "doDont": "Heading 120% / paragraph 160% good; heading 160-170% / paragraph 110-120% bad.",
-  "auditCheck": "heading LH ratio > paragraph LH ratio.",
-  "restyleFix": "See F-08."
- },
- {
   "id": "F-17",
   "title": "Use sans-serif typefaces for body copy",
   "source": "playbook",
@@ -2743,28 +2601,9 @@
   ],
   "rule": "Prefer sans-serif for body copy: Open Sans, Inter, Roboto are generally more readable than serifs such as Times New Roman or Georgia. Fonts can still define the brand, but readability comes first.",
   "why": "Readability.",
-  "doDont": "Do Open Sans / Inter / Roboto body. Don't Times New Roman / Georgia for body text. (Serif headings, e.g. Playfair Display, are acceptable per F-18.)",
+  "doDont": "Do Open Sans / Inter / Roboto body. Don't Times New Roman / Georgia for body text. (Serif headings, e.g. Playfair Display, are acceptable per E-19.)",
   "auditCheck": "Body `font-family` resolves to a serif (Times New Roman, Georgia, `font-serif`) → flag.",
   "restyleFix": "Switch body to Inter / Open Sans / Roboto; keep serif only for display headings if brand demands."
- },
- {
-  "id": "F-18",
-  "title": "Use no more than two fonts (ideally one family with weights and sizes)",
-  "source": "playbook",
-  "pages": "96-97",
-  "citation": "p.96-97",
-  "section": "Typography: \"Things to avoid\" and \"Things to do\" checklists (p.96-97)",
-  "skill": "ux-typography",
-  "severity": "medium",
-  "tags": [
-   "typography",
-   "craft"
-  ],
-  "rule": "Max two different fonts. Best practice: one font with different weights and sizes. Experienced designers can pair two, e.g. Playfair Display for headings + Roboto for paragraphs. Avoid fonts that compromise aesthetics or readability.",
-  "why": "Consistency, readability and aesthetics.",
-  "doDont": "Do one family (or a deliberate heading/body pair). Don't use 3+ typefaces or decorative fonts that hurt readability.",
-  "auditCheck": "Count distinct `font-family` values in the CSS/Figma styles: >2 → violation. Check any display/script font used for body or UI labels.",
-  "restyleFix": "Consolidate to a single family (e.g. Inter) using weight/size for hierarchy; or a max of one heading font + one body font."
  },
  {
   "id": "F-19",
@@ -3320,27 +3159,6 @@
   "doDont": "",
   "auditCheck": "In dialogs, is the destructive/confirm button left of the cancel button (in LTR locales)? In CSS: check the DOM/flex order of the footer buttons.",
   "restyleFix": "Reorder the footer to `[Cancel] [Delete]` (secondary first, primary last on the right). Note RTL locales would mirror this (inferred from the left-to-right rationale)."
- },
- {
-  "id": "G-13",
-  "title": "Avoid long, monolithic blocks of text",
-  "source": "playbook",
-  "pages": "123",
-  "citation": "p.123",
-  "section": "Long text on product pages (p.123-126)",
-  "skill": "ux-ui-patterns",
-  "severity": "medium",
-  "tags": [
-   "typography",
-   "layout",
-   "hierarchy",
-   "copy"
-  ],
-  "rule": "Don't present product information as one dense paragraph. Attention is scarce. Users scan rather than read word-for-word (cited: Nielsen Norman Group research). Bite-sized information is easier to process.",
-  "why": "A monolithic paragraph looks visually dull, makes reading laborious, overwhelms users and makes them bounce.",
-  "doDont": "Don't: the UltraClean Vacuum Cleaner card has the product image on the left, and on the right the title and one very long paragraph (approx. 15+ lines) of small grey text. Only a few phrases are emphasized in darker/bold (\"4.8-star customer rating\", \"HEPA filter\", \"cordless design\", \"conserving energy\"). It is hard to scan.",
-  "auditCheck": "Are there paragraphs longer than roughly 5-6 lines (inference) (the bad example runs about 15+ lines in a narrow column) in product/description areas? Does the description lack headings, lists or icons? Is bolding the only scan aid?",
-  "restyleFix": "Break the paragraph into a short intro, a labelled list of key features, and a closing sentence (see G-14)."
  },
  {
   "id": "G-14",
@@ -5834,7 +5652,7 @@
   "why": "One ratio gives gaps and hierarchy a common rhythm and removes guesswork.",
   "doDont": "Do derive scales from one base and ratio, rounded to usable pixels. Don't choose sizes ad hoc or force the ratio against an existing 8px grid.",
   "auditCheck": "Collect distinct font sizes and spacing values (`text-[..px]`, `gap-[..]`, `p-[..]`); flag many one-off values with no consistent step ratio.",
-  "restyleFix": "Replace arbitrary sizes with a tokenized scale such as 8/13/21/34/55 and 16/26/42/68, rounded to your grid. (On conflict the playbook wins: see B-15/B-17, base-unit multiples.)"
+  "restyleFix": "Replace arbitrary sizes with a tokenized scale such as 8/13/21/34/55 and 16/26/42/68, rounded to your grid. (On conflict the playbook wins: see B-15, base-unit multiples.)"
  },
  {
   "id": "W2-09",

@@ -33,7 +33,7 @@
 - p.26 (printed 25): sidebar conclusion + "Start with too much space" + customer-growth card (loose vs cramped, both bad) → B-13, B-14.
 - p.27 (printed 26): scale whitespace down gradually; loose (bad) vs balanced (good) card → B-14.
 - p.28 (printed 27): spacing/sizing system on base unit (multiples of 4); form with 16/40/8/24/24/24/40 vs 7/19/8/19/19/21/19 → B-15.
-- p.29 (printed 28): benefits of standardised system + Law of Proximity (8px related) + "Avoid random numbers" (31px, 19px) → B-16, B-17.
+- p.29 (printed 28): benefits of standardised system + Law of Proximity (8px related) + "Avoid random numbers" (31px, 19px) → B-15, B-16.
 - p.30 (printed 29): Layout intro, aesthetics + usability, pizza layout comparison (row with dividers vs single column) → B-18, B-19.
 - p.31 (printed 30): explanation of pizza layouts; "we eat with our eyes", premium perception, quick scanning → B-19, B-20.
 - p.32 (printed 31): "Getting the order right" – price-first/CTA-before-description vs image→name→description→price→CTA → B-21.
@@ -65,7 +65,7 @@
 - p.51 (printed 50): explanation of dropdown shadow; "Use shadows for elements over dynamic backgrounds" with map bad/good → D-03, D-04.
 - p.52 (printed 51): "Use soft shadows" – harsh #9F9F9F Y0 vs soft #E9E9E9 Y12 Blur 48 → D-05.
 - p.53 (printed 52): "Match your shadow color to the background" – purple bg grey #C7C7C7 vs tinted #CFC9DD → D-06.
-- p.54 (printed 53): explanation of tinted shadow, "never go back to pure grey/black"; yellow bg example #D8D8D8 vs #E3D5B2 → D-06, D-07.
+- p.54 (printed 53): explanation of tinted shadow, "never go back to pure grey/black"; yellow bg example #D8D8D8 vs #E3D5B2 → D-06.
 - p.55 (printed 54): "Define your shadow system" – intro + xs/sm/md/lg/xl/2xl swatches → D-08.
 - p.56 (printed 55): three shadow tiers (soft/medium/strong) and variations; start of "Creating depth through outlines and background colours" (light grey bg + white cards) → D-09, D-10, D-11.
 - p.57 (printed 56): dashboard bad (all-white flat) vs good (grey bg, white cards) → D-11.
@@ -111,10 +111,10 @@
 - p.91 — Bigger line-height: 1.5-1.6x, <1.2 cramped, >2 floating (F-07).
 - p.92 — Smaller LH for headings, larger for paragraphs: 120%/160%, 36px → 1.3x (F-08).
 - p.93 — Colour contrast ≥4.5:1; WebAIM, Coolors, Figma Contrast plugin (F-09).
-- p.94 — Text alignment: left for paragraphs, centre for short titles (F-10).
+- p.94 — Text alignment: left for paragraphs, centre for short titles (A-24, A-26).
 - p.95 — Typography test: full spec comparison of bad vs good Japan card (F-11, F-12).
-- p.96 — "Things to avoid" checklist (pure black/white, same colour/weight, bigger heading LH, bad contrast for aesthetics, <10px, extra thin weights, >2 fonts, compromising fonts) (F-13, F-14, F-15, F-16, F-18, F-02, F-03, F-06, F-09).
-- p.97 — "Things to do" checklist (darker headings/lighter paragraphs, weights, line-height, AA contrast, 16px, sans-serif body, ≤2 fonts, left align, paragraph spacing) (F-14, F-15, F-08, F-09, F-06, F-17, F-18, F-10, F-19).
+- p.96 — "Things to avoid" checklist (pure black/white, same colour/weight, bigger heading LH, bad contrast for aesthetics, <10px, extra thin weights, >2 fonts, compromising fonts) (E-31, A-12, E-33, F-08, E-19, F-02, F-03, F-06, F-09).
+- p.97 — "Things to do" checklist (darker headings/lighter paragraphs, weights, line-height, AA contrast, 16px, sans-serif body, ≤2 fonts, left align, paragraph spacing) (A-12, E-33, F-08, F-09, F-06, F-17, E-19, A-24, F-19).
 - p.98 — Interaction cost definition, three components (cognitive/physical/time), ideal zero vs zig-zag diagram (F-20, F-21, F-23).
 - p.99 — Items to minimise (reading, scrolling, searching, understanding, clicking, typing, waiting, remembering) + gesture-icon illustration (F-22).
 - p.100 — Strategy 1: keep related actions close, Fitts's Law, Spotify playback bar (F-24).
@@ -143,7 +143,7 @@
 - p120: Right colour for a delete CTA: green Delete (bad) vs red Delete + Cancel (good) (G-10).
 - p121: Give users the option to go back: the Cancel option as a safety net, and Cancel left / Delete right (G-11).
 - p122: Position buttons correctly: Delete-left/Cancel-right (bad) vs Cancel-left/Delete-right (good), with the LTR scanning rationale (G-12).
-- p123: Avoid long blocks of text. Bad example: one monolithic paragraph on the vacuum cleaner product card (G-13).
+- p123: Avoid long blocks of text. Bad example: one monolithic paragraph on the vacuum cleaner product card (E-29).
 - p124: Divide content into smaller sections with check icons and a star rating (G-14).
 - p125: Two-column feature layout, chunking and balance (G-15).
 - p126: Go beyond the brief: colour-coded feature icons and a "3X more powerful suction" comparison bar chart (G-16).

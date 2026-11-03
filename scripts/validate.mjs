@@ -28,13 +28,18 @@ for (const j of [".claude-plugin/plugin.json", ".claude-plugin/marketplace.json"
 const rules = JSON.parse(readFileSync(join(root, "skills/ux-doctor/references/rules.json"), "utf8"));
 const ids = new Set(rules.map((r) => r.id));
 if (ids.size !== rules.length) errs.push("duplicate rule IDs");
+{ const aliases = rules.flatMap((r) => (r.aliases || []).map((a) => [a, r.id]));
+  for (const [a, id] of aliases) if (ids.has(a)) errs.push(`${id}: alias ${a} is still a live rule ID`);
+  const seen = new Set(); for (const [a, id] of aliases) { if (seen.has(a)) errs.push(`${id}: alias ${a} is claimed twice`); seen.add(a); } }
 // every rule ID cited in SKILL.md/agents/commands and in hand-written references/*.md (finding-format.md, rule-tensions.md, ...) must exist;
 // only the generated reference files are skipped
 const GENERATED = new Set(["rules.md", "index.md", "numeric-cheatsheet.md", "rules.json"]);
 const handMd = (dir) => readdirSync(join(root, dir), { recursive: true }).map((n) => n.replaceAll("\\", "/")).filter((n) => /\.md$/.test(n) && !(/(^|\/)references\//.test(n) && GENERATED.has(n.split("/").pop()))); // "/" paths on Windows too
 for (const dir of ["skills", "commands", "agents"]) for (const f of handMd(dir)) {
   const txt = readFileSync(join(root, dir, f), "utf8");
-  for (const m of txt.matchAll(/\b([A-H]-\d{2}|W\d-\d{2})\b/g)) if (!ids.has(m[1]) && !/^[A-H]-00$/.test(m[1])) errs.push(`${dir}/${f}: unknown rule ${m[1]}`);
+  const aliasOf = new Map(rules.flatMap((r) => (r.aliases || []).map((a) => [a, r.id])));
+  const mapped = new Set([...txt.matchAll(/\b([A-H]-\d{2}|W\d-\d{2}) → ([A-H]-\d{2}|W\d-\d{2})\b/g)].filter((m) => aliasOf.get(m[1]) === m[2]).map((m) => m.index));
+  for (const m of txt.matchAll(/\b([A-H]-\d{2}|W\d-\d{2})\b/g)) if (!ids.has(m[1]) && !mapped.has(m.index) && !/^[A-H]-00$/.test(m[1])) errs.push(`${dir}/${f}: unknown rule ${m[1]}${aliasOf.has(m[1]) ? ` (merged into ${aliasOf.get(m[1])}; cite that, or write "${m[1]} → ${aliasOf.get(m[1])}")` : ""}`);
 }
 // duplicate-CTA guidance has one canonical home (ux-hierarchy-clarity); other files point to it instead of restating it
 {

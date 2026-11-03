@@ -15,6 +15,9 @@ All notable changes to this project are documented here. Format: [Keep a Changel
 - Community files: SECURITY, CONTRIBUTING, CODE_OF_CONDUCT, CODEOWNERS, issue and PR templates.
 
 ### Changed
+- Duplicate audit: 11 playbook rules that repeat another rule's check (the p.96-97 typography checklist and second worked examples) are folded into the rule they repeat, with the page added as "reaffirmed" and their unique details kept: F-13 → E-31, F-14 → A-12, F-15 → E-33, F-16 → F-08, F-18 → E-19, F-10 → A-24, G-13 → E-29, D-07 → D-06, C-01 → B-23, C-06 → C-03, B-17 → B-15. Playbook rules: 188 → 177 (433 in total). Cross-dimension pairs (A-12/F-14, A-24/F-10, E-29/G-13) no longer score one problem in two dimensions.
+- `rule.mjs` resolves a retired ID to the rule it was merged into (`(F-13 was merged into E-31)`; `mergedFrom` in `--json`), so older audit reports still look up; `npm run validate` rejects an alias that shadows a live ID and a retired ID cited in docs outside the `F-13 → E-31` form. Tests in `test/rule.test.mjs`.
+- `rule-tensions.md` gains a **Restatements: count once** table for web rules that repeat another rule (F-09/W1-12, E-10/W1-14/W2-24, G-09/W3-01, C-14/W2-20, W1-76/W3-26, W2-64/W1-38/W2-63, W3-27/W1-19, W1-04/W2-03, W3-40/W1-45), referenced from the finding format, the audit dedupe step and the auditor agent, and three contradictions found on the way: W1-20 vs W1-77/W3-26 (scaling hovered cards), C-18 vs D-01 (initial avatars vs photos), W3-29 vs W3-27/W1-19 (flat tones vs layered shadows).
 - Sharper audit checks from the same tips, marked `(inference)`: C-09 covers equivalent alternatives styled differently (sign-in providers, payment methods), F-25 covers over-fine or overlapping answer ranges, F-26 covers clamping secondary descriptions behind "Read more", A-07 covers a main action rendered as a text link.
 
 ### Fixed
