@@ -60,8 +60,8 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Rule**: "Checkout" = primary: vibrant green filled button, easy to spot. "Continue shopping" = secondary: same size as Checkout but grey (light grey fill, dark text) so it demands less attention. "Remove" = least prominent: only red/pink coloured text with underline, no filled background.
 - **Why**: Clear action ranking tells users what to do next.
 - **Do / Don't**: Good (thumbs-up, right): green filled Checkout, light-grey filled Continue shopping (same size), small underlined pink/red "Remove" text link under each item. Rows keep price at right; unchanged layout otherwise.
-- **Audit check**: Per action group: exactly one filled saturated button; secondary buttons use neutral/grey/outline; per-row destructive/repeated actions are text links (small, underlined or coloured text), not filled buttons.
-- **Restyle fix**: Primary = brand-coloured solid; secondary = neutral grey fill (same size is fine); tertiary/destructive-in-row = underlined text link in red.
+- **Audit check**: Per action group: exactly one filled saturated button; secondary buttons use neutral/grey/outline; per-row destructive/repeated actions are text links (small, underlined or coloured text), not filled buttons. Zero filled buttons is also a violation when the group has a main action: a primary or only action rendered as a small text link (e.g. an onboarding "Get started" link under the copy) is easy to miss (inference).
+- **Restyle fix**: Primary = brand-coloured solid; secondary = neutral grey fill (same size is fine); tertiary/destructive-in-row = underlined text link in red. Promote a link-styled main action to the filled primary button.
 - **Severity**: high ; **Tags**: [hierarchy, buttons, color]
 
 ### A-08 Don't let imagery overpower the key details  (p.9)

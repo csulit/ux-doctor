@@ -135,8 +135,8 @@
   "rule": "\"Checkout\" = primary: vibrant green filled button, easy to spot. \"Continue shopping\" = secondary: same size as Checkout but grey (light grey fill, dark text) so it demands less attention. \"Remove\" = least prominent: only red/pink coloured text with underline, no filled background.",
   "why": "Clear action ranking tells users what to do next.",
   "doDont": "Good (thumbs-up, right): green filled Checkout, light-grey filled Continue shopping (same size), small underlined pink/red \"Remove\" text link under each item. Rows keep price at right; unchanged layout otherwise.",
-  "auditCheck": "Per action group: exactly one filled saturated button; secondary buttons use neutral/grey/outline; per-row destructive/repeated actions are text links (small, underlined or coloured text), not filled buttons.",
-  "restyleFix": "Primary = brand-coloured solid; secondary = neutral grey fill (same size is fine); tertiary/destructive-in-row = underlined text link in red."
+  "auditCheck": "Per action group: exactly one filled saturated button; secondary buttons use neutral/grey/outline; per-row destructive/repeated actions are text links (small, underlined or coloured text), not filled buttons. Zero filled buttons is also a violation when the group has a main action: a primary or only action rendered as a small text link (e.g. an onboarding \"Get started\" link under the copy) is easy to miss (inference).",
+  "restyleFix": "Primary = brand-coloured solid; secondary = neutral grey fill (same size is fine); tertiary/destructive-in-row = underlined text link in red. Promote a link-styled main action to the filled primary button."
  },
  {
   "id": "A-08",
@@ -1202,8 +1202,8 @@
   "rule": "Don't use many different colours for primary, secondary and tertiary buttons (e.g. tinted to match each card's image). Use one colour scheme for all buttons: black (dark) for main actions and light grey for secondary ones.",
   "why": "Different button colours make users wonder whether each button has a unique function, divert attention from main content and can feel off-brand. One scheme looks organised/professional and makes it obvious what each button does.",
   "doDont": "Don't (from visual): each of the three cards has its own button pair coloured to match the illustration (orange for lion, brown for hippo, purple for elephant; light tint \"Learn more\" + solid \"Book now\"). Do (from visual): all three cards use the same pair – light grey \"Learn more\" and near-black/dark brown \"Book now\".",
-  "auditCheck": "Do equivalent buttons (same role) have different background colours across sibling cards/sections? Count distinct primary-button fills per screen (should be 1).",
-  "restyleFix": "Define one primary and one secondary button style (dark fill / light-grey fill) and apply to every card regardless of illustration colour."
+  "auditCheck": "Do equivalent buttons (same role) have different background colours across sibling cards/sections? Count distinct primary-button fills per screen (should be 1). Also check equivalent alternatives inside one group (inference): sign-in providers (\"Continue with Google\" outlined next to a brand-filled \"Continue with Facebook\"), payment methods or export formats styled differently make one option look recommended and can outrank the real primary.",
+  "restyleFix": "Define one primary and one secondary button style (dark fill / light-grey fill) and apply to every card regardless of illustration colour. Give equivalent alternatives one shared secondary style and carry each provider's identity in its logo only, within the provider's own branding guidelines (general practice)."
  },
  {
   "id": "C-10",
@@ -2894,8 +2894,8 @@
   "rule": "Decision time rises with the number and complexity of choices. Reduce options; highlight a smaller set of recommended/popular items.",
   "why": "Hick's Law — fewer choices → faster decisions.",
   "doDont": "Do (Uber Eats, from visual): curated horizontal carousels \"Popular near you\" and \"New on Uber Eats\" (4 cards each visible, \"See all\" links) instead of a list of hundreds of restaurants; filters (sort, price range, dietary) in a left sidebar. Don't dump hundreds of items/menu entries at once.",
-  "auditCheck": "Count of equal-weight options presented at once (nav items, cards, menu items, filters); is there a recommended/popular/curated subset?",
-  "restyleFix": "Group into curated sets, show top N with \"See all\", progressively disclose the rest."
+  "auditCheck": "Count of equal-weight options presented at once (nav items, cards, menu items, filters); is there a recommended/popular/curated subset? For single-choice answer lists (onboarding, survey, filter ranges), are the options finer than the product uses the answer for, e.g. six one-hour sleep ranges where four bands drive the same outcome (inference)? Do adjacent ranges share a boundary (\"6 to 7\", \"7 to 8\"), so a value fits two options (inference)?",
+  "restyleFix": "Group into curated sets, show top N with \"See all\", progressively disclose the rest. Merge answer options to the granularity the result is used at and write ranges that neither overlap nor leave gaps (\"Under 6 h\", \"6 h to under 7.5 h\", \"7.5 to 9 h\", \"Over 9 h\") (inference)."
  },
  {
   "id": "F-26",
@@ -2914,8 +2914,8 @@
   "rule": "People hold about seven items (give or take a couple) in working memory (George Miller). Organise information into meaningful, manageable chunks with clear headings.",
   "why": "Chunking reduces memory load.",
   "doDont": "Do (Airbnb listing, from visual): page split into separate boxed chunks — host summary (\"Entire home hosted by… 10 guests · 4 bedrooms · 5 beds · 4 bathrooms\"), highlights (Dedicated workspace, Unwind in the hot tub), description with \"Show more\", and \"What this place offers\" amenities grid with \"Show all 21 amenities\" — plus a sticky booking card (price £1,597/night, dates, guests, Reserve button, fee breakdown). Don't present a wall of text about the rental.",
-  "auditCheck": "Long undivided text blocks; lists/menus/nav with >~7 ungrouped items; missing section headings.",
-  "restyleFix": "Add headings, split into groups of ≲7, use \"Show more\"/\"Show all N\" to truncate long lists."
+  "auditCheck": "Long undivided text blocks; lists/menus/nav with >~7 ungrouped items; missing section headings; cards or panels whose full description is shown when a short summary would let users scan (inference).",
+  "restyleFix": "Add headings, split into groups of ≲7, use \"Show more\"/\"Show all N\" to truncate long lists; clamp secondary descriptions to a few lines with a \"Read more\" toggle that expands in place (inference). Don't truncate text users need to decide (price, terms, errors)."
  },
  {
   "id": "F-27",
@@ -8460,6 +8460,66 @@
   "doDont": "Do compare element boxes before and after the swap, or record layout-shift entries during load. Don't call the skeleton done because it looks similar.",
   "auditCheck": "With a browser tool, capture boxes of the elements below and beside the skeleton in both states, or read `PerformanceObserver` `layout-shift` entries during the swap; media without reserved space (`width`/`height` or `aspect-ratio`) is a likely cause (inference). Text with a different line count than the skeleton is another.",
   "restyleFix": "Reserve space for media with `aspect-ratio` or explicit dimensions, set `min-height` on the container for the loaded content, and match line counts; re-measure until the shift is gone."
+ },
+ {
+  "id": "W4-03",
+  "title": "Balance colour by area with the 60-30-10 split: dominant, secondary, accent",
+  "source": "web",
+  "pages": "clean-ui-tips",
+  "citation": "web:clean-ui-tips",
+  "section": "Web patterns: Colour proportion",
+  "skill": "ux-web-patterns",
+  "severity": "low",
+  "tags": [
+   "color",
+   "hierarchy",
+   "craft"
+  ],
+  "rule": "Split a screen's colour by area into three roles: a dominant base (page background, about 60%), a secondary tone for surfaces such as cards, inputs and bars (about 30%), and an accent kept to actions and active states (about 10%). The numbers are a balance heuristic, not a measurement target.",
+  "why": "One colour in charge, one supporting tier and a small accent give the screen a clear structure and make the accent easy to find; an even split leaves no colour in charge.",
+  "doDont": "Do give surfaces their own tone one step from the background and keep the accent on buttons, links and selection. Don't fill large areas with the accent or build the screen from two tones with no surface tier.",
+  "auditCheck": "On a screenshot, estimate the area share of background, surface and accent colours. Flag an accent covering clearly more than about 10% of the screen or sitting on non-interactive blocks, two roles at a near-equal share, or no distinct surface tier (cards and inputs indistinguishable from the page, see B-07) (inference).",
+  "restyleFix": "Assign tokens per role (background, surface, accent), move the accent off decorative areas onto actions and active states, and add a surface tone one step lighter or darker than the background. (On conflict the playbook wins: the 10% is a ceiling, E-03 keeps the primary colour on interactive elements and E-04 keeps the palette small.)"
+ },
+ {
+  "id": "W4-04",
+  "title": "Ask one question per step in questionnaires and onboarding",
+  "source": "web",
+  "pages": "clean-ui-tips",
+  "citation": "web:clean-ui-tips",
+  "section": "Web patterns: Multi-step questions",
+  "skill": "ux-web-patterns",
+  "severity": "medium",
+  "tags": [
+   "forms",
+   "interaction-cost",
+   "layout"
+  ],
+  "rule": "In a stepped questionnaire, quiz or onboarding flow, give each step one question and its own action. Stacking several independent questions (\"Q1 … Q2 …\") on one step of a stepper defeats the stepper.",
+  "why": "Each question is a separate decision; stacking them multiplies what users must parse at once and pushes the step's action below the fold.",
+  "doDont": "Do show one question, its options and a visible Continue/Submit per step, with the step count. Don't stack unrelated questions on one step, and don't split related data-entry fields (address, card details) into one-field steps (see W3-10, G-06).",
+  "auditCheck": "In multi-step flows, count independent questions per step (flag 2 or more); numbered \"Q1.\"/\"Q2.\" labels inside one step are a signal. On a mobile viewport, check that the step's primary action is visible without scrolling (inference).",
+  "restyleFix": "Drop questions whose answer the product doesn't use first (F-29), then split the rest into one question per step, update the step count and progress, and keep the action low in thumb reach (H-10)."
+ },
+ {
+  "id": "W4-05",
+  "title": "Move text repeated on every item into the group heading",
+  "source": "web",
+  "pages": "clean-ui-tips",
+  "citation": "web:clean-ui-tips",
+  "section": "Web patterns: Repeated content",
+  "skill": "ux-web-patterns",
+  "severity": "low",
+  "tags": [
+   "copy",
+   "hierarchy",
+   "layout"
+  ],
+  "rule": "When every item in a list, accordion or menu repeats the same text (\"Relaxation before bed / Exercise 1\", \"Relaxation before bed / Exercise 2\"), put the shared part in the group's heading once and leave only what differs on each item.",
+  "why": "Repeated text multiplies reading per item and buries the part that tells the items apart.",
+  "doDont": "Do title the group \"Relaxation before bed\" and label the items \"Exercise 1\", \"Exercise 2\", \"Exercise 3\". Don't repeat a shared prefix, suffix or unit on every row.",
+  "auditCheck": "Compare item labels in lists, accordions, tabs, menus and table columns; flag a shared run of two or more words, or the same unit, repeated on three or more sibling items (inference).",
+  "restyleFix": "Move the shared text into the heading, group label or column header (for label:value lists see A-14) and shorten each item to its distinguishing part."
  },
  {
   "id": "W5-01",

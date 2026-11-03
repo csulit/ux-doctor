@@ -241,6 +241,9 @@
 | W3-53 | Combine sticky positioning with scroll timelines | web:scroll-driven-animations | low | motion, navigation, craft |
 | W4-01 | Size the skeleton from the measured loaded UI | web:skeleton-measure | medium | states, layout, craft |
 | W4-02 | Prove the skeleton-to-content swap causes no layout shift | web:skeleton-measure | medium | states, layout, mobile |
+| W4-03 | Balance colour by area with the 60-30-10 split: dominant, secondary, accent | web:clean-ui-tips | low | color, hierarchy, craft |
+| W4-04 | Ask one question per step in questionnaires and onboarding | web:clean-ui-tips | medium | forms, interaction-cost, layout |
+| W4-05 | Move text repeated on every item into the group heading | web:clean-ui-tips | low | copy, hierarchy, layout |
 | W5-01 | Report AI-look tells as a cluster, never one by one | web:design-slop-score | low | craft, hierarchy |
 | W5-02 | Check whether the look was chosen for this product | web:ai-design-slop-review | low | craft, typography, color |
 | W5-03 | Keep motion for user actions, not a fade-up on every section | web:frontend-design-skill | low | motion, craft |

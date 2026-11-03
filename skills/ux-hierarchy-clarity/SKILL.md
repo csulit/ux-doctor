@@ -22,7 +22,7 @@ Read references/index.md first; open references/rules.md only for the rule IDs r
   - A fix that hides, removes or moves a control is not done until the vacated region has been viewed at both scroll states (top, and after the hero scrolls out) × 1440x900 and 390x844 × light and dark (where there is a theme toggle), with no new balance or alignment problem (C-02, A-21). `cta-scan` cannot scroll, so re-running it at the top cannot see this: use a browser tool to scroll past the hero CTA, then screenshot; without one, label the claim `not visually verified (scrolled state)` and never mark it fixed on that basis.
   - Related: A-07, W1-82, W3-17, W3-19.
 - A-06 (p.8) — buttons differ only in hue (red/blue/green) with same size/fill → colour does not rank; keep one saturated CTA, neutralise the rest.
-- A-07 (p.8) — per action group: exactly one filled saturated button; secondary = grey fill/outline, same size OK; repeated/destructive row actions = small underlined red text link.
+- A-07 (p.8) — per action group: exactly one filled saturated button; secondary = grey fill/outline, same size OK; repeated/destructive row actions = small underlined red text link. A main or only action rendered as a text link (zero filled buttons) is also a miss → promote it to the filled primary (inference).
 - A-10 (p.10) — name the top 1-3 items per screen; visual weight order must match → rank 1 gets largest/darkest/most contrasted treatment.
 - A-11 (p.10) — metric card value font-size must exceed label; good example roughly 2x+ (from visual; label ~12px muted, value large bold); format 2,121 not 2121.
 - A-12 (p.11) — heading must be at least as dark/contrasty as body (light theme); grey title over black body → heading text-primary, body text-secondary.

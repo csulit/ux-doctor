@@ -18,15 +18,16 @@ Use it to count effort in key flows, rank detours, and prescribe shorter paths.
 - F-20 — key task takes more clicks/keystrokes/scrolls/decisions than the shortest path → shorten the path, apply F-24..F-30. (high, p.98)
 - F-31 — small option set (colour, size, plan) hidden in a `<select>`/nested menu → show inline as swatches, segmented control or radio chips. Playbook baseline: 2 clicks + scroll for colour, 2 more + scroll for quantity = 5 clicks, 1 scroll (plus a short mouse move) to add two red chairs; improved: a colour change = 1 click + short mouse move. (high, p.107-108) The "≈ ≤5-6 options" cut-off for "small set" is an (inference), not stated in the playbook.
 - F-29 — avoidable steps, retyped saved data, no address lookup → merge/remove steps, `autocomplete` attributes, address typeahead, saved payment prefilled. (high, p.105)
-- F-25 — many equal-weight options shown at once (nav items, cards, filters, menu entries) → curate a "Popular"/recommended subset, top N + "See all", disclose the rest progressively. (high, p.101)
+- F-25 — many equal-weight options shown at once (nav items, cards, filters, menu entries) → curate a "Popular"/recommended subset, top N + "See all", disclose the rest progressively. Single-choice answer lists finer than the product uses, or ranges sharing a boundary ("6 to 7", "7 to 8") → merge to the needed granularity with non-overlapping ranges (inference). (high, p.101)
 - F-32 — colour/material/pattern choices as text only ("Green") → visual swatches with a ringed selected state. (p.108)
 - F-33 — quantity as `<select>` or stepper without direct entry → − / editable number / + stepper. (p.108)
 - F-34 — primary CTA far from the inputs it commits (far-right, detached) → place adjacent to the last input (right of or below the stepper). (p.108)
 - F-24 — action distant from its subject, tiny hit area, or behind another screen → anchor controls next to/persistently with the target, enlarge hit area (Fitts's Law). (p.100)
-- F-26 — wall of text or >~7 ungrouped items, no headings → chunk into groups of ≲7 (≈7±2 working memory), add headings, "Show more"/"Show all N". (p.101-102)
+- F-26 — wall of text or >~7 ungrouped items, no headings → chunk into groups of ≲7 (≈7±2 working memory), add headings, "Show more"/"Show all N"; clamp secondary card descriptions to a few lines with an in-place "Read more" (inference). (p.101-102)
 - F-28 — user must remember state from earlier screens/sessions, unlabeled or unconventional icons → "Continue/recent" shortcuts, visible progress, conventional labelled icons. (p.104)
 - F-30 — per-item repeated work with no bulk select, duplicate, templates or remembered choices → add multi-select + bulk actions, defaults, copy/duplicate. (p.106)
 - F-27 — auto-playing/animated banners, pop-ups on load, ads, competing visuals on task or reading screens → remove or defer; keep content and essential nav. (p.103)
+- W4-04 (web, medium) — several independent questions stacked on one step of a questionnaire/onboarding stepper, or the step's action below the fold → one question + visible action per step, after dropping unused questions (F-29); related data-entry fields stay together (W3-10). Label `source: web`.
 - F-22 — long reading before action, long scroll to CTA, search needed, heavy typing, load waits, info to remember → cut copy, surface info, shorten forms, keep context visible. (p.99)
 - G-01 — returning user cannot buy in one step → add a filled "Buy now" beside an outlined "Add to cart", backed by saved address and payment; which is primary is a deliberate business choice. (p.109)
 
