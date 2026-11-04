@@ -5,11 +5,12 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 ## Interaction cost: definition (p.98-99)
 
 ### F-20 Minimise interaction cost (mental + physical + time effort)  (p.98)
-- **Rule**: Interaction cost = the mental, physical and time effort a user must invest to reach their goal with a UI. A well-designed site/app reduces it. Ideal = zero (users find what they want immediately) but usually unfeasible because of feature breadth. Diagram: green straight arrow User → Goal (ideal) vs pink zig-zag path with many detours (high interaction cost).
+- **Rule**: Interaction cost = the mental, physical and time effort a user must invest to reach their goal with a UI. A well-designed site/app reduces it. Ideal = zero (users find what they want immediately) but usually unfeasible because of feature breadth: aim to reduce cost, not necessarily eliminate it. Diagram: green straight arrow User → Goal (ideal) vs pink zig-zag path with many detours (high interaction cost).
 - **Why**: Every unit of effort is friction between the user and their goal.
 - **Do / Don't**: Do give the shortest, most direct path. Don't force detours (zig-zag).
-- **Audit check**: For each key task, count clicks/keystrokes/scrolls/page loads/decisions and compare with the minimum possible.
+- **Audit check**: For each key task, count clicks/keystrokes/scrolls/page loads/decisions and compare with the minimum possible. Don't expect zero; rank findings so the highest-frequency tasks with the highest effort (the biggest detours) come first.
 - **Restyle fix**: Apply strategies F-24 to F-30.
+- **Also cited as**: F-23 (p.98)
 - **Severity**: high ; **Tags**: interaction-cost
 
 ### F-21 Know the three cost components: cognitive, physical, time  (p.98)
@@ -30,20 +31,13 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 
 ## Interaction cost: effective strategies (p.100-106)
 
-### F-23 Cost is visible in the audit: don't expect zero, but target the biggest detours  (p.98)
-- **Rule**: Zero interaction cost is the ultimate usability goal but is usually unrealistic; aim to reduce, not necessarily eliminate.
-- **Why**: Feature-rich products inevitably require some interaction.
-- **Do / Don't**: n/a.
-- **Audit check**: Prioritise fixes on highest-frequency tasks with highest effort.
-- **Restyle fix**: n/a (prioritisation guidance).
-- **Severity**: low ; **Tags**: interaction-cost
-
-### F-24 Keep related actions close (Fitts's Law)  (p.100)
+### F-24 Keep related actions close (Fitts's Law)  (p.100, reaffirmed p.108)
 - **Rule**: Closer and larger targets are faster to click. Position actions near the elements they relate to and give them a sufficient clickable area.
 - **Why**: Fitts's Law — shorter distance and bigger target = less physical effort/time.
-- **Do / Don't**: Do (Spotify, from visual): playback controls (shuffle, previous, play/pause, next, repeat + progress bar) in a persistent fixed bar at the bottom of the screen, highlighted in the screenshot, so users don't navigate to another screen/menu. Don't put the action far from its subject or behind a separate screen.
-- **Audit check**: Distance between an action and the object it acts on; tiny hit areas (touch targets small); controls that require navigating away; CTA far from the related input.
-- **Restyle fix**: Move controls adjacent to / persistently anchored with their target; enlarge hit areas.
+- **Do / Don't**: Do (Spotify, from visual): playback controls (shuffle, previous, play/pause, next, repeat + progress bar) in a persistent fixed bar at the bottom of the screen, highlighted in the screenshot, so users don't navigate to another screen/menu. Don't put the action far from its subject or behind a separate screen. Product page (p.108): good, "Add to cart" pill immediately right of the quantity stepper, below the colour swatches; bad, "Add to cart" at the far right edge, separated from the dropdowns.
+- **Audit check**: Distance between an action and the object it acts on; tiny hit areas (touch targets small); controls that require navigating away; a submit CTA far from the inputs it commits (far-right, detached, in another container or column).
+- **Restyle fix**: Move controls adjacent to / persistently anchored with their target; enlarge hit areas. Place a submit CTA adjacent to (right of or directly below) the final input it commits.
+- **Also cited as**: F-34 (p.108)
 - **Severity**: medium ; **Tags**: interaction-cost, buttons, layout
 
 ### F-25 Minimise choice (Hick's Law) and curate recommendations  (p.101)
@@ -119,14 +113,6 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Audit check**: Quantity implemented as `<select>`; stepper missing direct numeric entry.
 - **Restyle fix**: Replace with stepper (−/+ buttons + editable input).
 - **Severity**: medium ; **Tags**: interaction-cost, forms
-
-### F-34 Place the primary CTA next to the inputs it commits  (p.108)
-- **Rule**: Move the "Add to cart" button closer to the quantity selector to reduce interaction (mouse-travel) cost.
-- **Why**: Fitts's Law — shorter distance; related actions close.
-- **Do / Don't**: Good: "Add to cart" pill immediately right of the quantity stepper, below the colour swatches. Bad: "Add to cart" at far right edge, separated from the dropdowns.
-- **Audit check**: Distance between configuration inputs and the submit CTA; CTA far-right/detached.
-- **Restyle fix**: Re-lay out so the CTA sits adjacent to (right of or directly below) the final input.
-- **Severity**: medium ; **Tags**: interaction-cost, buttons, layout
 
 ## Minimizing interaction cost: one-click ordering (p.109)
 

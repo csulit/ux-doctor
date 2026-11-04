@@ -130,7 +130,7 @@
 - **Why**: Stacked cues create a clear entry point and reading order.
 - **Do / Don't**: Do: Make the headline about double body size, combining size with weight, contrast and spacing. Don't: Depend on size alone or give everything equal emphasis.
 - **Audit check**: Compare heading to body font sizes (ratio near 2x), font-weight spread across headings/body/captions, and padding of the hero versus secondary items.
-- **Restyle fix**: Scale the headline to ~2x body, set weights 800/400/300 by role, and give the hero extra padding.
+- **Restyle fix**: Scale the headline to ~2x body, set weights 800/400/300 by role, and give the hero extra padding. (On conflict the playbook wins: see F-03, small captions stay at 400; use 300 only at large display sizes.)
 - **Severity**: medium ; **Tags**: hierarchy, typography, spacing
 
 ### W3-17 Reserve one accent color for the single key action  (src: visual-hierarchy)
@@ -138,7 +138,7 @@
 - **Why**: Many colors turn hierarchy into noise.
 - **Do / Don't**: Do: Use one accent for the primary action and ghost-style secondaries. Don't: Give each element its own color.
 - **Audit check**: Count distinct accent/hue classes in a view; check for more than one filled primary-style button per view.
-- **Restyle fix**: Neutralize secondary elements, make secondary buttons ghost/outline, and keep the accent only on the primary CTA. (On conflict the playbook wins: see E-31, avoid pure white; use off-white for headings.)
+- **Restyle fix**: Neutralize secondary elements, make secondary buttons ghost/outline, and keep the accent fill only on the primary CTA. (On conflict the playbook wins: see E-31, avoid pure white; use off-white for headings; and E-03, links and active states may carry the primary colour as text or indicator.)
 - **Severity**: high ; **Tags**: color, hierarchy, buttons
 
 ### W3-18 Isolate one element against a uniform baseline  (src: von-restorff)
@@ -196,7 +196,7 @@
 - **Why**: Spacing and type account for most of the difference between cheap-looking and premium cards.
 - **Do / Don't**: Do: Use ~40px padding, ~24px radius, a 600-weight title and ~55% opacity description. Don't: Squeeze content to the edges with tiny padding, near-zero radius or equal title/body weight.
 - **Audit check**: Check card classes for p-3/12px padding with rounded-none/sm, and title/body with the same font-weight and opacity.
-- **Restyle fix**: Raise card padding to ~40px, radius to ~24px, set title 600 at ~38px, and body ~55% opacity.
+- **Restyle fix**: Raise card padding to ~40px, radius to ~24px, set title 600 at ~38px, and body ~55% opacity. (On conflict the playbook wins: see F-09, the blended body colour must still reach 4.5:1; measure it with `contrast.mjs --over`, and raise the opacity or use a grey token if it fails.)
 - **Severity**: medium ; **Tags**: cards, spacing, typography, hierarchy
 
 ### W3-25 Layer a tight and a soft shadow plus a ~12% hairline border on cards  (src: perfect-card)
@@ -244,7 +244,7 @@
 - **Why**: Seven colors reduce to one, and the UI looks intentional.
 - **Do / Don't**: Do: Use 13px text, 32px rows, one accent and grey status icons. Don't: Mark status or priority with colored pills where a grey icon conveys it.
 - **Audit check**: Check data-list row heights (~32px), font-size 13px, count of distinct accent colors, and colored badge/pill status components.
-- **Restyle fix**: Compact rows, apply -0.01em tracking, replace colored pills with grey icons and limit the accent to selection and primary. Dense tool UIs only. (On conflict the playbook wins: see F-06, 16px body.)
+- **Restyle fix**: Compact rows, apply -0.01em tracking, replace colored pills with grey icons and limit the accent to selection and primary. Dense tool UIs only; grey icons are for workflow statuses (todo, in progress, done) told apart by icon shape. (On conflict the playbook wins: see F-06, 16px body, and E-11/E-10, error and success keep red/green plus an icon or label.)
 - **Severity**: medium ; **Tags**: tables, color, typography, spacing
 
 ### W3-31 Align labels left and numbers right on a 4px grid  (src: reverse-engineered-linear)

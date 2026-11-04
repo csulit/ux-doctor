@@ -9,24 +9,21 @@
 | E-17 | Prefer proven, versatile UI fonts | p.75 | low | typography |
 | E-18 | Only use properly licensed fonts (Google Fonts for free) | p.75 | medium | typography, craft |
 | E-19 | Use at most 2 different fonts per UI | p.75-76, reaffirmed p.96-97 | high | typography, craft, hierarchy |
-| E-20 | Best practice: one versatile font, vary weight and size for dynamics | p.76 | medium | typography, hierarchy |
 | E-21 | If using two fonts: one for headings, one for body, from proven pairings | p.76 | low | typography |
-| E-22 | Keep body-copy line length at 45-75 characters on desktop | p.76-77 | high | typography, layout, accessibility |
+| E-22 | Keep body-copy line length at 45-75 characters on desktop | p.76-77, reaffirmed p.78 | high | typography, layout, accessibility |
 | E-23 | On mobile aim for 30-40 characters per line | p.77 | medium | typography, mobile |
 | E-24 | Measure line length with tools instead of counting | p.77 | low | typography, craft |
 | E-25 | Allow flexibility in line length by content, layout and device | p.77 | low | typography, layout |
-| E-26 | Don't let body text span the full page width | p.78 | high | typography, layout |
-| E-27 | Narrow centered text column (≤75 chars) is a valid fix | p.79 | medium | typography, layout, alignment |
+| E-27 | Narrow centred text block (≤75 chars, lines left-aligned) is a valid fix | p.79 | medium | typography, layout, alignment |
 | E-28 | Narrow left-aligned text column (≤75 chars) is the other valid fix | p.80 | medium | typography, layout, alignment |
 | E-29 | Break long paragraphs into shorter chunks | p.81, reaffirmed p.123 | medium | typography, layout, spacing, hierarchy, copy |
 | E-30 | Add subheadings (with icons/lines/space) to shorter paragraphs | p.82 | medium | typography, hierarchy, layout, spacing |
-| E-31 | Avoid pure black (#000000) text on white, and pure white (#FFFFFF) on dark | p.83, reaffirmed p.96 | medium | contrast, color, typography, dark-mode |
-| E-32 | Use graded greys: darker heading, lighter body text (reference values) | p.83 | medium | contrast, color, typography, hierarchy, dark-mode |
-| E-33 | Use heavier weights for headings and lighter for body | p.84, reaffirmed p.96-97 | high | typography, hierarchy |
+| E-31 | Avoid pure black (#000000) text on white, and pure white (#FFFFFF) on dark | p.83, reaffirmed p.96 | medium | contrast, color, typography, hierarchy, dark-mode |
+| E-33 | Use heavier weights for headings and lighter for body | p.84, reaffirmed p.22, p.96-97 | high | typography, hierarchy |
 | F-01 | Light-weight headings are acceptable only if clearly larger than body (colour reinforces) | p.85 | medium | hierarchy, typography, color |
 | F-02 | Never use text colour that is too light (light-grey text) | p.86 | high | contrast, accessibility, typography, color |
 | F-03 | Avoid extra-light (thin) font weights for body text | p.87, reaffirmed p.96 | high | typography, accessibility, contrast |
-| F-04 | Use size to signal which text is important | p.88 | high | hierarchy, typography |
+| F-04 | Use size to signal which text is important | p.88, reaffirmed p.22 | high | hierarchy, typography |
 | F-05 | Make headings clearly bigger than body text | p.89 | high | hierarchy, typography |
 | F-06 | Use readable font sizes: 16px for main text, never below ~12px (10px floor) | p.90, reaffirmed p.96-97 | high | typography, accessibility, mobile |
 | F-07 | Use generous line-height for body text: 1.5-1.6x (150-160%) | p.91 | high | typography, spacing |

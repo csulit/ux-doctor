@@ -2,8 +2,7 @@
 
 | ID | Rule | Page/Src (p.N = playbook PDF page; web:slug = web rule, no page) | Severity | Tags |
 |---|---|---|---|---|
-| A-21 | Align elements on shared axes for order and polish | p.17 | medium | alignment, layout, craft |
-| A-22 | Don't misjudge alignment: icon, title, body and button should share a clean edge | p.17 | medium | alignment, cards, layout |
+| A-21 | Align elements on shared axes for order and polish | p.17 | medium | alignment, layout, craft, cards |
 | A-23 | Don't forget to align items: list items must share left/right edges | p.18 | medium | alignment, navigation, layout |
 | A-24 | Left-align most text, especially long text and lists | p.18, reaffirmed p.94, p.97 | medium | alignment, typography |
 | A-25 | Right-align numbers (and RTL languages) | p.18 | medium | alignment, tables, typography |
@@ -21,10 +20,9 @@
 | B-21 | Order elements in the sequence the user processes them: image → name → description → price → CTA | p.32 | medium | layout, hierarchy, cards, buttons |
 | B-22 | Turn plain radio-list options into selectable cards | p.33 | low | layout, cards, forms, states |
 | B-23 | Design form layout after the final output | p.34, reaffirmed p.35 | low | forms, layout, interaction-cost |
-| C-02 | Keep proportion and scale balanced – no element overpowers the others | p.36 | medium | hierarchy, layout, craft |
+| C-02 | Keep proportion and scale balanced – no element overpowers the others | p.36, reaffirmed p.37 | medium | hierarchy, layout, craft, buttons, imagery |
 | C-03 | Use colour harmony – don't overuse a single colour | p.36, reaffirmed p.37 | medium | color, hierarchy |
 | C-04 | Keep consistent spacing, typography and element sizes between components | p.36 | medium | spacing, typography, craft |
-| C-05 | Don't let the hero image and CTA button hog the card | p.37 | medium | hierarchy, buttons, imagery, layout |
 | C-07 | Keep essential UI components consistent across the same and different screens | p.38 | high | craft, interaction-cost, hierarchy |
 | C-08 | Use one corner-radius/shape language for all elements | p.39 | medium | borders, craft, buttons, cards |
 | C-09 | Use one button colour scheme (primary/secondary/tertiary) everywhere | p.40-41 | high | buttons, color, craft, hierarchy |
@@ -32,8 +30,7 @@
 | C-11 | Make cards in a set (3+) the same height | p.43 | medium | cards, layout, alignment |
 | C-12 | Keep headings and descriptions about the same length across cards | p.43-44 | low | copy, cards, layout |
 | C-13 | When copy length varies, equalise card height and pin CTAs to the bottom | p.44 | medium | cards, alignment, buttons, layout |
-| C-14 | Use a single icon style (outline vs filled, weight, detail, size) within a screen | p.45 | medium | icons, craft |
+| C-14 | Use a single icon style (outline vs filled, weight, detail, size) within a screen | p.45, reaffirmed p.46 | medium | icons, craft |
 | C-15 | Mix icon styles only to signal state (e.g. filled = selected tab) | p.45-46 | low | icons, navigation, states |
-| C-16 | Use one icon set (custom or open-source) that fits the brand | p.46 | low | icons, craft |
 | H-05 | Don't stretch forms and CTAs to fill wide screens | p.130 | medium | layout, forms, spacing, typography |
 | H-06 | Contain forms in a defined card and treat white space as a design element | p.131 | medium | layout, spacing, cards, forms, depth |

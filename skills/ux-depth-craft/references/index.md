@@ -3,7 +3,7 @@
 | ID | Rule | Page/Src (p.N = playbook PDF page; web:slug = web rule, no page) | Severity | Tags |
 |---|---|---|---|---|
 | D-02 | Use depth and texture (shadows, outlines, background colour) to guide eyes and actions | p.50 | medium | depth, hierarchy, shadows, borders, color |
-| D-03 | Give floating elements (dropdown menus) a subtle shadow | p.50-51 | medium | depth, shadows, navigation, interaction-cost |
+| D-03 | Give floating elements (dropdown menus) a subtle shadow | p.50-51, reaffirmed p.22 | medium | depth, shadows, navigation, interaction-cost |
 | D-04 | Add shadows to elements overlapping dynamic/complex backgrounds | p.51 | medium | depth, shadows, imagery, contrast |
 | D-05 | Use soft, diffuse shadows – never harsh/tight dark ones | p.52 | medium | shadows, depth, craft |
 | D-06 | Tint the shadow colour to match a coloured background | p.53-54 | medium | shadows, color, depth, craft |

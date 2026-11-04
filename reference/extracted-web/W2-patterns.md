@@ -118,7 +118,7 @@
 - **Severity**: low ; **Tags**: color, craft
 
 ### W2-15 Use gradients as ambient glow, not as full surfaces behind text  (src: gradient-design)
-- **Rule**: Put a soft radial glow behind content instead of a full-bleed linear wash over it, and keep body copy off the gradient's blended middle band.
+- **Rule**: If a gradient is used, put a soft radial glow behind content instead of a full-bleed linear wash over it, and keep body copy off the gradient's blended middle band. One glow in the accent hue behind a product shot or hero, not several decorative blobs (W1-81); the default background stays neutral (E-05).
 - **Why**: Contrast can't be predicted where the colors blend.
 - **Do / Don't**: Do use gradients as atmosphere behind content. Don't set body text straight onto a gradient's middle.
 - **Audit check**: Find text elements over gradient backgrounds (`bg-gradient-*` ancestors) and measure contrast at the mid-transition area.
@@ -482,7 +482,7 @@
 - **Severity**: medium ; **Tags**: copy, states
 
 ### W2-60 Validate inline as the user types to prevent errors  (src: error-states)
-- **Rule**: Live inline validation that checks each rule and turns criteria green catches mistakes before submit; keep field-level errors small, anchored to the input, and specific. (Balance with on-blur timing for format-style errors.)
+- **Rule**: Live inline validation that checks each rule and turns criteria green catches mistakes before submit; keep field-level errors small, anchored to the input, and specific. Live checks are for requirement checklists that show progress (password rules, G-09); a format error (email, phone, date) first appears on blur and then revalidates live (W2-27).
 - **Why**: Submit-only validation tells people they failed after the fact.
 - **Do / Don't**: Do show per-rule progress (e.g. password criteria) near the input. Don't use a generic floating alert for field errors.
 - **Audit check**: Check password/complex fields for rule checklists and that errors render adjacent to the input with `aria-describedby`.
@@ -609,7 +609,7 @@
 - **Rule**: In about 3 seconds the hero must convey what's offered, who it serves, and why it matters, using a headline, subhead, and single CTA; skip carousels or sliders.
 - **Why**: Rotating slides conceal the one message that counts.
 - **Do / Don't**: Do lead with a headline, subhead, and lone CTA. Don't put a rotating carousel in the hero.
-- **Audit check**: grep hero sections for carousel/slider libraries (`swiper`, `embla`, `slick`) and count CTAs.
+- **Audit check**: grep hero sections for carousel/slider libraries (`swiper`, `embla`, `slick`) and count CTAs. A secondary rendered as a text link (W1-82) does not count as a second CTA; two buttons do.
 - **Restyle fix**: Replace the carousel with one headline, subhead, and primary CTA.
 - **Severity**: high ; **Tags**: hierarchy, copy, buttons
 

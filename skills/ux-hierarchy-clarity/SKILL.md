@@ -5,7 +5,7 @@ description: "Playbook knowledge on visual hierarchy, proximity, clarity, contra
 
 # UX Hierarchy, Clarity & Contrast
 
-Covers rule groups A (hierarchy, proximity, clarity), B-02..B-12 (contrast, simplicity) and C-17/C-18/D-01 (visual cues).
+Covers rule groups A (hierarchy, proximity, clarity), B-02..B-11 (contrast, simplicity) and C-17/C-18/D-01 (visual cues).
 Use it to decide what should stand out, what should recede, and what to remove.
 
 ## How to use
@@ -34,21 +34,21 @@ Read references/index.md first; open references/rules.md only for the rule IDs r
 - A-20 (p.16) — checkbox state contradicts the copy ("Unselect items you want to remove") → positive wording; checked = the item that will be acted on.
 - B-03 (p.21) — badge/chip text contrast: bad examples 2.84:1, 1.81:1, 1.92:1 (white on saturated fill); good 4.8, 4.94, 6.54:1 (dark same-hue text on pale tint) → tint bg + dark text, re-measure to ≥ 4.5:1 (WCAG AA threshold is external; the playbook only shows the ratios).
 - B-09 (p.22) — text directly on a photo with no scrim/gradient/`backdrop-filter: blur()` → bottom-to-top dark gradient or blurred translucent panel; test with a light image.
-- B-11/B-12 (p.23-24) — cart/list items with non-task metadata (views, sold counts, material, return notes) or oversized images → delete, shrink thumbnail, secondary attrs light grey + small, more gap between items.
+- B-10/B-11 (p.23-24) — elements that don't help the task on this screen; cart/list items with non-task metadata (views, sold counts, material, return notes) or oversized images → delete, shrink thumbnail, secondary attrs light grey + small, more gap between items.
 - B-07 (p.22) — component fill ≈ parent fill with no border/shadow (white input on white card) → 1px subtle neutral border.
 
 ## Code signals
 - Several `bg-*-600`/`btn-primary`/`variant="default"` buttons siblings in one container; `grep -rnE 'Button|btn' ` then count filled per group (A-05, A-07).
 - Count CTAs per viewport, not per file: layout/header components render on every page, so a header CTA plus a hero CTA with the same normalised label AND destination is a duplicate even when each file has one (different labels to the same destination are only a note). Collect candidates by destination, then compare labels, e.g. `rg -n 'mailto:|href=.(/signup|/contact|/demo|/pricing)'`; prefer `../ux-doctor/scripts/cta-scan.mjs <url> --render` on the rendered page (same-destination test above).
 - Row-level actions rendered as full `<Button>` (e.g. "Remove", "Delete" in a `.map`) instead of `variant="link"`/`ghost` (A-05, A-07).
-- Uniform text: all text one `font-normal` or one `font-semibold`; adjacent type levels with near-identical `text-sm`/`text-base` (B-05, B-06).
+- Uniform text: all text one `font-normal` or one `font-semibold`; adjacent type levels with near-identical `text-sm`/`text-base` (typography dimension: E-33, F-04).
 - Heading colour lighter than body: `text-gray-400|500` on `h1-h4` next to `text-gray-800|900` on `p` (A-12).
 - Metric/KPI cards where label class size ≥ value class size (`text-xl` label, `text-sm` value) (A-11).
 - Spacing: `label { margin-bottom }` ≈ field-group gap; `space-y-*` equal to `mb-*` on labels; `gap-*` uniform in forms (A-15, A-16).
 - Icon-only controls: `<button>` containing only `<svg>`/`<Icon/>` with no text and no `aria-label`; `role="switch"` without label (A-18).
 - Badge classes: `text-white` with `bg-green-500|orange-400|red-400`; `bg-*-500 text-white` in chip/badge components (B-03).
 - `<img>` or `background-image` with absolutely-positioned text and no `bg-gradient-to-t`, `from-black/*`, `backdrop-blur` overlay (B-09).
-- Inputs/cards with `bg-white` on `bg-white` parent and no `border`/`shadow` (B-07, B-08).
+- Inputs/cards with `bg-white` on `bg-white` parent and no `border`/`shadow` (B-07; overlays with no shadow are D-03, depth dimension).
 - Copy regex: `/unselect|un-check|uncheck .* to (keep|remove)/i`; checkboxes with `defaultChecked` that contradict title text (A-20).
 - Screenshots: count distinct interactive elements and filled buttons per viewport; look for list rows without leading avatar/icon when image data exists (C-18, D-01).
 
@@ -59,11 +59,11 @@ Read references/index.md first; open references/rules.md only for the rule IDs r
 - Form: label margin-bottom ~12px (Tailwind `mb-3`), field groups ~32px apart (`space-y-8`) (A-16, values from the p.13 example; Tailwind classes are general practice).
 - Status badge: `*-100` background + `*-700/800` text of same hue, re-measure ≥ 4.5:1 (B-03; 4.5:1 is WCAG AA, external).
 - Text on image: bottom dark gradient scrim or `backdrop-blur` + semi-transparent dark layer (B-09).
-- Weights by role: headings/values heavier, body/meta regular (B-05 gives no numbers; E-33 says heading 500-700, body 400).
+- Weights by role: headings/values heavier, body/meta regular (E-33: heading 500-700, body 400).
 - Thumbnail ≈ 40px in list rows so text carries the row (A-08, from visual); ~32px circular avatar in message rows (inference), initials only as fallback (D-01, C-18).
 - Add visible text labels to icons; green on / grey off for toggles (A-18).
 - Step/process sections: illustration or icon per step plus segmented progress indicator (C-17).
-- Add missing subtle border (e.g. 1px neutral) or soft diffuse shadow to raised surfaces (B-07, B-08).
+- Add missing subtle border (e.g. 1px neutral) or soft diffuse shadow to raised surfaces (B-07, D-03).
 
 ## Pairs well with
 - ux-color — status colours, primary-colour restraint, neutral backgrounds.

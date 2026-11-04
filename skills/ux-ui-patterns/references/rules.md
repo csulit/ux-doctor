@@ -8,33 +8,18 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 
 ## Expose content directly (p.111-113)
 
-### G-02 Don't hide content behind promotional banners that need a tap  (p.111, p.112)
-- **Rule**: Don't put a big banner like "Discover 100+ recipes selected by our chefs" or "Discover 40+ foods that are good for your health" with an "Explore now" button between the user and the actual content. Show the content itself on the screen.
+### G-02 Don't hide content behind promotional banners that need a tap  (p.111, p.112, reaffirmed p.113)
+- **Rule**: Don't put a big banner like "Discover 100+ recipes selected by our chefs" or "Discover 40+ foods that are good for your health" with an "Explore now" button between the user and the actual content. Show the content itself on the screen: on open, a curated list (the PDF's example is "Top 10 easy recommended recipes", p.113) with no tap needed gives quick value, reduced friction and relevancy, because the most relevant or popular items are there right away.
 - **Why**: The banner is an extra step. Interaction cost is the cognitive, physical and time effort a user spends to reach their goal. Users want immediate value, and hiding content creates an unnecessary barrier between them and the value of the app. The cost looks trivial but adds up, especially for new users who are unsure about investing time.
 - **Do / Don't**:
   - Don't (p.111): the "Discover" screen has two section headings, each followed by one large full-width photo banner (pasta on red/cream; grapefruit on blue/yellow). Each banner has a copy line and a dark "Explore now" button. No real recipe or food items are visible.
   - Do (p.112): the same "Discover" screen with a "Recommended recipes" row and a "View all" link at the right. The row shows three image cards (rounded corners) with the title below and a clock icon plus time ("Noodle dish 20 minutes", "Grilled chicken with beans 20 minutes", "Baked duck and rice 32 minutes"). Then a "Recommended foods" row with "View all" and three items on light-grey rounded tiles (Tomatoes, Pistachio, Broccoli) with centred labels.
-- **Audit check**: Does a home or discovery screen use large banner/hero tiles whose only job is to say "explore X" and link elsewhere? Does each section show real items (cards/thumbnails with titles and metadata) at the point of entry? Count the taps from the screen to the first real content item (should be 0 (inference)).
-- **Restyle fix**: Replace the banner with a horizontal row or grid of 3 actual item cards (image, title, key metadata such as duration). Add a small "View all" link on the right of the section header for the rest.
-- **Severity**: medium ; **Tags**: [interaction-cost, layout, cards, imagery, hierarchy]
-
-### G-03 Show a curated, relevant list immediately (e.g. "Top 10 easy recommended recipes")  (p.113)
-- **Rule**: On open, show a curated list (the PDF's example is "Top 10 easy recommended recipes") with no tap needed. Exposing content directly has three benefits: (1) Quick value, because the user instantly sees what the app offers and is more likely to engage; (2) Reduced friction, because fewer steps means a better experience, more retention and more interaction; (3) Relevancy, because you can showcase the most relevant or popular items so the user finds something of interest right away.
-- **Why**: Instant value, lower friction and higher relevance improve retention and engagement.
-- **Do / Don't**: Do: a ready list of specific, useful items on first view. Don't: generic "discover" teasers (see G-02).
-- **Audit check**: Does the first viewport on a content app show specific, popular or relevant items rather than teasers? Are the items curated or ranked (e.g. "Top N")?
-- **Restyle fix**: Replace teaser sections with a titled curated list ("Top 10 …") of actual items, ordered by popularity or relevance.
-- **Severity**: medium ; **Tags**: [interaction-cost, copy, layout]
+- **Audit check**: Does a home or discovery screen use large banner/hero tiles whose only job is to say "explore X" and link elsewhere? Does each section show real items (cards/thumbnails with titles and metadata) at the point of entry? Count the taps from the screen to the first real content item (should be 0 (inference)). Are the items shown curated or ranked (e.g. "Top N") rather than an arbitrary sample (p.113)?
+- **Restyle fix**: Replace the banner with a horizontal row or grid of 3 actual item cards (image, title, key metadata such as duration), or a titled curated list ("Top 10 …") ordered by popularity or relevance. Add a small "View all" link on the right of the section header for the rest.
+- **Also cited as**: G-03 (p.113)
+- **Severity**: medium ; **Tags**: [interaction-cost, layout, cards, imagery, hierarchy, copy]
 
 ## Form fields matched to input (p.114-116)
-
-### G-04 Design each input field for the type of data it collects  (p.114)
-- **Rule**: Don't use a one-size-fits-all field. Shape each field (size, length, segmentation, typography) to match the information asked for.
-- **Why**: It streamlines the interaction and removes unnecessary cognitive load, giving a smoother, more efficient experience.
-- **Do / Don't**: See G-05 (verification code) and G-06 (card details) for the two examples.
-- **Audit check**: Are all inputs in a form the same width and style regardless of the data they take? Is field width proportional to the expected value length?
-- **Restyle fix**: Set field widths and segmentation by data type (see G-05, G-06).
-- **Severity**: medium ; **Tags**: [forms, interaction-cost]
 
 ### G-05 Use separate large digit boxes for verification codes  (p.114, p.115)
 - **Rule**: For a verification code, use individual big boxes, one per digit (the example has four boxes), with enlarged typography for the digits, instead of one long standard-text field.
@@ -46,14 +31,15 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Restyle fix**: Replace it with N (e.g. 4) equal-sized boxes, one per digit. Use a large font size, auto-advance focus, and show a visible cursor/active state.
 - **Severity**: medium ; **Tags**: [forms, typography, interaction-cost]
 
-### G-06 Match field length to expected data (short fields for CVC, expiry, zip) and pair them on a row  (p.115, p.116)
-- **Rule**: Size each field by the type and amount of data it holds. A CVC is always 3 or 4 digits, so it gets a short field. Apply the same logic to expiry date (MM/YY) and zip code. Don't give every item its own full-width field.
+### G-06 Match field length to expected data (short fields for CVC, expiry, zip) and pair them on a row  (p.115, p.116, reaffirmed p.114)
+- **Rule**: Don't use a one-size-fits-all field (p.114): shape each field (size, length, segmentation, typography) to the information asked for; segmentation for codes is G-05. Size each field by the type and amount of data it holds. A CVC is always 3 or 4 digits, so it gets a short field. Apply the same logic to expiry date (MM/YY) and zip code. Don't give every item its own full-width field.
 - **Why**: Short fields remove ambiguity about what to type and make efficient use of space. The form then helps users enter data accurately and quickly, which benefits users and designers.
 - **Do / Don't**:
   - Don't: the "Payment details" form is a long single column, with Card number, Expiry, CVC, Name on card, Country and Zip code each full width on its own row. The "Pay $65" button sits at the bottom, so the form is tall.
   - Do: the same form is compact. Card number is full width. Expiry and CVC sit on one row as two shorter fields (CVC has an eye icon). Name on card is full width. Country (with a flag) and Zip code sit on one row, with Zip shorter. A full-width blue "Pay $65" button sits at the bottom.
-- **Audit check**: Are short-value fields (CVC 3-4 digits, expiry MM/YY, zip/postal code, quantity, age) rendered full width? Could two or more short fields share a row? A form with more than ~5 stacked full-width fields where some take ≤5 characters (inference) is a violation.
+- **Audit check**: Are all inputs in the form the same width and style regardless of the data they take? Are short-value fields (CVC 3-4 digits, expiry MM/YY, zip/postal code, quantity, age) rendered full width? Could two or more short fields share a row? A form with more than ~5 stacked full-width fields where some take ≤5 characters (inference) is a violation.
 - **Restyle fix**: Set short fields to width proportional to content (about 1/3 to 1/2 of the row). Group related short fields side by side: Expiry+CVC, Country+Zip. Keep long data (card number, name) full width.
+- **Also cited as**: G-04 (p.114)
 - **Severity**: medium ; **Tags**: [forms, layout, spacing, interaction-cost]
 
 ## Passwords (p.117-119)
@@ -176,39 +162,25 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 
 ## Bonus tips: mobile (p.134-136)
 
-### H-09 Place primary actions in the thumb zone  (p.134)
+### H-09 Place primary actions in the thumb zone  (p.134, reaffirmed p.135-136)
 - **Rule**: Mobile devices are often used one-handed, mainly with the thumb. Place key elements (buttons, navigation links, CTAs) and the most-used features within the area the thumb reaches easily. Elements outside it are harder to reach and cause frustration or misclicks.
 - **Why**: Better usability and a more user-friendly interface on mobile.
-- **Do / Don't**: The thumb-zone map (from visual) on a phone: green "Easy to reach" is a blob in the lower-left/lower-middle of the screen. Orange "Stretch but okay" is the middle band and the area right of the green. Red "Hard to reach" is the top of the screen (including the top-left and the top corners) and the bottom-right corner. This map assumes a right-handed thumb (from visual).
-- **Audit check**: On mobile layouts, are the primary CTA, primary navigation and most-used controls in the top third or the far corners? Is the key action reachable in the lower-middle area?
-- **Restyle fix**: Move primary actions to the bottom of the screen (bottom bar, bottom-anchored CTA) and keep rarely used controls at the top.
+- **Do / Don't**: The thumb-zone map (from visual) on a phone: green "Easy to reach" is a blob in the lower-left/lower-middle of the screen. Orange "Stretch but okay" is the middle band and the area right of the green. Red "Hard to reach" is the top of the screen (including the top-left and the top corners) and the bottom-right corner. This map assumes a right-handed thumb (from visual). Onboarding example (p.135, from visual): bad, a real-estate welcome screen (house photo, "Your perfect home is just a search away!") with the outlined "Sign In" pill at the top-right and the dark "Sign up" at the bottom; good, both buttons stacked full width at the bottom, outlined "Sign In" directly above the filled "Sign up", with the image and text moved up.
+- **Audit check**: On mobile layouts, are the primary CTA, primary navigation and most-used controls (login, sign in, sign up) in the top third or the far corners? Is the key action reachable in the lower-middle area, with the primary and secondary actions stacked together in the lower part?
+- **Restyle fix**: Move primary actions to the bottom of the screen (bottom bar, bottom-anchored CTA) and keep rarely used controls at the top. Move top-corner auth buttons into a full-width stacked group at the bottom, with the filled primary lowest.
+- **Also cited as**: H-10 (p.135-136)
 - **Severity**: high ; **Tags**: [mobile, interaction-cost, buttons, navigation, accessibility]
-
-### H-10 Anchor onboarding CTAs low on the screen, within thumb reach  (p.135-136)
-- **Rule**: Place the main CTA (and the secondary action) near the bottom of the screen where the thumb rests, not at the top. A CTA outside the thumb zone forces users to stretch or adjust their grip.
-- **Why**: Inconvenient and frustrating, especially for users on the go or with limited mobility. A CTA placed in the thumb zone can be used quickly and easily with one hand.
-- **Do / Don't**: Bad (thumbs-down, from visual): a real-estate welcome screen (house photo, headline "Your perfect home is just a search away!", subtext "Explore a wide array of properties right at your fingertips."). The outlined "Sign In" pill sits at the top-right of the screen, far from the thumb. Dark "Sign up" is at the bottom. Good (thumbs-up, from visual): the same screen with both buttons stacked at the bottom, full width and pill-shaped. The outlined "Sign In" is directly above the dark filled "Sign up" below the text. The image and text move upward.
-- **Audit check**: Is any frequently used button (login, sign in, primary CTA) in the top corner of a mobile screen? Are the primary and secondary actions stacked together in the lower part?
-- **Restyle fix**: Move top-corner auth buttons into a full-width stacked group at the bottom of the screen, with the primary (filled) below or at the very bottom.
-- **Severity**: medium ; **Tags**: [mobile, buttons, interaction-cost, layout]
 
 ## Bonus tips: states (p.136-140)
 
-### H-11 Don't leave empty states bare  (p.136)
-- **Rule**: An empty state must not be a blank screen with a bare message such as "You have no projects!". It must offer value and direction.
-- **Why**: A bare empty state is a dead end. Users feel lost, frustrated, stuck and unsure what to do next, and it wastes an opportunity to guide and engage them.
-- **Do / Don't**: Bad (thumbs-down, from visual): a mobile "Projects" screen (back arrow, title, settings gear) with just "You have no projects!" centered in the middle of a blank white card.
-- **Audit check**: Does any list, table, dashboard or inbox render only plain text, or nothing, when it has zero items? Does it lack a CTA?
-- **Restyle fix**: Replace with a designed empty state (see H-12).
-- **Severity**: high ; **Tags**: [states, copy, interaction-cost]
-
-### H-12 Build empty states from illustration, benefit headline, tips and a CTA  (p.136-137)
-- **Rule**: A good empty state educates, engages and encourages action. It consists of: (1) a solution-oriented headline ("Start managing your projects and stay organised."), (2) an accompanying illustration to make it visually appealing and less daunting, (3) actionable tips ("Invite team members to collaborate on a project for better communication", "Set deadlines for tasks to keep everyone on track"), and (4) a direct CTA button ("Create new project").
+### H-12 Don't leave empty states bare: build them from illustration, benefit headline, tips and a CTA  (p.136-137)
+- **Rule**: An empty state must not be a blank screen with a bare message such as "You have no projects!"; a bare state is a dead end where users feel lost and unsure what to do next. A good empty state educates, engages and encourages action. It consists of: (1) a solution-oriented headline ("Start managing your projects and stay organised."), (2) an accompanying illustration to make it visually appealing and less daunting, (3) actionable tips ("Invite team members to collaborate on a project for better communication", "Set deadlines for tasks to keep everyone on track"), and (4) a direct CTA button ("Create new project").
 - **Why**: It turns a potentially negative experience into a positive one, and the tips and CTA give clear next steps.
-- **Do / Don't**: Good (thumbs-up, from visual): a "Projects" screen with a pink-tinted circular illustration (hourglass, calendar, clock, clipboard, lightbulb) at the top. Below it are a bold left-aligned headline, two short tips with small orange lightning-bolt icons in grey text, and a full-width pink pill "Create new project" button at the bottom of the card. Don't: show the bare text in H-11.
-- **Audit check**: Does the empty state include all four parts: headline stating the benefit or next step, a visual, 1-3 tips (inference), and a primary CTA that creates the first item?
+- **Do / Don't**: Good (thumbs-up, from visual): a "Projects" screen with a pink-tinted circular illustration (hourglass, calendar, clock, clipboard, lightbulb) at the top. Below it are a bold left-aligned headline, two short tips with small orange lightning-bolt icons in grey text, and a full-width pink pill "Create new project" button at the bottom of the card. Bad (thumbs-down, from visual): the same mobile "Projects" screen (back arrow, title, settings gear) with just "You have no projects!" centered in a blank white card.
+- **Audit check**: Does any list, table, dashboard or inbox render only plain text, or nothing, when it has zero items, or lack a CTA? That bare state is the high case. Otherwise, does the empty state include all four parts: headline stating the benefit or next step, a visual, 1-3 tips (inference), and a primary CTA that creates the first item? A designed state missing only the tips is lowered one level, with that reason printed.
 - **Restyle fix**: Add an illustration, rewrite the headline as an invitation, add 2 short tips with icons, and add a primary CTA button that performs the first action.
-- **Severity**: medium ; **Tags**: [states, imagery, copy, buttons, hierarchy]
+- **Also cited as**: H-11 (p.136)
+- **Severity**: high ; **Tags**: [states, imagery, copy, buttons, hierarchy, interaction-cost]
 
 ### H-13 Error states must explain, offer a fix and match the app's style  (p.138)
 - **Rule**: A good error state (form validation error, 404 page and so on) must: 1. clearly communicate what went wrong; 2. offer a clear, actionable solution to fix the problem; 3. maintain a consistent visual style with the rest of the application or website.

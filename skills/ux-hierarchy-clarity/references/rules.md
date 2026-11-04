@@ -199,22 +199,6 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Restyle fix**: Pick differentiating colours from a deliberate palette (complementary/analogous) and verify ratios.
 - **Severity**: medium ; **Tags**: contrast, color, accessibility
 
-### B-05 Create contrast with font weight and style  (p.22)
-- **Rule**: Vary font weights and styles to create contrast within textual elements (e.g. bold title vs regular body).
-- **Why**: Differentiates text roles without needing more colour/size.
-- **Do / Don't**: Text only.
-- **Audit check**: Do headings/labels/values differ in weight from body text? Flag screens where all text uses a single weight (e.g. everything `font-normal` or everything `font-semibold`).
-- **Restyle fix**: Assign weights by role (e.g. titles/values 600–700, body/meta 400) consistently.
-- **Severity**: medium ; **Tags**: typography, contrast, hierarchy
-
-### B-06 Create contrast with size  (p.22)
-- **Rule**: Use size contrast to differentiate between elements; this sets up a clear visual hierarchy.
-- **Why**: Size difference signals importance.
-- **Do / Don't**: Text only.
-- **Audit check**: Is there a visible size step between the primary element (title, key metric, CTA) and secondary elements? Flag type scales where adjacent levels differ by almost nothing.
-- **Restyle fix**: Increase the size of the most important element and/or reduce secondary text so the hierarchy is clear.
-- **Severity**: medium ; **Tags**: typography, hierarchy, contrast
-
 ### B-07 Use a border or outline when elements are too similar in colour  (p.22)
 - **Rule**: If elements are too close in colour (e.g. card on same-colour background, input on same-colour surface), add a well-placed border/outline to supply the missing contrast.
 - **Why**: Border adds separation when colour difference is insufficient.
@@ -222,14 +206,6 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Audit check**: Compare fill of component vs its parent background; if nearly identical and no border/shadow, flag (e.g. white input on white card without border).
 - **Restyle fix**: Add a 1px subtle border (neutral tint) or outline to the element.
 - **Severity**: medium ; **Tags**: borders, contrast, depth
-
-### B-08 Use shadows to make an element pop from its background  (p.22)
-- **Rule**: A shadow can make an element pop from its background, improve its visibility and create a sense of dimension.
-- **Why**: Visibility and depth.
-- **Do / Don't**: Text only (the panda cards in B-09 and cards throughout the pages show soft, diffuse shadows under raised cards – from visual).
-- **Audit check**: Do raised/floating elements (cards, dropdowns, modals) separate from their background through a shadow or border? Flag floating layers with neither.
-- **Restyle fix**: Add a soft, diffuse shadow to raised surfaces (keep it subtle).
-- **Severity**: low ; **Tags**: shadows, depth, contrast
 
 ### B-09 Keep text over images legible for any image: add an overlay/gradient or a background blur  (p.22)
 - **Rule**: For components with text over a background image, design for legibility at scale: light text on a dark photo may look fine, but it may fail when a lighter image is used. Make the component robust to any background by placing an overlay (with a layer blur that complements the image tone) or by using a background blur behind the text.
@@ -241,12 +217,13 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 
 ## Simplicity (p.23-24)
 
-### B-10 Reduce elements and content to their essentials  (p.23)
-- **Rule**: Simplicity = reducing elements and content to their most essential forms; prioritise essential features and information so users can accomplish their goals straightforwardly.
+### B-10 Reduce elements and content to their essentials  (p.23, reaffirmed p.24)
+- **Rule**: Simplicity = reducing elements and content to their most essential forms; prioritise essential features and information so users can accomplish their goals straightforwardly. Every additional button, image or line of text clutters the UI: don't show information that isn't relevant to the task the user is trying to accomplish (p.24).
 - **Why**: A simple design reduces cognitive effort and makes the interface easier to understand and navigate. Overcomplicated or cluttered designs overwhelm users, causing confusion and reduced engagement.
 - **Do / Don't**: See B-11 (cart example).
-- **Audit check**: For each screen, can the primary task be identified in a few seconds? Count competing elements/text lines per item; flag any element that doesn't support the screen's task.
-- **Restyle fix**: Remove, collapse or defer non-essential elements; keep one clear primary action.
+- **Audit check**: For each screen, can the primary task be identified in a few seconds? Count competing elements/text lines per item; for each button, image and text line ask "does this help complete the task on this screen?" and flag the ones that don't.
+- **Restyle fix**: Remove, collapse or defer non-essential elements (move them to a secondary screen or progressive disclosure); keep one clear primary action.
+- **Also cited as**: B-12 (p.24)
 - **Severity**: high ; **Tags**: hierarchy, interaction-cost, craft
 
 ### B-11 Cart screen: keep items compact, show only task-relevant details, and let whitespace/weight/colour do the work  (p.23, p.24)
@@ -256,14 +233,6 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Audit check**: In cart/checkout lists, count metadata lines per line-item (PDF good example: name + 2 attributes + price/qty). Flag extra marketing/social-proof data (views, sold counts), return-policy notes, oversized images that push content/total below the fold.
 - **Restyle fix**: Delete non-task metadata (viewed/sold counts, material, return notes → link elsewhere), shrink the thumbnail, set secondary attributes in lighter grey and smaller size, add spacing between items.
 - **Severity**: high ; **Tags**: hierarchy, spacing, interaction-cost, cards
-
-### B-12 Show only information relevant to the user's current task  (p.24)
-- **Rule**: Keep only the most important elements and information. Every additional button, image or line of text clutters the UI. Don't show users information that isn't relevant to the task they're trying to accomplish.
-- **Why**: Cuts cognitive load and keeps focus where it should be.
-- **Do / Don't**: Text only (see B-11).
-- **Audit check**: For each element ask "does this help complete the task on this screen?" Flag buttons/images/text lines that don't.
-- **Restyle fix**: Remove or move the irrelevant element to a secondary screen / progressive disclosure.
-- **Severity**: high ; **Tags**: interaction-cost, hierarchy, copy
 
 ## Visual cues (p.47-48)
 

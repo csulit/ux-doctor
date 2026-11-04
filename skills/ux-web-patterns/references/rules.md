@@ -147,7 +147,7 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Why**: Pure white glares and fatigues the eyes; opacity tiers keep hierarchy without new hues.
 - **Do / Don't**: Do use opacity levels for emphasis. Don't use #FFF for all text.
 - **Audit check**: grep `#fff`, `#ffffff`, `text-white` on dark backgrounds, esp. for body text.
-- **Restyle fix**: Use an off-white body color and `rgba(255,255,255,α)` tiers for secondary/disabled text.
+- **Restyle fix**: Use an off-white body color and `rgba(255,255,255,α)` tiers for secondary/disabled text; every tier except disabled must still reach 4.5:1 against its surface (F-09; measure with `contrast.mjs --over`).
 - **Severity**: medium ; **Tags**: dark-mode, typography, hierarchy, contrast
 
 ### W1-19 Build shadows from three stacked layers  (src: depth-layers)
@@ -477,7 +477,7 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Severity**: medium ; **Tags**: accessibility, mobile, interaction-cost
 
 ### W1-59 Give dropdown triggers a 48px target with a caret  (src: dropdown-design)
-- **Rule**: A dropdown trigger should look pressable: hover state included, a caret icon showing, and a touch area of 48px; a 30px box with a faint outline fails.
+- **Rule**: A dropdown trigger should look pressable: hover state included, a caret icon showing, and a touch area of 48px; a 30px box with a faint outline fails. 48px is the target for form-control triggers; 44px is the floor for any touch target (W2-83).
 - **Why**: Obvious affordance and a target that's easy to reach.
 - **Do / Don't**: Do give it a 48px touch area, a caret and hover feedback. Don't ship a small trigger with weak contrast.
 - **Audit check**: Check trigger height (<48px, `h-8`/`h-7`), missing chevron icon, missing `hover:` style.
@@ -639,7 +639,7 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Why**: Keeps actions tidy and layout steady.
 - **Do / Don't**: Do anchor revealed actions to the bottom edge. Don't cover the title with buttons or push them past the card edge.
 - **Audit check**: Check hover-revealed buttons for absolute positioning overlapping title and for `transition-delay` ~60ms steps.
-- **Restyle fix**: Position actions in the bottom bar with 60ms staggered delays.
+- **Restyle fix**: Position actions in the bottom bar with 60ms staggered delays. Only extras (favourite, share) may wait for hover; the card's main action stays visible, and on touch (`hover: none`) all actions show without hover (W2-81, W2-82).
 - **Severity**: low ; **Tags**: cards, motion, layout
 
 ### W1-79 Signal card interactivity with an edge accent  (src: card-hover-anatomy)
@@ -659,7 +659,7 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Severity**: medium ; **Tags**: copy, typography, hierarchy
 
 ### W1-81 Keep one accent and drop background blobs  (src: de-ai-landing-hero)
-- **Rule**: Pair a neutral background with a single splash of color, placed only on the product screenshot and primary button: one accent, zero blobs.
+- **Rule**: Pair a neutral background with a single splash of color, placed only on the product screenshot and primary button: one accent, zero blobs. A decorative blob is a blurred colour shape with no job; one soft glow behind a product shot that uses the accent (W2-15) is not a blob.
 - **Why**: Purple gradient smears add energy but no content.
 - **Do / Don't**: Do keep the accent for the screenshot and primary CTA. Don't add decorative gradient blobs.
 - **Audit check**: grep `blur-3xl`, `radial-gradient` blobs, absolute gradient circles in hero.
@@ -751,11 +751,11 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Severity**: medium ; **Tags**: copy, buttons, interaction-cost
 
 ### W1-92 Reserve red for destruction and move delete off the confirm spot  (src: destructive-actions)
-- **Rule**: Spend red only on destructive actions (not logout, badges, alerts), and never place a destructive button where confirm normally sits.
+- **Rule**: Among actions, spend red only on destructive ones (not logout, a red notification badge or a decorative accent), and never place a destructive button where confirm normally sits. Error status colour (field errors, error alerts) stays red by convention (E-11).
 - **Why**: Overused red cries wolf, and muscle memory clicks primary spots blind.
 - **Do / Don't**: Do reserve red and reposition delete. Don't put delete in the usual confirm position.
 - **Audit check**: grep `bg-red-*`/`text-red-*`/`destructive` on non-destructive elements; check button order in dialogs.
-- **Restyle fix**: Recolor non-destructive red usages and reorder dialog actions. (On conflict the playbook wins: see G-12, Cancel left / destructive right.)
+- **Restyle fix**: Recolor non-destructive red actions and decorative red and reorder dialog actions; leave error states red. (On conflict the playbook wins: see G-12, Cancel left / destructive right, and E-11, red = error.)
 - **Severity**: medium ; **Tags**: color, buttons, interaction-cost
 
 ### W1-93 Add friction to irreversible deletes  (src: destructive-actions)
@@ -787,11 +787,11 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Why**: Slow replies make users mentally check out.
 - **Do / Don't**: Do acknowledge every interaction within 400ms. Don't hold all visual response until the server answers.
 - **Audit check**: Check async actions for immediate loading/pressed state; look for await before any UI update.
-- **Restyle fix**: Add immediate acknowledgment (state change, spinner or skeleton).
+- **Restyle fix**: Add immediate acknowledgment: a pressed or pending state on the control at once (W1-03, W1-95); a spinner or skeleton only once the wait passes ~300ms (W2-62).
 - **Severity**: high ; **Tags**: states, interaction-cost, motion
 
 ### W1-97 Use skeletons, optimistic updates and progress for waits  (src: doherty-threshold)
-- **Rule**: Show placeholder skeleton shapes as soon as a screen opens, update optimistically when success is near-certain, and use spinners, progress or inline status for waits beyond the threshold.
+- **Rule**: Never leave a screen blank while it loads: show placeholder skeleton shapes once the wait passes ~300ms (W2-62), update optimistically when success is near-certain, and use spinners, progress or inline status for waits beyond the threshold.
 - **Why**: Unavoidable waits still feel responsive.
 - **Do / Don't**: Do display skeletons and progress. Don't leave the screen empty or frozen while data loads.
 - **Audit check**: grep loading branches returning `null` or blank; check for `Skeleton`/`animate-pulse` and progress components.
@@ -915,7 +915,7 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Severity**: low ; **Tags**: color, craft
 
 ### W2-15 Use gradients as ambient glow, not as full surfaces behind text  (src: gradient-design)
-- **Rule**: Put a soft radial glow behind content instead of a full-bleed linear wash over it, and keep body copy off the gradient's blended middle band.
+- **Rule**: If a gradient is used, put a soft radial glow behind content instead of a full-bleed linear wash over it, and keep body copy off the gradient's blended middle band. One glow in the accent hue behind a product shot or hero, not several decorative blobs (W1-81); the default background stays neutral (E-05).
 - **Why**: Contrast can't be predicted where the colors blend.
 - **Do / Don't**: Do use gradients as atmosphere behind content. Don't set body text straight onto a gradient's middle.
 - **Audit check**: Find text elements over gradient backgrounds (`bg-gradient-*` ancestors) and measure contrast at the mid-transition area.
@@ -1279,7 +1279,7 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Severity**: medium ; **Tags**: copy, states
 
 ### W2-60 Validate inline as the user types to prevent errors  (src: error-states)
-- **Rule**: Live inline validation that checks each rule and turns criteria green catches mistakes before submit; keep field-level errors small, anchored to the input, and specific. (Balance with on-blur timing for format-style errors.)
+- **Rule**: Live inline validation that checks each rule and turns criteria green catches mistakes before submit; keep field-level errors small, anchored to the input, and specific. Live checks are for requirement checklists that show progress (password rules, G-09); a format error (email, phone, date) first appears on blur and then revalidates live (W2-27).
 - **Why**: Submit-only validation tells people they failed after the fact.
 - **Do / Don't**: Do show per-rule progress (e.g. password criteria) near the input. Don't use a generic floating alert for field errors.
 - **Audit check**: Check password/complex fields for rule checklists and that errors render adjacent to the input with `aria-describedby`.
@@ -1406,7 +1406,7 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Rule**: In about 3 seconds the hero must convey what's offered, who it serves, and why it matters, using a headline, subhead, and single CTA; skip carousels or sliders.
 - **Why**: Rotating slides conceal the one message that counts.
 - **Do / Don't**: Do lead with a headline, subhead, and lone CTA. Don't put a rotating carousel in the hero.
-- **Audit check**: grep hero sections for carousel/slider libraries (`swiper`, `embla`, `slick`) and count CTAs.
+- **Audit check**: grep hero sections for carousel/slider libraries (`swiper`, `embla`, `slick`) and count CTAs. A secondary rendered as a text link (W1-82) does not count as a second CTA; two buttons do.
 - **Restyle fix**: Replace the carousel with one headline, subhead, and primary CTA.
 - **Severity**: high ; **Tags**: hierarchy, copy, buttons
 
@@ -1639,7 +1639,7 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Why**: Stacked cues create a clear entry point and reading order.
 - **Do / Don't**: Do: Make the headline about double body size, combining size with weight, contrast and spacing. Don't: Depend on size alone or give everything equal emphasis.
 - **Audit check**: Compare heading to body font sizes (ratio near 2x), font-weight spread across headings/body/captions, and padding of the hero versus secondary items.
-- **Restyle fix**: Scale the headline to ~2x body, set weights 800/400/300 by role, and give the hero extra padding.
+- **Restyle fix**: Scale the headline to ~2x body, set weights 800/400/300 by role, and give the hero extra padding. (On conflict the playbook wins: see F-03, small captions stay at 400; use 300 only at large display sizes.)
 - **Severity**: medium ; **Tags**: hierarchy, typography, spacing
 
 ### W3-17 Reserve one accent color for the single key action  (src: visual-hierarchy)
@@ -1647,7 +1647,7 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Why**: Many colors turn hierarchy into noise.
 - **Do / Don't**: Do: Use one accent for the primary action and ghost-style secondaries. Don't: Give each element its own color.
 - **Audit check**: Count distinct accent/hue classes in a view; check for more than one filled primary-style button per view.
-- **Restyle fix**: Neutralize secondary elements, make secondary buttons ghost/outline, and keep the accent only on the primary CTA. (On conflict the playbook wins: see E-31, avoid pure white; use off-white for headings.)
+- **Restyle fix**: Neutralize secondary elements, make secondary buttons ghost/outline, and keep the accent fill only on the primary CTA. (On conflict the playbook wins: see E-31, avoid pure white; use off-white for headings; and E-03, links and active states may carry the primary colour as text or indicator.)
 - **Severity**: high ; **Tags**: color, hierarchy, buttons
 
 ### W3-18 Isolate one element against a uniform baseline  (src: von-restorff)
@@ -1705,7 +1705,7 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Why**: Spacing and type account for most of the difference between cheap-looking and premium cards.
 - **Do / Don't**: Do: Use ~40px padding, ~24px radius, a 600-weight title and ~55% opacity description. Don't: Squeeze content to the edges with tiny padding, near-zero radius or equal title/body weight.
 - **Audit check**: Check card classes for p-3/12px padding with rounded-none/sm, and title/body with the same font-weight and opacity.
-- **Restyle fix**: Raise card padding to ~40px, radius to ~24px, set title 600 at ~38px, and body ~55% opacity.
+- **Restyle fix**: Raise card padding to ~40px, radius to ~24px, set title 600 at ~38px, and body ~55% opacity. (On conflict the playbook wins: see F-09, the blended body colour must still reach 4.5:1; measure it with `contrast.mjs --over`, and raise the opacity or use a grey token if it fails.)
 - **Severity**: medium ; **Tags**: cards, spacing, typography, hierarchy
 
 ### W3-25 Layer a tight and a soft shadow plus a ~12% hairline border on cards  (src: perfect-card)
@@ -1753,7 +1753,7 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Why**: Seven colors reduce to one, and the UI looks intentional.
 - **Do / Don't**: Do: Use 13px text, 32px rows, one accent and grey status icons. Don't: Mark status or priority with colored pills where a grey icon conveys it.
 - **Audit check**: Check data-list row heights (~32px), font-size 13px, count of distinct accent colors, and colored badge/pill status components.
-- **Restyle fix**: Compact rows, apply -0.01em tracking, replace colored pills with grey icons and limit the accent to selection and primary. Dense tool UIs only. (On conflict the playbook wins: see F-06, 16px body.)
+- **Restyle fix**: Compact rows, apply -0.01em tracking, replace colored pills with grey icons and limit the accent to selection and primary. Dense tool UIs only; grey icons are for workflow statuses (todo, in progress, done) told apart by icon shape. (On conflict the playbook wins: see F-06, 16px body, and E-11/E-10, error and success keep red/green plus an icon or label.)
 - **Severity**: medium ; **Tags**: tables, color, typography, spacing
 
 ### W3-31 Align labels left and numbers right on a 4px grid  (src: reverse-engineered-linear)

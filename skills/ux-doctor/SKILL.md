@@ -5,7 +5,7 @@ description: "Core of the ux-doctor plugin. Defines the severity scale, scoring,
 
 # ux-doctor — core
 
-Evidence-based UI auditing, review and restyling. All design judgements come from the playbook rules in the `ux-*` knowledge skills (177 playbook rules with IDs like `E-12` and a PDF page, + 256 web-pattern rules). Sources: playbook rules (IDs `A-01`…`H-18`, PDF pages) are primary; `W1-…W5-…` rules (skill `ux-web-patterns`, 256 paraphrased tips from public UX pattern pages and published guidance on generic AI-generated UI) are secondary and must be labelled `source: web`; on conflict the playbook wins. Do not give taste-based advice without a rule ID; if no rule fits, label it `(general practice)`; label anything that is an estimate rather than a playbook claim `(inference)`.
+Evidence-based UI auditing, review and restyling. All design judgements come from the playbook rules in the `ux-*` knowledge skills (161 playbook rules with IDs like `E-12` and a PDF page, + 256 web-pattern rules). Sources: playbook rules (IDs `A-01`…`H-18`, PDF pages) are primary; `W1-…W5-…` rules (skill `ux-web-patterns`, 256 paraphrased tips from public UX pattern pages and published guidance on generic AI-generated UI) are secondary and must be labelled `source: web`; on conflict the playbook wins. Do not give taste-based advice without a rule ID; if no rule fits, label it `(general practice)`; label anything that is an estimate rather than a playbook claim `(inference)`.
 
 ## Workflows (pick one)
 | Intent | Skill | Command (Claude Code / Cursor / Pi) |

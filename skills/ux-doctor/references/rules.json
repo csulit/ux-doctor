@@ -416,33 +416,17 @@
   "tags": [
    "alignment",
    "layout",
-   "craft"
+   "craft",
+   "cards"
   ],
   "rule": "Alignment = arranging text, images and components along common lines/axes to create visual order and harmony. Poor alignment looks messy and is hard to use.",
   "why": "Gives a polished, organised look; misalignment hurts readability and perceived quality.",
-  "doDont": "Intro to the following two examples (A-22, A-23).",
-  "auditCheck": "Do left edges of titles, body text, buttons, icons within a component fall on the same x line (unless intentional hanging icon)? Check computed left offsets/padding.",
-  "restyleFix": "Snap all items to common axes (see A-22 - A-28)."
- },
- {
-  "id": "A-22",
-  "title": "Don't misjudge alignment: icon, title, body and button should share a clean edge",
-  "source": "playbook",
-  "pages": "17",
-  "citation": "p.17",
-  "section": "Alignment (p.17-19)",
-  "skill": "ux-layout-spacing",
-  "severity": "medium",
-  "tags": [
-   "alignment",
-   "cards",
-   "layout"
-  ],
-  "rule": "Alignment can be wrong by misjudgement: aligning things incorrectly (e.g. text indented next to an icon so the body and button no longer line up with the title).",
-  "why": "Incorrect alignment creates a ragged, messy card.",
-  "doDont": "Bad (thumbs-down, left card \"Cactus\"): title \"Cactus\" at left edge; below it a round cactus icon at the left edge with paragraph and \"Learn more\" pill button indented to the right of the icon, so the body/button don't align with the title. Good (right card): icon and title in one row at the top; paragraph and \"Learn more\" button below, both flush left on the same left edge as the icon.",
-  "auditCheck": "In cards, does body/button left edge equal title/icon left edge? Is an icon floated alongside a multi-line paragraph, causing text indentation?",
-  "restyleFix": "Put icon + title in a header row; place body text and button below on the card's common left edge."
+  "doDont": "Misjudged alignment (\"Cactus\" card): bad (thumbs-down), title \"Cactus\" at the left edge, then a round cactus icon at the left edge with the paragraph and \"Learn more\" pill indented to the right of the icon, so body and button don't line up with the title; good, icon and title in one row at the top, paragraph and button below, flush left on the icon's edge. Forgetting to align items is A-23.",
+  "auditCheck": "Do left edges of titles, body text, buttons, icons within a component fall on the same x line (unless intentional hanging icon)? Check computed left offsets/padding. Is an icon floated alongside a multi-line paragraph, indenting the body and button away from the title?",
+  "restyleFix": "Snap all items to common axes (see A-23 - A-28). In cards, put icon + title in a header row and place body text and button below on the card's common left edge.",
+  "aliases": [
+   "A-22"
+  ]
  },
  {
   "id": "A-23",
@@ -648,46 +632,6 @@
   "restyleFix": "Pick differentiating colours from a deliberate palette (complementary/analogous) and verify ratios."
  },
  {
-  "id": "B-05",
-  "title": "Create contrast with font weight and style",
-  "source": "playbook",
-  "pages": "22",
-  "citation": "p.22",
-  "section": "Contrast (p.21-22)",
-  "skill": "ux-hierarchy-clarity",
-  "severity": "medium",
-  "tags": [
-   "typography",
-   "contrast",
-   "hierarchy"
-  ],
-  "rule": "Vary font weights and styles to create contrast within textual elements (e.g. bold title vs regular body).",
-  "why": "Differentiates text roles without needing more colour/size.",
-  "doDont": "Text only.",
-  "auditCheck": "Do headings/labels/values differ in weight from body text? Flag screens where all text uses a single weight (e.g. everything `font-normal` or everything `font-semibold`).",
-  "restyleFix": "Assign weights by role (e.g. titles/values 600–700, body/meta 400) consistently."
- },
- {
-  "id": "B-06",
-  "title": "Create contrast with size",
-  "source": "playbook",
-  "pages": "22",
-  "citation": "p.22",
-  "section": "Contrast (p.21-22)",
-  "skill": "ux-hierarchy-clarity",
-  "severity": "medium",
-  "tags": [
-   "typography",
-   "hierarchy",
-   "contrast"
-  ],
-  "rule": "Use size contrast to differentiate between elements; this sets up a clear visual hierarchy.",
-  "why": "Size difference signals importance.",
-  "doDont": "Text only.",
-  "auditCheck": "Is there a visible size step between the primary element (title, key metric, CTA) and secondary elements? Flag type scales where adjacent levels differ by almost nothing.",
-  "restyleFix": "Increase the size of the most important element and/or reduce secondary text so the hierarchy is clear."
- },
- {
   "id": "B-07",
   "title": "Use a border or outline when elements are too similar in colour",
   "source": "playbook",
@@ -706,26 +650,6 @@
   "doDont": "Text only.",
   "auditCheck": "Compare fill of component vs its parent background; if nearly identical and no border/shadow, flag (e.g. white input on white card without border).",
   "restyleFix": "Add a 1px subtle border (neutral tint) or outline to the element."
- },
- {
-  "id": "B-08",
-  "title": "Use shadows to make an element pop from its background",
-  "source": "playbook",
-  "pages": "22",
-  "citation": "p.22",
-  "section": "Contrast (p.21-22)",
-  "skill": "ux-hierarchy-clarity",
-  "severity": "low",
-  "tags": [
-   "shadows",
-   "depth",
-   "contrast"
-  ],
-  "rule": "A shadow can make an element pop from its background, improve its visibility and create a sense of dimension.",
-  "why": "Visibility and depth.",
-  "doDont": "Text only (the panda cards in B-09 and cards throughout the pages show soft, diffuse shadows under raised cards – from visual).",
-  "auditCheck": "Do raised/floating elements (cards, dropdowns, modals) separate from their background through a shadow or border? Flag floating layers with neither.",
-  "restyleFix": "Add a soft, diffuse shadow to raised surfaces (keep it subtle)."
  },
  {
   "id": "B-09",
@@ -752,8 +676,8 @@
   "id": "B-10",
   "title": "Reduce elements and content to their essentials",
   "source": "playbook",
-  "pages": "23",
-  "citation": "p.23",
+  "pages": "23, reaffirmed p.24",
+  "citation": "p.23, reaffirmed p.24",
   "section": "Simplicity (p.23-24)",
   "skill": "ux-hierarchy-clarity",
   "severity": "high",
@@ -762,11 +686,14 @@
    "interaction-cost",
    "craft"
   ],
-  "rule": "Simplicity = reducing elements and content to their most essential forms; prioritise essential features and information so users can accomplish their goals straightforwardly.",
+  "rule": "Simplicity = reducing elements and content to their most essential forms; prioritise essential features and information so users can accomplish their goals straightforwardly. Every additional button, image or line of text clutters the UI: don't show information that isn't relevant to the task the user is trying to accomplish (p.24).",
   "why": "A simple design reduces cognitive effort and makes the interface easier to understand and navigate. Overcomplicated or cluttered designs overwhelm users, causing confusion and reduced engagement.",
   "doDont": "See B-11 (cart example).",
-  "auditCheck": "For each screen, can the primary task be identified in a few seconds? Count competing elements/text lines per item; flag any element that doesn't support the screen's task.",
-  "restyleFix": "Remove, collapse or defer non-essential elements; keep one clear primary action."
+  "auditCheck": "For each screen, can the primary task be identified in a few seconds? Count competing elements/text lines per item; for each button, image and text line ask \"does this help complete the task on this screen?\" and flag the ones that don't.",
+  "restyleFix": "Remove, collapse or defer non-essential elements (move them to a secondary screen or progressive disclosure); keep one clear primary action.",
+  "aliases": [
+   "B-12"
+  ]
  },
  {
   "id": "B-11",
@@ -788,26 +715,6 @@
   "doDont": "Two mobile \"Cart\" screens (back arrow, title, trash icon; \"Luxury grey suit\", $699 with −/1/+ stepper; \"Total (3 items): $1797\"; \"Proceed to checkout\" black pill; bottom nav with 4 icons). **Don't**: big product photos; many dark/bold detail lines per item (Color: Grey, Size: Medium (M), Material: Polyester, Viewed: 3221 times, Sold: 221 times, \"* Read return policy\"); items tightly packed so only ~2 items fit; total set very large/bold. **Do**: smaller product image; only Color and Size shown in light grey small text under a bolder product name; price + quantity stepper on one line; generous vertical gaps between items so 3 items visible; total in modest size. (from visual)",
   "auditCheck": "In cart/checkout lists, count metadata lines per line-item (PDF good example: name + 2 attributes + price/qty). Flag extra marketing/social-proof data (views, sold counts), return-policy notes, oversized images that push content/total below the fold.",
   "restyleFix": "Delete non-task metadata (viewed/sold counts, material, return notes → link elsewhere), shrink the thumbnail, set secondary attributes in lighter grey and smaller size, add spacing between items."
- },
- {
-  "id": "B-12",
-  "title": "Show only information relevant to the user's current task",
-  "source": "playbook",
-  "pages": "24",
-  "citation": "p.24",
-  "section": "Simplicity (p.23-24)",
-  "skill": "ux-hierarchy-clarity",
-  "severity": "high",
-  "tags": [
-   "interaction-cost",
-   "hierarchy",
-   "copy"
-  ],
-  "rule": "Keep only the most important elements and information. Every additional button, image or line of text clutters the UI. Don't show users information that isn't relevant to the task they're trying to accomplish.",
-  "why": "Cuts cognitive load and keeps focus where it should be.",
-  "doDont": "Text only (see B-11).",
-  "auditCheck": "For each element ask \"does this help complete the task on this screen?\" Flag buttons/images/text lines that don't.",
-  "restyleFix": "Remove or move the irrelevant element to a secondary screen / progressive disclosure."
  },
  {
   "id": "B-13",
@@ -889,7 +796,7 @@
   "rule": "With a multiples-of-4 system, fix a rule such as \"related items are 8px apart\" and apply it throughout; larger steps separate unrelated groups.",
   "why": "Easy to apply consistently; simplifies cognitive load; aligns with Law of Proximity.",
   "doDont": "See B-15 (label→input always 8; fields apart 24; sections apart 40).",
-  "auditCheck": "Is the gap within a group (e.g. label→input) always smaller than the gap between groups, and is the same value used everywhere for the same relationship?",
+  "auditCheck": "Is the same spacing value used everywhere for the same relationship (every label→input 8, every field→field 24, every section→section 40)? Flag the same relationship spaced differently across forms or screens. Whether the gap inside a group is smaller than the gap between groups is A-15's check; don't report it here as well.",
   "restyleFix": "Define tokens: e.g. intra-group 8px, between-field 24px, between-section 40px (values from visual of the form) and apply consistently."
  },
  {
@@ -1021,21 +928,26 @@
   "id": "C-02",
   "title": "Keep proportion and scale balanced – no element overpowers the others",
   "source": "playbook",
-  "pages": "36",
-  "citation": "p.36",
+  "pages": "36, reaffirmed p.37",
+  "citation": "p.36, reaffirmed p.37",
   "section": "Balance and harmony (p.36-37)",
   "skill": "ux-layout-spacing",
   "severity": "medium",
   "tags": [
    "hierarchy",
    "layout",
-   "craft"
+   "craft",
+   "buttons",
+   "imagery"
   ],
   "rule": "No single element should overpower the others. Every element gets its own space and prominence, but not so much that it becomes a distraction.",
   "why": "Balance and harmony make everything on the page fit together, make the design look good, easier to use, and help people quickly understand what is on screen and how to use it.",
-  "doDont": "See C-04/C-05 (kiwi card example, p.37). Oversized elements are the \"don't\".",
-  "auditCheck": "Is any one element (hero image, CTA, heading) disproportionately large relative to the rest of the component so that the eye has no clear second stop? Compare sizes of image, heading, body and button within a card.",
-  "restyleFix": "Scale down the dominant element until the heading, body and CTA each remain easy to see without any of them dominating."
+  "doDont": "Kiwi-ice-cream card (p.37, from visual). Don't: a very large circle image, tiny description and rating text, and a full-card-width tall pill \"Get now\" button; image and button hog attention, so the eye doesn't know where to go next and heading, description and rating get lost. Do: the image is smaller, the heading stays about the same size, the description and rating text are larger (the description grows relative to the heading), the rating row sits under it and \"Get now\" is a small compact pill (not full width), so the card is shorter. Keep the image eye-catching but not overshadowing, the heading and CTA easy to see but \"not too flashy\". See also C-04.",
+  "auditCheck": "Is any one element (hero image, CTA, heading) disproportionately large relative to the rest of the component so that the eye has no clear second stop? Compare sizes of image, heading, body and button within a card. Is the CTA full-width/very tall on a content card when it is not a mobile footer bar? Is the image taking the dominant share of card area while the description and rating text are tiny?",
+  "restyleFix": "Scale down the dominant element until the heading, body and CTA each remain easy to see without any of them dominating: reduce image diameter/height, shrink the CTA to a content-width pill with normal padding, bump the description and rating text size so the card reads heading → description → rating → CTA.",
+  "aliases": [
+   "C-05"
+  ]
  },
  {
   "id": "C-03",
@@ -1078,27 +990,6 @@
   "doDont": "No dedicated example; the kiwi pair (p.37) shows the refined version with heading, body, rating and button at modest, proportionate sizes.",
   "auditCheck": "Do similar components use different paddings, font sizes or element heights? Are spacing/type/size values drawn from a shared scale/tokens?",
   "restyleFix": "Normalise spacing, type sizes and element sizes to a shared token scale across components."
- },
- {
-  "id": "C-05",
-  "title": "Don't let the hero image and CTA button hog the card",
-  "source": "playbook",
-  "pages": "37",
-  "citation": "p.37",
-  "section": "Balance and harmony (p.36-37)",
-  "skill": "ux-layout-spacing",
-  "severity": "medium",
-  "tags": [
-   "hierarchy",
-   "buttons",
-   "imagery",
-   "layout"
-  ],
-  "rule": "Image and button must not be too big compared to the rest of the content. Keep the image eye-catching but not overshadowing; make heading and CTA easy to see but \"not too flashy\".",
-  "why": "When image and button are oversized, they hog attention; the eye doesn't know where to go next and crucial details (heading, description, rating) get lost.",
-  "doDont": "Don't (from visual): kiwi-ice-cream card with a very large circle image, tiny description and rating text, and a full-card-width tall pill \"Get now\" button. Do (from visual): the image is smaller, the heading stays about the same size, the description and rating text are larger and more readable (the description grows relative to the heading), the rating row sits under it and the \"Get now\" button is a small, compact pill (not full width), the card is shorter.",
-  "auditCheck": "Is the CTA full-width/very tall on a content card when it is not a mobile footer bar? Is the hero image taking the dominant share of card area while the description and rating text are tiny (compare description/rating size to the heading and the image)? Does the secondary content get visually lost?",
-  "restyleFix": "Reduce image diameter/height, shrink CTA to content-width pill with normal padding, bump the description and rating text size (the heading can stay about the same) so the card reads heading → description → rating → CTA."
  },
  {
   "id": "C-07",
@@ -1248,8 +1139,8 @@
   "id": "C-14",
   "title": "Use a single icon style (outline vs filled, weight, detail, size) within a screen",
   "source": "playbook",
-  "pages": "45",
-  "citation": "p.45",
+  "pages": "45, reaffirmed p.46",
+  "citation": "p.45, reaffirmed p.46",
   "section": "Consistency (p.38-46)",
   "skill": "ux-layout-spacing",
   "severity": "medium",
@@ -1257,11 +1148,14 @@
    "icons",
    "craft"
   ],
-  "rule": "Don't mix icons of different sizes or types – e.g. one simple and another highly detailed, or some outlined and others filled on the same screen. Decide on an icon style ahead of time and use it across all UI screens (e.g. outlined everywhere).",
+  "rule": "Don't mix icons of different sizes or types – e.g. one simple and another highly detailed, or some outlined and others filled on the same screen. Decide on an icon style ahead of time and use it across all UI screens (e.g. outlined everywhere). Use one icon set: a custom set is one way, open-source icons are fine if the set fits the brand image and you don't mix two sets with different properties (weight, style, corner shape) (p.46).",
   "why": "Inconsistent icons are a common error that breaks cohesion.",
   "doDont": "Don't (from visual, \"Account features\" list): Manage account icon is a detailed double-person outline, search is a different outline, heart is filled, share is filled, notification bell is filled – mixed outline/filled and different detail levels, and icons slightly different sizes. Do (from visual): all five icons (user, search, heart, share, bell) are consistent thin outline icons of the same size and stroke, in the same purple colour.",
-  "auditCheck": "Within a screen, do icons mix stroke and fill variants, different stroke widths, different sizes or different libraries? (Code: multiple icon packages imported, mix of `fill`/`stroke` styles, inconsistent width/height.)",
-  "restyleFix": "Replace all icons with one set in a single style (e.g. outlined), same stroke width and the same size (grid)."
+  "auditCheck": "Within a screen, do icons mix stroke and fill variants, different stroke widths, different sizes or different libraries? Across screens, how many icon libraries does the project/Figma file use, and do icons differ in stroke weight, terminal shapes or corner styles? (Code: multiple icon packages imported, mix of `fill`/`stroke` styles, inconsistent width/height.) Filled vs outline that maps to selected state is C-15's exception, not a finding.",
+  "restyleFix": "Pick one library matching the brand tone and replace all icons with it in a single style (e.g. outlined), same stroke width and the same size (grid).",
+  "aliases": [
+   "C-16"
+  ]
  },
  {
   "id": "C-15",
@@ -1282,25 +1176,6 @@
   "doDont": "Do (from visual p.46): dark bottom nav bar with four icons; the active \"home\" icon is filled, on a lilac circular highlight raised/notched in the bar; the other three (clock, pie chart, user) are outlined and grey; annotated \"Icon: filled\" and \"Icon: outlined\".",
   "auditCheck": "If a nav bar uses filled vs outline icons, does the difference map to selected/unselected state rather than arbitrary variation? Is the active tab differentiated (filled)?",
   "restyleFix": "In tab bars/nav, use outlined for inactive and the filled variant of the same icon for the active tab (optionally plus highlight)."
- },
- {
-  "id": "C-16",
-  "title": "Use one icon set (custom or open-source) that fits the brand",
-  "source": "playbook",
-  "pages": "46",
-  "citation": "p.46",
-  "section": "Consistency (p.38-46)",
-  "skill": "ux-layout-spacing",
-  "severity": "low",
-  "tags": [
-   "icons",
-   "craft"
-  ],
-  "rule": "A custom icon set is one way to achieve consistency, but open-source icons are fine if the set aligns with the overall brand image and you don't mix two different sets with varying properties.",
-  "why": "Keeps a consistent look.",
-  "doDont": "Do: one coherent set (custom or open-source) matching the brand. Don't: mix two different icon sets with different properties (weight, style, corner shape).",
-  "auditCheck": "How many icon libraries are in the project/Figma file? Do icons across screens have different stroke weights, terminal shapes or corner styles?",
-  "restyleFix": "Pick one library (e.g. a single open-source family matching brand tone) and swap out all others."
  },
  {
   "id": "C-17",
@@ -1390,8 +1265,8 @@
   "id": "D-03",
   "title": "Give floating elements (dropdown menus) a subtle shadow",
   "source": "playbook",
-  "pages": "50-51",
-  "citation": "p.50-51",
+  "pages": "50-51, reaffirmed p.22",
+  "citation": "p.50-51, reaffirmed p.22",
   "section": "Use shadows to add depth (p.50-51)",
   "skill": "ux-depth-craft",
   "severity": "medium",
@@ -1401,11 +1276,14 @@
    "navigation",
    "interaction-cost"
   ],
-  "rule": "Use shadows to create a sense of depth so users can tell which items they can click or move, and to move the design away from flat layouts. A navigation dropdown should have a subtle shadow so it appears to float above the page.",
+  "rule": "Use shadows to create a sense of depth so users can tell which items they can click or move, and to move the design away from flat layouts. A shadow makes an element pop from its background and improves its visibility (p.22). A navigation dropdown should have a subtle shadow so it appears to float above the page.",
   "why": "The shadow makes the dropdown seem to float above the page and helps the menu stand out from the background, making it easier to focus on the options.",
   "doDont": "Don't (left, thumbs-down): nav bar \"Resources / Solutions / Pricing\" with the open \"Solutions\" dropdown (Marketing, Product & Engineering, Customer experience, Customer engagement, footer \"All resources\") has no shadow, so the white panel merges with the pale grey background behind it. Do (right, thumbs-up): identical dropdown with a subtle, diffuse shadow that lifts it off the page.",
-  "auditCheck": "Do dropdowns, popovers, menus, tooltips and modals have a box-shadow (or equivalent elevation) when overlapping other content? `box-shadow: none` on an absolutely/fixed-positioned overlay = violation.",
-  "restyleFix": "Add a soft shadow to the overlay (see D-05 values, e.g. `0 12px 48px` low-opacity) so it separates from the underlying page."
+  "auditCheck": "Do dropdowns, popovers, menus, tooltips and modals have a box-shadow (or equivalent elevation) when overlapping other content? `box-shadow: none` on an absolutely/fixed-positioned overlay = violation. Raised in-flow surfaces (cards) need a shadow or a border (p.22); a card with neither on a same-colour background is B-07's check.",
+  "restyleFix": "Add a soft shadow to the overlay (see D-05 values, e.g. `0 12px 48px` low-opacity) so it separates from the underlying page.",
+  "aliases": [
+   "B-08"
+  ]
  },
  {
   "id": "D-04",
@@ -1961,7 +1839,7 @@
   "why": "Typeface conveys tone for the sector.",
   "doDont": "Example \"Faircase – Fair and Square.\" law-firm landing page: serif logo, nav, large serif headline, serif body and stats (\"1542 Cases / 53 Lawyers / 726 Connections\"), dark red/maroon CTA, tan background panel with portrait photo (from visual).",
   "auditCheck": "Does the typeface personality match the sector/brand (formal sector with playful/techy font = mismatch)?",
-  "restyleFix": "Swap to a classic serif (e.g. Merriweather-like, from visual) for headings/body in formal contexts."
+  "restyleFix": "Swap headings and display text to a classic serif (e.g. Merriweather-like, from visual) in formal contexts. The p.72 example also sets the body in serif, while F-17 (p.97) prefers sans-serif body copy for readability: pair a serif heading face with a sans body (E-21), and keep a serif body only when it is a text serif set at 16px or more with 1.5+ line-height (F-06, F-07) (inference)."
  },
  {
   "id": "E-14",
@@ -2071,33 +1949,15 @@
    "craft",
    "hierarchy"
   ],
-  "rule": "Never use more than two font families. More than two looks cluttered, confusing and off-brand. Best practice (p.96-97): one family with different weights and sizes; experienced designers can pair two (e.g. Playfair Display headings + Roboto paragraphs). Avoid fonts that compromise readability.",
+  "rule": "Never use more than two font families. More than two looks cluttered, confusing and off-brand. Best practice (p.76, p.96-97): one versatile family, with dynamics from different weights and sizes; experienced designers can pair two (e.g. Playfair Display headings + Roboto paragraphs). Avoid fonts that compromise readability.",
   "why": "Messy and harder to look at; one or two fonts feel clean.",
   "doDont": "Don't: music app screen with four families – Poppins (title) + Open Sans (subtitle), Times (track titles), Telex (button, UPPERCASE \"DISCOVER MORE\"). Do: same screen all Inter (\"Music\", \"Special edition\", track titles, \"Discover more\").",
-  "auditCheck": "Count distinct `font-family` values (excluding icon/mono fallbacks) in CSS/Figma text styles: > 2 → flag. Also flag a display/script font used for body text or UI labels.",
-  "restyleFix": "Consolidate to 1 (ideally) or 2 families; remap all text styles.",
+  "auditCheck": "Count distinct `font-family` values (excluding icon/mono fallbacks) in CSS/Figma text styles: > 2 → flag. Two families split by role (headings vs body, E-21) are allowed, not a finding; one family is the recommendation. A display/script face on body text or UI labels is E-16's check.",
+  "restyleFix": "Consolidate to 1 (ideally) or 2 families; replace an extra family with a different weight/size of the primary family and remap all text styles.",
   "aliases": [
-   "F-18"
+   "F-18",
+   "E-20"
   ]
- },
- {
-  "id": "E-20",
-  "title": "Best practice: one versatile font, vary weight and size for dynamics",
-  "source": "playbook",
-  "pages": "76",
-  "citation": "p.76",
-  "section": "Typography (p.72-84)",
-  "skill": "ux-typography",
-  "severity": "medium",
-  "tags": [
-   "typography",
-   "hierarchy"
-  ],
-  "rule": "For a clean, professional look, stick to one versatile font and create dynamics via different weights and sizes.",
-  "why": "Cleaner and more professional.",
-  "doDont": "Do: all-Inter example (see E-19).",
-  "auditCheck": "Is hierarchy built with weight/size in a single family rather than extra families?",
-  "restyleFix": "Replace secondary family with a different weight/size of the primary family."
  },
  {
   "id": "E-21",
@@ -2121,8 +1981,8 @@
   "id": "E-22",
   "title": "Keep body-copy line length at 45-75 characters on desktop",
   "source": "playbook",
-  "pages": "76-77",
-  "citation": "p.76-77",
+  "pages": "76-77, reaffirmed p.78",
+  "citation": "p.76-77, reaffirmed p.78",
   "section": "Typography (p.72-84)",
   "skill": "ux-typography",
   "severity": "high",
@@ -2132,10 +1992,13 @@
    "accessibility"
   ],
   "rule": "For body copy on desktop, line length should be 45-75 characters per line (research-backed sweet spot). These are guidelines, not strict rules.",
-  "why": "Optimises readability/visual appeal; keeps focus and prevents users feeling overwhelmed or losing their place.",
-  "doDont": "Diagram with ruler markers 0, 20, 45, 75, 100 characters in a browser frame. Green (good) text blocks: one spanning to ~75, another ending at roughly 45 (from visual). Pink (bad) blocks: a narrow block of ~20 characters per line (too short, choppy) and a wide block running out to ~100 characters (too long).",
+  "why": "Optimises readability/visual appeal; keeps focus and prevents users feeling overwhelmed or losing their place. Text across the whole page width makes the eyes travel far from the end of one line to the start of the next, increasing eye strain (p.78).",
+  "doDont": "Diagram with ruler markers 0, 20, 45, 75, 100 characters in a browser frame. Green (good) text blocks: one spanning to ~75, another ending at roughly 45 (from visual). Pink (bad) blocks: a narrow block of ~20 characters per line (too short, choppy) and a wide block running out to ~100 characters (too long). Applied bad example (p.78, from visual): a dog-community landing page whose \"Why people love dogs\" paragraph runs the full container width (~100+ characters per line, 4 lines) in small grey text; the two valid fixes are E-27 and E-28.",
   "auditCheck": "Measure real characters per line of the rendered body paragraph (browser: `Range.getClientRects()` per line plus the line's text length; or font metrics) – do not infer it from a `ch` value: 1ch is the width of the `0` glyph, not an average character (one proportional UI font measured 72ch ≈ 93 real characters per line, while 36em ≈ 73.5; inference from a real-project measurement). Flag if >75 or <45 on desktop (e.g. no `max-width` on a paragraph in a wide container, `max-w-none`, full-width text).",
-  "restyleFix": "Cap the column in `em`/`rem`; rule of thumb for proportional UI fonts about 30–36em gives 45–75 characters (inference – 36em ≈ 73.5 characters in one measured font, about 2.0 characters/em; verify per font by re-measuring). Use `ch` only for monospace fonts. Centre or left-align the constrained column; `max-w-prose` (65ch) is not a safe shortcut for proportional fonts."
+  "restyleFix": "Cap the column in `em`/`rem`; rule of thumb for proportional UI fonts about 30–36em gives 45–75 characters (inference – 36em ≈ 73.5 characters in one measured font, about 2.0 characters/em; verify per font by re-measuring). Use `ch` only for monospace fonts. Centre or left-align the constrained column; `max-w-prose` (65ch) is not a safe shortcut for proportional fonts.",
+  "aliases": [
+   "E-26"
+  ]
  },
  {
   "id": "E-23",
@@ -2195,27 +2058,8 @@
   "restyleFix": "Tune per breakpoint."
  },
  {
-  "id": "E-26",
-  "title": "Don't let body text span the full page width",
-  "source": "playbook",
-  "pages": "78",
-  "citation": "p.78",
-  "section": "Typography (p.72-84)",
-  "skill": "ux-typography",
-  "severity": "high",
-  "tags": [
-   "typography",
-   "layout"
-  ],
-  "rule": "Text stretching across the whole page width is hard to read; constrain it.",
-  "why": "Eyes must travel a long distance from end of one line to start of next, increasing eye strain and reducing readability.",
-  "doDont": "Don't: dog-community landing page – below the hero, heading \"Why people love dogs\" and a paragraph running the full container width (~100+ characters per line, 4 lines), small grey text (from visual).",
-  "auditCheck": "Paragraph container whose rendered lines exceed ~75 real characters (measure per line in the browser, see E-22; do not convert from `ch`, since 1ch is the width of `0`, not an average character) with long unbroken lines.",
-  "restyleFix": "Add a `max-width` that yields ≤ 75 real characters per line; for proportional UI fonts about 30–36em is a starting point (inference – verify per font)."
- },
- {
   "id": "E-27",
-  "title": "Narrow centered text column (≤75 chars) is a valid fix",
+  "title": "Narrow centred text block (≤75 chars, lines left-aligned) is a valid fix",
   "source": "playbook",
   "pages": "79",
   "citation": "p.79",
@@ -2227,11 +2071,11 @@
    "layout",
    "alignment"
   ],
-  "rule": "Center-align the text *block* below the image/intro and limit line length to max 75 characters.",
+  "rule": "Centre the text *block* (the container, not the lines) below the image/intro and limit line length to max 75 characters. The lines inside the block stay left-aligned (A-24).",
   "why": "Eyes travel less, easier to move from line end to next line start.",
   "doDont": "Do: paragraph block (\"Why people love dogs\", 4 lines at ~70 chars) is a narrower column positioned in the centre of the container; the heading is left-aligned with the paragraph inside the column (from visual – the block is centred, text itself remains left-aligned).",
-  "auditCheck": "Text block in wide container is constrained to ≤75 real characters per line (measure it, see E-22) and centred (`mx-auto max-w-…`).",
-  "restyleFix": "Wrap in centred container with max-width ≈75 characters."
+  "auditCheck": "Text block in wide container is constrained to ≤75 real characters per line (measure it, see E-22) and centred (`mx-auto max-w-…`) with its text left-aligned. `text-center` on a multi-line paragraph is not this fix; it is A-24's violation.",
+  "restyleFix": "Wrap in centred container with max-width ≈75 characters; keep `text-align: left` inside it."
  },
  {
   "id": "E-28",
@@ -2312,45 +2156,25 @@
    "contrast",
    "color",
    "typography",
-   "dark-mode"
-  ],
-  "rule": "Don't use #000000 text on white backgrounds or #FFFFFF text on dark backgrounds. Use off-black/dark grey for headings and a lighter grey for body text.",
-  "why": "Pure extremes are hard on the eyes and disrupt visual harmony; a softer scheme is soothing, sophisticated and balanced; dark grey headings say \"this is significant\" without screaming; lighter grey text stays readable without overwhelming.",
-  "doDont": "Don't: dark card Heading #FFFFFF / Body #FFFFFF on black; light card Heading #000000 / Body #000000 on white. Do: see E-32. The p.96 checklist repeats it: the p.95 good card uses #1B000D for headings and #5E5458 for paragraphs instead of #000000 for both.",
-  "auditCheck": "Grep CSS/tokens for `color: #000`, `#000000`, `black`, `#fff`/`#ffffff`/`white` used as text colour on respective extremes (`text-black`, `text-white` on `bg-black`/`bg-white`/very dark).",
-  "restyleFix": "Replace with off-black/dark-grey tokens and lighter grey body (E-32 values, or #1B000D heading / #5E5458 body from p.95) that still passes 4.5:1.",
-  "aliases": [
-   "F-13"
-  ]
- },
- {
-  "id": "E-32",
-  "title": "Use graded greys: darker heading, lighter body text (reference values)",
-  "source": "playbook",
-  "pages": "83",
-  "citation": "p.83",
-  "section": "Typography (p.72-84)",
-  "skill": "ux-typography",
-  "severity": "medium",
-  "tags": [
-   "contrast",
-   "color",
-   "typography",
    "hierarchy",
    "dark-mode"
   ],
-  "rule": "Heading darker/stronger than body text, both soft. Reference values from the example — Dark mode (on black background): heading #F2F2F2, body #CACACA. Light mode (on white background): heading #1A1A1A, body #4E4E4E.",
-  "why": "Refined contrast \"that just feels right\" while keeping a heading/body hierarchy.",
-  "doDont": "Do: example \"The scoop on ice cream\" card in both DARK and LIGHT variants using values above; heading visibly brighter/darker than body. Don't: identical colour for heading and body (#FFFFFF/#FFFFFF, #000000/#000000).",
-  "auditCheck": "Heading and body use different, non-extreme colours; light theme text ≈ #1A1A1A heading / ≈ #4E4E4E body (contrast of #4E4E4E on white = 8.32:1 – computed, still above WCAG AA); dark theme ≈ #F2F2F2 / ≈ #CACACA. Flag body greys lighter than AA 4.5:1 (inference: threshold not on p.83).",
-  "restyleFix": "Set text tokens: light — heading #1A1A1A, body #4E4E4E; dark — heading #F2F2F2, body #CACACA."
+  "rule": "Don't use #000000 text on white backgrounds or #FFFFFF text on dark backgrounds. Use off-black/dark grey for headings and a lighter grey for body text, both soft. Reference values from the p.83 example: light mode (on white) heading #1A1A1A, body #4E4E4E; dark mode (on black) heading #F2F2F2, body #CACACA.",
+  "why": "Pure extremes are hard on the eyes and disrupt visual harmony; a softer scheme is soothing, sophisticated and balanced; dark grey headings say \"this is significant\" without screaming; lighter grey text stays readable without overwhelming.",
+  "doDont": "Don't: dark card Heading #FFFFFF / Body #FFFFFF on black; light card Heading #000000 / Body #000000 on white. Do: \"The scoop on ice cream\" card in both DARK and LIGHT variants using the reference values, heading visibly brighter/darker than body. The p.96 checklist repeats it: the p.95 good card uses #1B000D for headings and #5E5458 for paragraphs instead of #000000 for both.",
+  "auditCheck": "Grep CSS/tokens for `color: #000`, `#000000`, `black`, `#fff`/`#ffffff`/`white` used as text colour on respective extremes (`text-black`, `text-white` on `bg-black`/`bg-white`/very dark). Compare text tokens with the reference values (#4E4E4E on white = 8.32:1, computed). The same colour for heading and body is A-12's check; body text below 4.5:1 is F-09's.",
+  "restyleFix": "Set text tokens: light — heading #1A1A1A, body #4E4E4E; dark — heading #F2F2F2, body #CACACA (or #1B000D heading / #5E5458 body from p.95); re-check that body still passes 4.5:1.",
+  "aliases": [
+   "F-13",
+   "E-32"
+  ]
  },
  {
   "id": "E-33",
   "title": "Use heavier weights for headings and lighter for body",
   "source": "playbook",
-  "pages": "84, reaffirmed p.96-97",
-  "citation": "p.84, reaffirmed p.96-97",
+  "pages": "84, reaffirmed p.22, p.96-97",
+  "citation": "p.84, reaffirmed p.22, p.96-97",
   "section": "Typography (p.72-84)",
   "skill": "ux-typography",
   "severity": "high",
@@ -2358,13 +2182,14 @@
    "typography",
    "hierarchy"
   ],
-  "rule": "Headings: bold, semibold or medium; paragraphs: regular, sometimes light. Don't use the same weight for heading and body.",
+  "rule": "Headings: bold, semibold or medium; paragraphs: regular, sometimes light. Don't use the same weight for heading and body. Weight and style are one of the five ways to create contrast between text roles (p.22): titles, labels and key values heavier than body and meta text.",
   "why": "Weight adds visual interest and tells users what is most important; thin body weights stay readable and don't compete with headings.",
   "doDont": "Don't: card \"The canine connection\" with heading Regular and body Regular – hard to tell what's important. Do: heading Bold, body Regular – clear what to focus on and what to skim.",
-  "auditCheck": "Compare `font-weight` of headings vs body: equal (e.g. 400/400) → flag. Headings should be ≥500 (medium/semibold/bold), body 300-400. Heading weight ≤ body weight is a violation unless the heading is clearly larger than the body (F-01); body weight < 400 → see F-03.",
-  "restyleFix": "Set headings to 500-700 and body to 400 (or 300).",
+  "auditCheck": "Compare `font-weight` of headings vs body: equal (e.g. 400/400) → flag. Headings should be ≥500 (medium/semibold/bold), body 300-400. Heading weight ≤ body weight is a violation unless the heading is clearly larger than the body (F-01); body weight < 400 → see F-03. Also flag a screen where all text uses one weight (everything `font-normal` or everything `font-semibold`), labels and values included (p.22).",
+  "restyleFix": "Set headings to 500-700 and body to 400 (or 300); assign weights by role and reuse them (titles/values 600–700, body/meta 400).",
   "aliases": [
-   "F-15"
+   "F-15",
+   "B-05"
   ]
  },
  {
@@ -2432,8 +2257,8 @@
   "id": "F-04",
   "title": "Use size to signal which text is important",
   "source": "playbook",
-  "pages": "88",
-  "citation": "p.88",
+  "pages": "88, reaffirmed p.22",
+  "citation": "p.88, reaffirmed p.22",
   "section": "Typography: size, line-height, contrast, alignment (p.88-94)",
   "skill": "ux-typography",
   "severity": "high",
@@ -2441,11 +2266,14 @@
    "hierarchy",
    "typography"
   ],
-  "rule": "Size is the most direct way to establish hierarchy; bigger elements attract more attention. Make the message that matters most the largest.",
+  "rule": "Size is the most direct way to establish hierarchy; bigger elements attract more attention. Make the message that matters most the largest. Size contrast is one of the five ways to create contrast (p.22).",
   "why": "Users read the biggest text first; if the wrong text is biggest they act on the wrong message (analogy: giant \"Start the engine and go full speed\" vs. small \"Wait until you see the green light!\" at a red light → crash).",
   "doDont": "Two cards with a traffic-light image. Bad: \"Wait until you see the green light!\" tiny, \"Start the engine and go full speed\" large. Good: \"Wait until you see the green light!\" large, \"Start the engine and go full speed\" small.",
-  "auditCheck": "Is the largest text on each card/section the one the user most needs to see (primary message, warning, key value)? Is a secondary/optional/ancillary text larger than the critical one?",
-  "restyleFix": "Re-assign type scale so the most important text gets the largest size and secondary text is reduced."
+  "auditCheck": "Is the largest text on each card/section the one the user most needs to see (primary message, warning, key value)? Is a secondary/optional/ancillary text larger than the critical one? Is there a visible size step between the primary element (title, key metric, CTA) and secondary text, or do adjacent type levels differ by almost nothing (p.22)? Heading vs body size is F-05's check.",
+  "restyleFix": "Re-assign type scale so the most important text gets the largest size and secondary text is reduced.",
+  "aliases": [
+   "B-06"
+  ]
  },
  {
   "id": "F-05",
@@ -2566,7 +2394,7 @@
   "rule": "Combine all principles on one card. Good card spec: heading line-height 120%, font-size 28px, weight Bold, colour `#1B000D` (near-black with tint); body line-height 160%, font-size 18px, weight Regular, colour `#5E5458` (softer than heading); button label font-size 18px, weight Semibold, colour `#141B12`; left-aligned text; WCAG AA and AAA Pass. Bad card spec: heading line-height 170%, 22px, Medium, `#000000`; body line-height 110%, 18px, Regular, `#000000`; button label 22px, Regular, `#FFFFFF` on pink; centre-aligned; button label WCAG AA Fail / AAA Fail.",
   "why": "Line height, contrast, weight, size and colour differences together make text more readable and engaging (\"elevate design from good to great\").",
   "doDont": "Card with Japan illustration, title \"Exploring the land of the rising sun: A journey through Japan's rich culture and history\", paragraph, pink \"Learn more →\" button. Bad: centred text; heading only 22px (barely > 18px body), medium weight, pure black; heading line-height 170% vs body 110% (inverted); pure black body (same as heading); white button label on pink fails contrast. Good: left-aligned; heading 28px bold, tight 120%; body 18px regular grey-brown, loose 160%; heading darker than body; dark semibold button label on pink passes.",
-  "auditCheck": "Test each point: heading/body size gap (28 vs 18 ≈ 1.55x), heading weight > body weight, heading darker than body, heading LH < body LH, pure #000/#FFF not used, button label contrast passes, paragraph left-aligned.",
+  "auditCheck": "Reference spec, not a finding of its own. Test each point and report a failing one under the rule that owns it: heading/body size gap (28 vs 18 ≈ 1.55x) F-05, heading weight > body weight E-33, heading darker than body A-12, heading LH < body LH F-08, pure #000/#FFF not used E-31, button label contrast passes F-12, paragraph left-aligned A-24. Don't add an F-11 finding on top of them.",
   "restyleFix": "Apply the good spec: heading 28/120% bold `#1B000D`; body 18/160% regular `#5E5458`; button text semibold dark (`#141B12`) on light-mid pink; left-align."
  },
  {
@@ -2638,11 +2466,14 @@
   "tags": [
    "interaction-cost"
   ],
-  "rule": "Interaction cost = the mental, physical and time effort a user must invest to reach their goal with a UI. A well-designed site/app reduces it. Ideal = zero (users find what they want immediately) but usually unfeasible because of feature breadth. Diagram: green straight arrow User → Goal (ideal) vs pink zig-zag path with many detours (high interaction cost).",
+  "rule": "Interaction cost = the mental, physical and time effort a user must invest to reach their goal with a UI. A well-designed site/app reduces it. Ideal = zero (users find what they want immediately) but usually unfeasible because of feature breadth: aim to reduce cost, not necessarily eliminate it. Diagram: green straight arrow User → Goal (ideal) vs pink zig-zag path with many detours (high interaction cost).",
   "why": "Every unit of effort is friction between the user and their goal.",
   "doDont": "Do give the shortest, most direct path. Don't force detours (zig-zag).",
-  "auditCheck": "For each key task, count clicks/keystrokes/scrolls/page loads/decisions and compare with the minimum possible.",
-  "restyleFix": "Apply strategies F-24 to F-30."
+  "auditCheck": "For each key task, count clicks/keystrokes/scrolls/page loads/decisions and compare with the minimum possible. Don't expect zero; rank findings so the highest-frequency tasks with the highest effort (the biggest detours) come first.",
+  "restyleFix": "Apply strategies F-24 to F-30.",
+  "aliases": [
+   "F-23"
+  ]
  },
  {
   "id": "F-21",
@@ -2681,29 +2512,11 @@
   "restyleFix": "Cut copy, surface info, shorten forms, add autofill, speed up loads, keep context visible."
  },
  {
-  "id": "F-23",
-  "title": "Cost is visible in the audit: don't expect zero, but target the biggest detours",
-  "source": "playbook",
-  "pages": "98",
-  "citation": "p.98",
-  "section": "Interaction cost: effective strategies (p.100-106)",
-  "skill": "ux-interaction-cost",
-  "severity": "low",
-  "tags": [
-   "interaction-cost"
-  ],
-  "rule": "Zero interaction cost is the ultimate usability goal but is usually unrealistic; aim to reduce, not necessarily eliminate.",
-  "why": "Feature-rich products inevitably require some interaction.",
-  "doDont": "n/a.",
-  "auditCheck": "Prioritise fixes on highest-frequency tasks with highest effort.",
-  "restyleFix": "n/a (prioritisation guidance)."
- },
- {
   "id": "F-24",
   "title": "Keep related actions close (Fitts's Law)",
   "source": "playbook",
-  "pages": "100",
-  "citation": "p.100",
+  "pages": "100, reaffirmed p.108",
+  "citation": "p.100, reaffirmed p.108",
   "section": "Interaction cost: effective strategies (p.100-106)",
   "skill": "ux-interaction-cost",
   "severity": "medium",
@@ -2714,9 +2527,12 @@
   ],
   "rule": "Closer and larger targets are faster to click. Position actions near the elements they relate to and give them a sufficient clickable area.",
   "why": "Fitts's Law — shorter distance and bigger target = less physical effort/time.",
-  "doDont": "Do (Spotify, from visual): playback controls (shuffle, previous, play/pause, next, repeat + progress bar) in a persistent fixed bar at the bottom of the screen, highlighted in the screenshot, so users don't navigate to another screen/menu. Don't put the action far from its subject or behind a separate screen.",
-  "auditCheck": "Distance between an action and the object it acts on; tiny hit areas (touch targets small); controls that require navigating away; CTA far from the related input.",
-  "restyleFix": "Move controls adjacent to / persistently anchored with their target; enlarge hit areas."
+  "doDont": "Do (Spotify, from visual): playback controls (shuffle, previous, play/pause, next, repeat + progress bar) in a persistent fixed bar at the bottom of the screen, highlighted in the screenshot, so users don't navigate to another screen/menu. Don't put the action far from its subject or behind a separate screen. Product page (p.108): good, \"Add to cart\" pill immediately right of the quantity stepper, below the colour swatches; bad, \"Add to cart\" at the far right edge, separated from the dropdowns.",
+  "auditCheck": "Distance between an action and the object it acts on; tiny hit areas (touch targets small); controls that require navigating away; a submit CTA far from the inputs it commits (far-right, detached, in another container or column).",
+  "restyleFix": "Move controls adjacent to / persistently anchored with their target; enlarge hit areas. Place a submit CTA adjacent to (right of or directly below) the final input it commits.",
+  "aliases": [
+   "F-34"
+  ]
  },
  {
   "id": "F-25",
@@ -2897,26 +2713,6 @@
   "restyleFix": "Replace with stepper (−/+ buttons + editable input)."
  },
  {
-  "id": "F-34",
-  "title": "Place the primary CTA next to the inputs it commits",
-  "source": "playbook",
-  "pages": "108",
-  "citation": "p.108",
-  "section": "Interaction cost: worked example — product page (p.107-108)",
-  "skill": "ux-interaction-cost",
-  "severity": "medium",
-  "tags": [
-   "interaction-cost",
-   "buttons",
-   "layout"
-  ],
-  "rule": "Move the \"Add to cart\" button closer to the quantity selector to reduce interaction (mouse-travel) cost.",
-  "why": "Fitts's Law — shorter distance; related actions close.",
-  "doDont": "Good: \"Add to cart\" pill immediately right of the quantity stepper, below the colour swatches. Bad: \"Add to cart\" at far right edge, separated from the dropdowns.",
-  "auditCheck": "Distance between configuration inputs and the submit CTA; CTA far-right/detached.",
-  "restyleFix": "Re-lay out so the CTA sits adjacent to (right of or directly below) the final input."
- },
- {
   "id": "G-01",
   "title": "Offer a primary \"Buy now\" (one-click order) button on product pages",
   "source": "playbook",
@@ -2940,8 +2736,8 @@
   "id": "G-02",
   "title": "Don't hide content behind promotional banners that need a tap",
   "source": "playbook",
-  "pages": "111, p.112",
-  "citation": "p.111, p.112",
+  "pages": "111, p.112, reaffirmed p.113",
+  "citation": "p.111, p.112, reaffirmed p.113",
   "section": "Expose content directly (p.111-113)",
   "skill": "ux-ui-patterns",
   "severity": "medium",
@@ -2950,52 +2746,17 @@
    "layout",
    "cards",
    "imagery",
-   "hierarchy"
+   "hierarchy",
+   "copy"
   ],
-  "rule": "Don't put a big banner like \"Discover 100+ recipes selected by our chefs\" or \"Discover 40+ foods that are good for your health\" with an \"Explore now\" button between the user and the actual content. Show the content itself on the screen.",
+  "rule": "Don't put a big banner like \"Discover 100+ recipes selected by our chefs\" or \"Discover 40+ foods that are good for your health\" with an \"Explore now\" button between the user and the actual content. Show the content itself on the screen: on open, a curated list (the PDF's example is \"Top 10 easy recommended recipes\", p.113) with no tap needed gives quick value, reduced friction and relevancy, because the most relevant or popular items are there right away.",
   "why": "The banner is an extra step. Interaction cost is the cognitive, physical and time effort a user spends to reach their goal. Users want immediate value, and hiding content creates an unnecessary barrier between them and the value of the app. The cost looks trivial but adds up, especially for new users who are unsure about investing time.",
   "doDont": "",
-  "auditCheck": "Does a home or discovery screen use large banner/hero tiles whose only job is to say \"explore X\" and link elsewhere? Does each section show real items (cards/thumbnails with titles and metadata) at the point of entry? Count the taps from the screen to the first real content item (should be 0 (inference)).",
-  "restyleFix": "Replace the banner with a horizontal row or grid of 3 actual item cards (image, title, key metadata such as duration). Add a small \"View all\" link on the right of the section header for the rest."
- },
- {
-  "id": "G-03",
-  "title": "Show a curated, relevant list immediately (e.g. \"Top 10 easy recommended recipes\")",
-  "source": "playbook",
-  "pages": "113",
-  "citation": "p.113",
-  "section": "Expose content directly (p.111-113)",
-  "skill": "ux-ui-patterns",
-  "severity": "medium",
-  "tags": [
-   "interaction-cost",
-   "copy",
-   "layout"
-  ],
-  "rule": "On open, show a curated list (the PDF's example is \"Top 10 easy recommended recipes\") with no tap needed. Exposing content directly has three benefits: (1) Quick value, because the user instantly sees what the app offers and is more likely to engage; (2) Reduced friction, because fewer steps means a better experience, more retention and more interaction; (3) Relevancy, because you can showcase the most relevant or popular items so the user finds something of interest right away.",
-  "why": "Instant value, lower friction and higher relevance improve retention and engagement.",
-  "doDont": "Do: a ready list of specific, useful items on first view. Don't: generic \"discover\" teasers (see G-02).",
-  "auditCheck": "Does the first viewport on a content app show specific, popular or relevant items rather than teasers? Are the items curated or ranked (e.g. \"Top N\")?",
-  "restyleFix": "Replace teaser sections with a titled curated list (\"Top 10 …\") of actual items, ordered by popularity or relevance."
- },
- {
-  "id": "G-04",
-  "title": "Design each input field for the type of data it collects",
-  "source": "playbook",
-  "pages": "114",
-  "citation": "p.114",
-  "section": "Form fields matched to input (p.114-116)",
-  "skill": "ux-ui-patterns",
-  "severity": "medium",
-  "tags": [
-   "forms",
-   "interaction-cost"
-  ],
-  "rule": "Don't use a one-size-fits-all field. Shape each field (size, length, segmentation, typography) to match the information asked for.",
-  "why": "It streamlines the interaction and removes unnecessary cognitive load, giving a smoother, more efficient experience.",
-  "doDont": "See G-05 (verification code) and G-06 (card details) for the two examples.",
-  "auditCheck": "Are all inputs in a form the same width and style regardless of the data they take? Is field width proportional to the expected value length?",
-  "restyleFix": "Set field widths and segmentation by data type (see G-05, G-06)."
+  "auditCheck": "Does a home or discovery screen use large banner/hero tiles whose only job is to say \"explore X\" and link elsewhere? Does each section show real items (cards/thumbnails with titles and metadata) at the point of entry? Count the taps from the screen to the first real content item (should be 0 (inference)). Are the items shown curated or ranked (e.g. \"Top N\") rather than an arbitrary sample (p.113)?",
+  "restyleFix": "Replace the banner with a horizontal row or grid of 3 actual item cards (image, title, key metadata such as duration), or a titled curated list (\"Top 10 …\") ordered by popularity or relevance. Add a small \"View all\" link on the right of the section header for the rest.",
+  "aliases": [
+   "G-03"
+  ]
  },
  {
   "id": "G-05",
@@ -3021,8 +2782,8 @@
   "id": "G-06",
   "title": "Match field length to expected data (short fields for CVC, expiry, zip) and pair them on a row",
   "source": "playbook",
-  "pages": "115, p.116",
-  "citation": "p.115, p.116",
+  "pages": "115, p.116, reaffirmed p.114",
+  "citation": "p.115, p.116, reaffirmed p.114",
   "section": "Form fields matched to input (p.114-116)",
   "skill": "ux-ui-patterns",
   "severity": "medium",
@@ -3032,11 +2793,14 @@
    "spacing",
    "interaction-cost"
   ],
-  "rule": "Size each field by the type and amount of data it holds. A CVC is always 3 or 4 digits, so it gets a short field. Apply the same logic to expiry date (MM/YY) and zip code. Don't give every item its own full-width field.",
+  "rule": "Don't use a one-size-fits-all field (p.114): shape each field (size, length, segmentation, typography) to the information asked for; segmentation for codes is G-05. Size each field by the type and amount of data it holds. A CVC is always 3 or 4 digits, so it gets a short field. Apply the same logic to expiry date (MM/YY) and zip code. Don't give every item its own full-width field.",
   "why": "Short fields remove ambiguity about what to type and make efficient use of space. The form then helps users enter data accurately and quickly, which benefits users and designers.",
   "doDont": "",
-  "auditCheck": "Are short-value fields (CVC 3-4 digits, expiry MM/YY, zip/postal code, quantity, age) rendered full width? Could two or more short fields share a row? A form with more than ~5 stacked full-width fields where some take ≤5 characters (inference) is a violation.",
-  "restyleFix": "Set short fields to width proportional to content (about 1/3 to 1/2 of the row). Group related short fields side by side: Expiry+CVC, Country+Zip. Keep long data (card number, name) full width."
+  "auditCheck": "Are all inputs in the form the same width and style regardless of the data they take? Are short-value fields (CVC 3-4 digits, expiry MM/YY, zip/postal code, quantity, age) rendered full width? Could two or more short fields share a row? A form with more than ~5 stacked full-width fields where some take ≤5 characters (inference) is a violation.",
+  "restyleFix": "Set short fields to width proportional to content (about 1/3 to 1/2 of the row). Group related short fields side by side: Expiry+CVC, Country+Zip. Keep long data (card number, name) full width.",
+  "aliases": [
+   "G-04"
+  ]
  },
  {
   "id": "G-07",
@@ -3399,8 +3163,8 @@
   "id": "H-09",
   "title": "Place primary actions in the thumb zone",
   "source": "playbook",
-  "pages": "134",
-  "citation": "p.134",
+  "pages": "134, reaffirmed p.135-136",
+  "citation": "p.134, reaffirmed p.135-136",
   "section": "Bonus tips: mobile (p.134-136)",
   "skill": "ux-ui-patterns",
   "severity": "high",
@@ -3413,72 +3177,38 @@
   ],
   "rule": "Mobile devices are often used one-handed, mainly with the thumb. Place key elements (buttons, navigation links, CTAs) and the most-used features within the area the thumb reaches easily. Elements outside it are harder to reach and cause frustration or misclicks.",
   "why": "Better usability and a more user-friendly interface on mobile.",
-  "doDont": "The thumb-zone map (from visual) on a phone: green \"Easy to reach\" is a blob in the lower-left/lower-middle of the screen. Orange \"Stretch but okay\" is the middle band and the area right of the green. Red \"Hard to reach\" is the top of the screen (including the top-left and the top corners) and the bottom-right corner. This map assumes a right-handed thumb (from visual).",
-  "auditCheck": "On mobile layouts, are the primary CTA, primary navigation and most-used controls in the top third or the far corners? Is the key action reachable in the lower-middle area?",
-  "restyleFix": "Move primary actions to the bottom of the screen (bottom bar, bottom-anchored CTA) and keep rarely used controls at the top."
- },
- {
-  "id": "H-10",
-  "title": "Anchor onboarding CTAs low on the screen, within thumb reach",
-  "source": "playbook",
-  "pages": "135-136",
-  "citation": "p.135-136",
-  "section": "Bonus tips: mobile (p.134-136)",
-  "skill": "ux-ui-patterns",
-  "severity": "medium",
-  "tags": [
-   "mobile",
-   "buttons",
-   "interaction-cost",
-   "layout"
-  ],
-  "rule": "Place the main CTA (and the secondary action) near the bottom of the screen where the thumb rests, not at the top. A CTA outside the thumb zone forces users to stretch or adjust their grip.",
-  "why": "Inconvenient and frustrating, especially for users on the go or with limited mobility. A CTA placed in the thumb zone can be used quickly and easily with one hand.",
-  "doDont": "Bad (thumbs-down, from visual): a real-estate welcome screen (house photo, headline \"Your perfect home is just a search away!\", subtext \"Explore a wide array of properties right at your fingertips.\"). The outlined \"Sign In\" pill sits at the top-right of the screen, far from the thumb. Dark \"Sign up\" is at the bottom. Good (thumbs-up, from visual): the same screen with both buttons stacked at the bottom, full width and pill-shaped. The outlined \"Sign In\" is directly above the dark filled \"Sign up\" below the text. The image and text move upward.",
-  "auditCheck": "Is any frequently used button (login, sign in, primary CTA) in the top corner of a mobile screen? Are the primary and secondary actions stacked together in the lower part?",
-  "restyleFix": "Move top-corner auth buttons into a full-width stacked group at the bottom of the screen, with the primary (filled) below or at the very bottom."
- },
- {
-  "id": "H-11",
-  "title": "Don't leave empty states bare",
-  "source": "playbook",
-  "pages": "136",
-  "citation": "p.136",
-  "section": "Bonus tips: states (p.136-140)",
-  "skill": "ux-ui-patterns",
-  "severity": "high",
-  "tags": [
-   "states",
-   "copy",
-   "interaction-cost"
-  ],
-  "rule": "An empty state must not be a blank screen with a bare message such as \"You have no projects!\". It must offer value and direction.",
-  "why": "A bare empty state is a dead end. Users feel lost, frustrated, stuck and unsure what to do next, and it wastes an opportunity to guide and engage them.",
-  "doDont": "Bad (thumbs-down, from visual): a mobile \"Projects\" screen (back arrow, title, settings gear) with just \"You have no projects!\" centered in the middle of a blank white card.",
-  "auditCheck": "Does any list, table, dashboard or inbox render only plain text, or nothing, when it has zero items? Does it lack a CTA?",
-  "restyleFix": "Replace with a designed empty state (see H-12)."
+  "doDont": "The thumb-zone map (from visual) on a phone: green \"Easy to reach\" is a blob in the lower-left/lower-middle of the screen. Orange \"Stretch but okay\" is the middle band and the area right of the green. Red \"Hard to reach\" is the top of the screen (including the top-left and the top corners) and the bottom-right corner. This map assumes a right-handed thumb (from visual). Onboarding example (p.135, from visual): bad, a real-estate welcome screen (house photo, \"Your perfect home is just a search away!\") with the outlined \"Sign In\" pill at the top-right and the dark \"Sign up\" at the bottom; good, both buttons stacked full width at the bottom, outlined \"Sign In\" directly above the filled \"Sign up\", with the image and text moved up.",
+  "auditCheck": "On mobile layouts, are the primary CTA, primary navigation and most-used controls (login, sign in, sign up) in the top third or the far corners? Is the key action reachable in the lower-middle area, with the primary and secondary actions stacked together in the lower part?",
+  "restyleFix": "Move primary actions to the bottom of the screen (bottom bar, bottom-anchored CTA) and keep rarely used controls at the top. Move top-corner auth buttons into a full-width stacked group at the bottom, with the filled primary lowest.",
+  "aliases": [
+   "H-10"
+  ]
  },
  {
   "id": "H-12",
-  "title": "Build empty states from illustration, benefit headline, tips and a CTA",
+  "title": "Don't leave empty states bare: build them from illustration, benefit headline, tips and a CTA",
   "source": "playbook",
   "pages": "136-137",
   "citation": "p.136-137",
   "section": "Bonus tips: states (p.136-140)",
   "skill": "ux-ui-patterns",
-  "severity": "medium",
+  "severity": "high",
   "tags": [
    "states",
    "imagery",
    "copy",
    "buttons",
-   "hierarchy"
+   "hierarchy",
+   "interaction-cost"
   ],
-  "rule": "A good empty state educates, engages and encourages action. It consists of: (1) a solution-oriented headline (\"Start managing your projects and stay organised.\"), (2) an accompanying illustration to make it visually appealing and less daunting, (3) actionable tips (\"Invite team members to collaborate on a project for better communication\", \"Set deadlines for tasks to keep everyone on track\"), and (4) a direct CTA button (\"Create new project\").",
+  "rule": "An empty state must not be a blank screen with a bare message such as \"You have no projects!\"; a bare state is a dead end where users feel lost and unsure what to do next. A good empty state educates, engages and encourages action. It consists of: (1) a solution-oriented headline (\"Start managing your projects and stay organised.\"), (2) an accompanying illustration to make it visually appealing and less daunting, (3) actionable tips (\"Invite team members to collaborate on a project for better communication\", \"Set deadlines for tasks to keep everyone on track\"), and (4) a direct CTA button (\"Create new project\").",
   "why": "It turns a potentially negative experience into a positive one, and the tips and CTA give clear next steps.",
-  "doDont": "Good (thumbs-up, from visual): a \"Projects\" screen with a pink-tinted circular illustration (hourglass, calendar, clock, clipboard, lightbulb) at the top. Below it are a bold left-aligned headline, two short tips with small orange lightning-bolt icons in grey text, and a full-width pink pill \"Create new project\" button at the bottom of the card. Don't: show the bare text in H-11.",
-  "auditCheck": "Does the empty state include all four parts: headline stating the benefit or next step, a visual, 1-3 tips (inference), and a primary CTA that creates the first item?",
-  "restyleFix": "Add an illustration, rewrite the headline as an invitation, add 2 short tips with icons, and add a primary CTA button that performs the first action."
+  "doDont": "Good (thumbs-up, from visual): a \"Projects\" screen with a pink-tinted circular illustration (hourglass, calendar, clock, clipboard, lightbulb) at the top. Below it are a bold left-aligned headline, two short tips with small orange lightning-bolt icons in grey text, and a full-width pink pill \"Create new project\" button at the bottom of the card. Bad (thumbs-down, from visual): the same mobile \"Projects\" screen (back arrow, title, settings gear) with just \"You have no projects!\" centered in a blank white card.",
+  "auditCheck": "Does any list, table, dashboard or inbox render only plain text, or nothing, when it has zero items, or lack a CTA? That bare state is the high case. Otherwise, does the empty state include all four parts: headline stating the benefit or next step, a visual, 1-3 tips (inference), and a primary CTA that creates the first item? A designed state missing only the tips is lowered one level, with that reason printed.",
+  "restyleFix": "Add an illustration, rewrite the headline as an invitation, add 2 short tips with icons, and add a primary CTA button that performs the first action.",
+  "aliases": [
+   "H-11"
+  ]
  },
  {
   "id": "H-13",
@@ -3956,7 +3686,7 @@
   "why": "Pure white glares and fatigues the eyes; opacity tiers keep hierarchy without new hues.",
   "doDont": "Do use opacity levels for emphasis. Don't use #FFF for all text.",
   "auditCheck": "grep `#fff`, `#ffffff`, `text-white` on dark backgrounds, esp. for body text.",
-  "restyleFix": "Use an off-white body color and `rgba(255,255,255,α)` tiers for secondary/disabled text."
+  "restyleFix": "Use an off-white body color and `rgba(255,255,255,α)` tiers for secondary/disabled text; every tier except disabled must still reach 4.5:1 against its surface (F-09; measure with `contrast.mjs --over`)."
  },
  {
   "id": "W1-19",
@@ -4750,7 +4480,7 @@
    "icons",
    "states"
   ],
-  "rule": "A dropdown trigger should look pressable: hover state included, a caret icon showing, and a touch area of 48px; a 30px box with a faint outline fails.",
+  "rule": "A dropdown trigger should look pressable: hover state included, a caret icon showing, and a touch area of 48px; a 30px box with a faint outline fails. 48px is the target for form-control triggers; 44px is the floor for any touch target (W2-83).",
   "why": "Obvious affordance and a target that's easy to reach.",
   "doDont": "Do give it a 48px touch area, a caret and hover feedback. Don't ship a small trigger with weak contrast.",
   "auditCheck": "Check trigger height (<48px, `h-8`/`h-7`), missing chevron icon, missing `hover:` style.",
@@ -5124,7 +4854,7 @@
   "why": "Keeps actions tidy and layout steady.",
   "doDont": "Do anchor revealed actions to the bottom edge. Don't cover the title with buttons or push them past the card edge.",
   "auditCheck": "Check hover-revealed buttons for absolute positioning overlapping title and for `transition-delay` ~60ms steps.",
-  "restyleFix": "Position actions in the bottom bar with 60ms staggered delays."
+  "restyleFix": "Position actions in the bottom bar with 60ms staggered delays. Only extras (favourite, share) may wait for hover; the card's main action stays visible, and on touch (`hover: none`) all actions show without hover (W2-81, W2-82)."
  },
  {
   "id": "W1-79",
@@ -5180,7 +4910,7 @@
    "depth",
    "hierarchy"
   ],
-  "rule": "Pair a neutral background with a single splash of color, placed only on the product screenshot and primary button: one accent, zero blobs.",
+  "rule": "Pair a neutral background with a single splash of color, placed only on the product screenshot and primary button: one accent, zero blobs. A decorative blob is a blurred colour shape with no job; one soft glow behind a product shot that uses the accent (W2-15) is not a blob.",
   "why": "Purple gradient smears add energy but no content.",
   "doDont": "Do keep the accent for the screenshot and primary CTA. Don't add decorative gradient blobs.",
   "auditCheck": "grep `blur-3xl`, `radial-gradient` blobs, absolute gradient circles in hero.",
@@ -5395,11 +5125,11 @@
    "buttons",
    "interaction-cost"
   ],
-  "rule": "Spend red only on destructive actions (not logout, badges, alerts), and never place a destructive button where confirm normally sits.",
+  "rule": "Among actions, spend red only on destructive ones (not logout, a red notification badge or a decorative accent), and never place a destructive button where confirm normally sits. Error status colour (field errors, error alerts) stays red by convention (E-11).",
   "why": "Overused red cries wolf, and muscle memory clicks primary spots blind.",
   "doDont": "Do reserve red and reposition delete. Don't put delete in the usual confirm position.",
   "auditCheck": "grep `bg-red-*`/`text-red-*`/`destructive` on non-destructive elements; check button order in dialogs.",
-  "restyleFix": "Recolor non-destructive red usages and reorder dialog actions. (On conflict the playbook wins: see G-12, Cancel left / destructive right.)"
+  "restyleFix": "Recolor non-destructive red actions and decorative red and reorder dialog actions; leave error states red. (On conflict the playbook wins: see G-12, Cancel left / destructive right, and E-11, red = error.)"
  },
  {
   "id": "W1-93",
@@ -5480,7 +5210,7 @@
   "why": "Slow replies make users mentally check out.",
   "doDont": "Do acknowledge every interaction within 400ms. Don't hold all visual response until the server answers.",
   "auditCheck": "Check async actions for immediate loading/pressed state; look for await before any UI update.",
-  "restyleFix": "Add immediate acknowledgment (state change, spinner or skeleton)."
+  "restyleFix": "Add immediate acknowledgment: a pressed or pending state on the control at once (W1-03, W1-95); a spinner or skeleton only once the wait passes ~300ms (W2-62)."
  },
  {
   "id": "W1-97",
@@ -5495,7 +5225,7 @@
    "states",
    "interaction-cost"
   ],
-  "rule": "Show placeholder skeleton shapes as soon as a screen opens, update optimistically when success is near-certain, and use spinners, progress or inline status for waits beyond the threshold.",
+  "rule": "Never leave a screen blank while it loads: show placeholder skeleton shapes once the wait passes ~300ms (W2-62), update optimistically when success is near-certain, and use spinners, progress or inline status for waits beyond the threshold.",
   "why": "Unavoidable waits still feel responsive.",
   "doDont": "Do display skeletons and progress. Don't leave the screen empty or frozen while data loads.",
   "auditCheck": "grep loading branches returning `null` or blank; check for `Skeleton`/`animate-pulse` and progress components.",
@@ -5785,7 +5515,7 @@
    "color",
    "contrast"
   ],
-  "rule": "Put a soft radial glow behind content instead of a full-bleed linear wash over it, and keep body copy off the gradient's blended middle band.",
+  "rule": "If a gradient is used, put a soft radial glow behind content instead of a full-bleed linear wash over it, and keep body copy off the gradient's blended middle band. One glow in the accent hue behind a product shot or hero, not several decorative blobs (W1-81); the default background stays neutral (E-05).",
   "why": "Contrast can't be predicted where the colors blend.",
   "doDont": "Do use gradients as atmosphere behind content. Don't set body text straight onto a gradient's middle.",
   "auditCheck": "Find text elements over gradient backgrounds (`bg-gradient-*` ancestors) and measure contrast at the mid-transition area.",
@@ -6655,7 +6385,7 @@
    "forms",
    "states"
   ],
-  "rule": "Live inline validation that checks each rule and turns criteria green catches mistakes before submit; keep field-level errors small, anchored to the input, and specific. (Balance with on-blur timing for format-style errors.)",
+  "rule": "Live inline validation that checks each rule and turns criteria green catches mistakes before submit; keep field-level errors small, anchored to the input, and specific. Live checks are for requirement checklists that show progress (password rules, G-09); a format error (email, phone, date) first appears on blur and then revalidates live (W2-27).",
   "why": "Submit-only validation tells people they failed after the fact.",
   "doDont": "Do show per-rule progress (e.g. password criteria) near the input. Don't use a generic floating alert for field errors.",
   "auditCheck": "Check password/complex fields for rule checklists and that errors render adjacent to the input with `aria-describedby`.",
@@ -6947,7 +6677,7 @@
   "rule": "In about 3 seconds the hero must convey what's offered, who it serves, and why it matters, using a headline, subhead, and single CTA; skip carousels or sliders.",
   "why": "Rotating slides conceal the one message that counts.",
   "doDont": "Do lead with a headline, subhead, and lone CTA. Don't put a rotating carousel in the hero.",
-  "auditCheck": "grep hero sections for carousel/slider libraries (`swiper`, `embla`, `slick`) and count CTAs.",
+  "auditCheck": "grep hero sections for carousel/slider libraries (`swiper`, `embla`, `slick`) and count CTAs. A secondary rendered as a text link (W1-82) does not count as a second CTA; two buttons do.",
   "restyleFix": "Replace the carousel with one headline, subhead, and primary CTA."
  },
  {
@@ -7500,7 +7230,7 @@
   "why": "Stacked cues create a clear entry point and reading order.",
   "doDont": "Do: Make the headline about double body size, combining size with weight, contrast and spacing. Don't: Depend on size alone or give everything equal emphasis.",
   "auditCheck": "Compare heading to body font sizes (ratio near 2x), font-weight spread across headings/body/captions, and padding of the hero versus secondary items.",
-  "restyleFix": "Scale the headline to ~2x body, set weights 800/400/300 by role, and give the hero extra padding."
+  "restyleFix": "Scale the headline to ~2x body, set weights 800/400/300 by role, and give the hero extra padding. (On conflict the playbook wins: see F-03, small captions stay at 400; use 300 only at large display sizes.)"
  },
  {
   "id": "W3-17",
@@ -7520,7 +7250,7 @@
   "why": "Many colors turn hierarchy into noise.",
   "doDont": "Do: Use one accent for the primary action and ghost-style secondaries. Don't: Give each element its own color.",
   "auditCheck": "Count distinct accent/hue classes in a view; check for more than one filled primary-style button per view.",
-  "restyleFix": "Neutralize secondary elements, make secondary buttons ghost/outline, and keep the accent only on the primary CTA. (On conflict the playbook wins: see E-31, avoid pure white; use off-white for headings.)"
+  "restyleFix": "Neutralize secondary elements, make secondary buttons ghost/outline, and keep the accent fill only on the primary CTA. (On conflict the playbook wins: see E-31, avoid pure white; use off-white for headings; and E-03, links and active states may carry the primary colour as text or indicator.)"
  },
  {
   "id": "W3-18",
@@ -7660,7 +7390,7 @@
   "why": "Spacing and type account for most of the difference between cheap-looking and premium cards.",
   "doDont": "Do: Use ~40px padding, ~24px radius, a 600-weight title and ~55% opacity description. Don't: Squeeze content to the edges with tiny padding, near-zero radius or equal title/body weight.",
   "auditCheck": "Check card classes for p-3/12px padding with rounded-none/sm, and title/body with the same font-weight and opacity.",
-  "restyleFix": "Raise card padding to ~40px, radius to ~24px, set title 600 at ~38px, and body ~55% opacity."
+  "restyleFix": "Raise card padding to ~40px, radius to ~24px, set title 600 at ~38px, and body ~55% opacity. (On conflict the playbook wins: see F-09, the blended body colour must still reach 4.5:1; measure it with `contrast.mjs --over`, and raise the opacity or use a grey token if it fails.)"
  },
  {
   "id": "W3-25",
@@ -7785,7 +7515,7 @@
   "why": "Seven colors reduce to one, and the UI looks intentional.",
   "doDont": "Do: Use 13px text, 32px rows, one accent and grey status icons. Don't: Mark status or priority with colored pills where a grey icon conveys it.",
   "auditCheck": "Check data-list row heights (~32px), font-size 13px, count of distinct accent colors, and colored badge/pill status components.",
-  "restyleFix": "Compact rows, apply -0.01em tracking, replace colored pills with grey icons and limit the accent to selection and primary. Dense tool UIs only. (On conflict the playbook wins: see F-06, 16px body.)"
+  "restyleFix": "Compact rows, apply -0.01em tracking, replace colored pills with grey icons and limit the accent to selection and primary. Dense tool UIs only; grey icons are for workflow statuses (todo, in progress, done) told apart by icon shape. (On conflict the playbook wins: see F-06, 16px body, and E-11/E-10, error and success keep red/green plus an icon or label.)"
  },
  {
   "id": "W3-31",

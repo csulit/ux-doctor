@@ -25,14 +25,10 @@
 | B-02 | Use contrast for readability, guidance and accessibility | p.21 | high | contrast, accessibility, hierarchy, color |
 | B-03 | Check contrast ratios on coloured status badges / chips (use darker text on a tint instead of white-ish text on a saturated fill) | p.21 | high | contrast, accessibility, color, states |
 | B-04 | Create contrast with colour (complementary / analogous hues) while respecting accessibility | p.22 | medium | contrast, color, accessibility |
-| B-05 | Create contrast with font weight and style | p.22 | medium | typography, contrast, hierarchy |
-| B-06 | Create contrast with size | p.22 | medium | typography, hierarchy, contrast |
 | B-07 | Use a border or outline when elements are too similar in colour | p.22 | medium | borders, contrast, depth |
-| B-08 | Use shadows to make an element pop from its background | p.22 | low | shadows, depth, contrast |
 | B-09 | Keep text over images legible for any image: add an overlay/gradient or a background blur | p.22 | high | contrast, imagery, accessibility, cards |
-| B-10 | Reduce elements and content to their essentials | p.23 | high | hierarchy, interaction-cost, craft |
+| B-10 | Reduce elements and content to their essentials | p.23, reaffirmed p.24 | high | hierarchy, interaction-cost, craft |
 | B-11 | Cart screen: keep items compact, show only task-relevant details, and let whitespace/weight/colour do the work | p.23, p.24 | high | hierarchy, spacing, interaction-cost, cards |
-| B-12 | Show only information relevant to the user's current task | p.24 | high | interaction-cost, hierarchy, copy |
 | C-17 | Add illustrations/progress indicators to make step content faster to grasp | p.47 | medium | imagery, hierarchy, states, craft |
 | C-18 | Represent senders with coloured initial avatars in lists (inbox/messaging) | p.48 | low | imagery, hierarchy, craft |
 | D-01 | Represent senders with photos/logos, not plain text/initials | p.49 | medium | imagery, cards, hierarchy, craft |

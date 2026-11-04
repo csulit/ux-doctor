@@ -7,18 +7,11 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 ### A-21 Align elements on shared axes for order and polish  (p.17)
 - **Rule**: Alignment = arranging text, images and components along common lines/axes to create visual order and harmony. Poor alignment looks messy and is hard to use.
 - **Why**: Gives a polished, organised look; misalignment hurts readability and perceived quality.
-- **Do / Don't**: Intro to the following two examples (A-22, A-23).
-- **Audit check**: Do left edges of titles, body text, buttons, icons within a component fall on the same x line (unless intentional hanging icon)? Check computed left offsets/padding.
-- **Restyle fix**: Snap all items to common axes (see A-22 - A-28).
-- **Severity**: medium ; **Tags**: [alignment, layout, craft]
-
-### A-22 Don't misjudge alignment: icon, title, body and button should share a clean edge  (p.17)
-- **Rule**: Alignment can be wrong by misjudgement: aligning things incorrectly (e.g. text indented next to an icon so the body and button no longer line up with the title).
-- **Why**: Incorrect alignment creates a ragged, messy card.
-- **Do / Don't**: Bad (thumbs-down, left card "Cactus"): title "Cactus" at left edge; below it a round cactus icon at the left edge with paragraph and "Learn more" pill button indented to the right of the icon, so the body/button don't align with the title. Good (right card): icon and title in one row at the top; paragraph and "Learn more" button below, both flush left on the same left edge as the icon.
-- **Audit check**: In cards, does body/button left edge equal title/icon left edge? Is an icon floated alongside a multi-line paragraph, causing text indentation?
-- **Restyle fix**: Put icon + title in a header row; place body text and button below on the card's common left edge.
-- **Severity**: medium ; **Tags**: [alignment, cards, layout]
+- **Do / Don't**: Misjudged alignment ("Cactus" card): bad (thumbs-down), title "Cactus" at the left edge, then a round cactus icon at the left edge with the paragraph and "Learn more" pill indented to the right of the icon, so body and button don't line up with the title; good, icon and title in one row at the top, paragraph and button below, flush left on the icon's edge. Forgetting to align items is A-23.
+- **Audit check**: Do left edges of titles, body text, buttons, icons within a component fall on the same x line (unless intentional hanging icon)? Check computed left offsets/padding. Is an icon floated alongside a multi-line paragraph, indenting the body and button away from the title?
+- **Restyle fix**: Snap all items to common axes (see A-23 - A-28). In cards, put icon + title in a header row and place body text and button below on the card's common left edge.
+- **Also cited as**: A-22 (p.17)
+- **Severity**: medium ; **Tags**: [alignment, layout, craft, cards]
 
 ### A-23 Don't forget to align items: list items must share left/right edges  (p.18)
 - **Rule**: Bad alignment also happens when you forget to align things properly; list items need identical edges.
@@ -110,7 +103,7 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Rule**: With a multiples-of-4 system, fix a rule such as "related items are 8px apart" and apply it throughout; larger steps separate unrelated groups.
 - **Why**: Easy to apply consistently; simplifies cognitive load; aligns with Law of Proximity.
 - **Do / Don't**: See B-15 (label→input always 8; fields apart 24; sections apart 40).
-- **Audit check**: Is the gap within a group (e.g. label→input) always smaller than the gap between groups, and is the same value used everywhere for the same relationship?
+- **Audit check**: Is the same spacing value used everywhere for the same relationship (every label→input 8, every field→field 24, every section→section 40)? Flag the same relationship spaced differently across forms or screens. Whether the gap inside a group is smaller than the gap between groups is A-15's check; don't report it here as well.
 - **Restyle fix**: Define tokens: e.g. intra-group 8px, between-field 24px, between-section 40px (values from visual of the form) and apply consistently.
 - **Severity**: medium ; **Tags**: spacing, hierarchy, layout
 
@@ -167,13 +160,14 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 
 ## Balance and harmony (p.36-37)
 
-### C-02 Keep proportion and scale balanced – no element overpowers the others  (p.36)
+### C-02 Keep proportion and scale balanced – no element overpowers the others  (p.36, reaffirmed p.37)
 - **Rule**: No single element should overpower the others. Every element gets its own space and prominence, but not so much that it becomes a distraction.
 - **Why**: Balance and harmony make everything on the page fit together, make the design look good, easier to use, and help people quickly understand what is on screen and how to use it.
-- **Do / Don't**: See C-04/C-05 (kiwi card example, p.37). Oversized elements are the "don't".
-- **Audit check**: Is any one element (hero image, CTA, heading) disproportionately large relative to the rest of the component so that the eye has no clear second stop? Compare sizes of image, heading, body and button within a card.
-- **Restyle fix**: Scale down the dominant element until the heading, body and CTA each remain easy to see without any of them dominating.
-- **Severity**: medium ; **Tags**: hierarchy, layout, craft
+- **Do / Don't**: Kiwi-ice-cream card (p.37, from visual). Don't: a very large circle image, tiny description and rating text, and a full-card-width tall pill "Get now" button; image and button hog attention, so the eye doesn't know where to go next and heading, description and rating get lost. Do: the image is smaller, the heading stays about the same size, the description and rating text are larger (the description grows relative to the heading), the rating row sits under it and "Get now" is a small compact pill (not full width), so the card is shorter. Keep the image eye-catching but not overshadowing, the heading and CTA easy to see but "not too flashy". See also C-04.
+- **Audit check**: Is any one element (hero image, CTA, heading) disproportionately large relative to the rest of the component so that the eye has no clear second stop? Compare sizes of image, heading, body and button within a card. Is the CTA full-width/very tall on a content card when it is not a mobile footer bar? Is the image taking the dominant share of card area while the description and rating text are tiny?
+- **Restyle fix**: Scale down the dominant element until the heading, body and CTA each remain easy to see without any of them dominating: reduce image diameter/height, shrink the CTA to a content-width pill with normal padding, bump the description and rating text size so the card reads heading → description → rating → CTA.
+- **Also cited as**: C-05 (p.37)
+- **Severity**: medium ; **Tags**: hierarchy, layout, craft, buttons, imagery
 
 ### C-03 Use colour harmony – don't overuse a single colour  (p.36, reaffirmed p.37)
 - **Rule**: Overusing one colour makes a design feel monotonous or overwhelming. Use complementary or analogous colours to bring variation and emotional balance.
@@ -191,14 +185,6 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Audit check**: Do similar components use different paddings, font sizes or element heights? Are spacing/type/size values drawn from a shared scale/tokens?
 - **Restyle fix**: Normalise spacing, type sizes and element sizes to a shared token scale across components.
 - **Severity**: medium ; **Tags**: spacing, typography, craft
-
-### C-05 Don't let the hero image and CTA button hog the card  (p.37)
-- **Rule**: Image and button must not be too big compared to the rest of the content. Keep the image eye-catching but not overshadowing; make heading and CTA easy to see but "not too flashy".
-- **Why**: When image and button are oversized, they hog attention; the eye doesn't know where to go next and crucial details (heading, description, rating) get lost.
-- **Do / Don't**: Don't (from visual): kiwi-ice-cream card with a very large circle image, tiny description and rating text, and a full-card-width tall pill "Get now" button. Do (from visual): the image is smaller, the heading stays about the same size, the description and rating text are larger and more readable (the description grows relative to the heading), the rating row sits under it and the "Get now" button is a small, compact pill (not full width), the card is shorter.
-- **Audit check**: Is the CTA full-width/very tall on a content card when it is not a mobile footer bar? Is the hero image taking the dominant share of card area while the description and rating text are tiny (compare description/rating size to the heading and the image)? Does the secondary content get visually lost?
-- **Restyle fix**: Reduce image diameter/height, shrink CTA to content-width pill with normal padding, bump the description and rating text size (the heading can stay about the same) so the card reads heading → description → rating → CTA.
-- **Severity**: medium ; **Tags**: hierarchy, buttons, imagery, layout
 
 ## Consistency (p.38-46)
 
@@ -258,12 +244,13 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Restyle fix**: Make the card `display:flex; flex-direction:column; height:100%` and push the button container with `margin-top:auto`.
 - **Severity**: medium ; **Tags**: cards, alignment, buttons, layout
 
-### C-14 Use a single icon style (outline vs filled, weight, detail, size) within a screen  (p.45)
-- **Rule**: Don't mix icons of different sizes or types – e.g. one simple and another highly detailed, or some outlined and others filled on the same screen. Decide on an icon style ahead of time and use it across all UI screens (e.g. outlined everywhere).
+### C-14 Use a single icon style (outline vs filled, weight, detail, size) within a screen  (p.45, reaffirmed p.46)
+- **Rule**: Don't mix icons of different sizes or types – e.g. one simple and another highly detailed, or some outlined and others filled on the same screen. Decide on an icon style ahead of time and use it across all UI screens (e.g. outlined everywhere). Use one icon set: a custom set is one way, open-source icons are fine if the set fits the brand image and you don't mix two sets with different properties (weight, style, corner shape) (p.46).
 - **Why**: Inconsistent icons are a common error that breaks cohesion.
 - **Do / Don't**: Don't (from visual, "Account features" list): Manage account icon is a detailed double-person outline, search is a different outline, heart is filled, share is filled, notification bell is filled – mixed outline/filled and different detail levels, and icons slightly different sizes. Do (from visual): all five icons (user, search, heart, share, bell) are consistent thin outline icons of the same size and stroke, in the same purple colour.
-- **Audit check**: Within a screen, do icons mix stroke and fill variants, different stroke widths, different sizes or different libraries? (Code: multiple icon packages imported, mix of `fill`/`stroke` styles, inconsistent width/height.)
-- **Restyle fix**: Replace all icons with one set in a single style (e.g. outlined), same stroke width and the same size (grid).
+- **Audit check**: Within a screen, do icons mix stroke and fill variants, different stroke widths, different sizes or different libraries? Across screens, how many icon libraries does the project/Figma file use, and do icons differ in stroke weight, terminal shapes or corner styles? (Code: multiple icon packages imported, mix of `fill`/`stroke` styles, inconsistent width/height.) Filled vs outline that maps to selected state is C-15's exception, not a finding.
+- **Restyle fix**: Pick one library matching the brand tone and replace all icons with it in a single style (e.g. outlined), same stroke width and the same size (grid).
+- **Also cited as**: C-16 (p.46)
 - **Severity**: medium ; **Tags**: icons, craft
 
 ### C-15 Mix icon styles only to signal state (e.g. filled = selected tab)  (p.45-46)
@@ -273,14 +260,6 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Audit check**: If a nav bar uses filled vs outline icons, does the difference map to selected/unselected state rather than arbitrary variation? Is the active tab differentiated (filled)?
 - **Restyle fix**: In tab bars/nav, use outlined for inactive and the filled variant of the same icon for the active tab (optionally plus highlight).
 - **Severity**: low ; **Tags**: icons, navigation, states
-
-### C-16 Use one icon set (custom or open-source) that fits the brand  (p.46)
-- **Rule**: A custom icon set is one way to achieve consistency, but open-source icons are fine if the set aligns with the overall brand image and you don't mix two different sets with varying properties.
-- **Why**: Keeps a consistent look.
-- **Do / Don't**: Do: one coherent set (custom or open-source) matching the brand. Don't: mix two different icon sets with different properties (weight, style, corner shape).
-- **Audit check**: How many icon libraries are in the project/Figma file? Do icons across screens have different stroke weights, terminal shapes or corner styles?
-- **Restyle fix**: Pick one library (e.g. a single open-source family matching brand tone) and swap out all others.
-- **Severity**: low ; **Tags**: icons, craft
 
 ## Bonus tips: whitespace around forms (p.130-131)
 
