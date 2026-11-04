@@ -4,6 +4,8 @@ All notable changes to this project are documented here. Format: [Keep a Changel
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-04
+
 ### Added
 - Clean-UI tips: web rules W4-03 (60-30-10 colour proportion), W4-04 (one question per step in questionnaires) and W4-05 (move text repeated on every item into the group heading), source `web:clean-ui-tips`; rule tensions W4-04 vs F-29/W3-10 and W4-03 vs E-03/E-04.
 - AI-look tells: 14 web rules W5-01..W5-14 (skill `ux-web-patterns`), paraphrased from Anthropic's `frontend-design` skill, Vercel's `design.md`, Adrian Krebs' Show HN design-pattern scoring, Ralabs' AI design slop review guide and the Slop Taxonomy. They cover per-section fade-ups and content hidden behind scroll triggers, single styled headline words, eyebrow labels and false numbering, arrow/dot/dash chrome, coloured card stripes, nested cards, emoji and stock icon tiles, stock copy, default palette clusters, demo-sized content and filler stat rows. W5-01 makes them a cluster (one grouped finding at 3+ tells), never a claim of AI authorship.
