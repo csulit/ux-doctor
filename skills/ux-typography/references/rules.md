@@ -9,7 +9,7 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Why**: Typeface conveys tone for the sector.
 - **Do / Don't**: Example "Faircase – Fair and Square." law-firm landing page: serif logo, nav, large serif headline, serif body and stats ("1542 Cases / 53 Lawyers / 726 Connections"), dark red/maroon CTA, tan background panel with portrait photo (from visual).
 - **Audit check**: Does the typeface personality match the sector/brand (formal sector with playful/techy font = mismatch)?
-- **Restyle fix**: Swap to a classic serif (e.g. Merriweather-like, from visual) for headings/body in formal contexts.
+- **Restyle fix**: Swap headings and display text to a classic serif (e.g. Merriweather-like, from visual) in formal contexts. The p.72 example also sets the body in serif, while F-17 (p.97) prefers sans-serif body copy for readability: pair a serif heading face with a sans body (E-21), and keep a serif body only when it is a text serif set at 16px or more with 1.5+ line-height (F-06, F-07) (inference).
 - **Severity**: low ; **Tags**: typography, craft
 
 ### E-14 Consider a script/handwritten typeface for relaxed, personal sectors like beauty  (p.72-73)
@@ -53,21 +53,13 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Severity**: medium ; **Tags**: typography, craft
 
 ### E-19 Use at most 2 different fonts per UI  (p.75-76, reaffirmed p.96-97)
-- **Rule**: Never use more than two font families. More than two looks cluttered, confusing and off-brand. Best practice (p.96-97): one family with different weights and sizes; experienced designers can pair two (e.g. Playfair Display headings + Roboto paragraphs). Avoid fonts that compromise readability.
+- **Rule**: Never use more than two font families. More than two looks cluttered, confusing and off-brand. Best practice (p.76, p.96-97): one versatile family, with dynamics from different weights and sizes; experienced designers can pair two (e.g. Playfair Display headings + Roboto paragraphs). Avoid fonts that compromise readability.
 - **Why**: Messy and harder to look at; one or two fonts feel clean.
 - **Do / Don't**: Don't: music app screen with four families – Poppins (title) + Open Sans (subtitle), Times (track titles), Telex (button, UPPERCASE "DISCOVER MORE"). Do: same screen all Inter ("Music", "Special edition", track titles, "Discover more").
-- **Audit check**: Count distinct `font-family` values (excluding icon/mono fallbacks) in CSS/Figma text styles: > 2 → flag. Also flag a display/script font used for body text or UI labels.
-- **Restyle fix**: Consolidate to 1 (ideally) or 2 families; remap all text styles.
-- **Also cited as**: F-18 (p.96-97, typography checklist)
+- **Audit check**: Count distinct `font-family` values (excluding icon/mono fallbacks) in CSS/Figma text styles: > 2 → flag. Two families split by role (headings vs body, E-21) are allowed, not a finding; one family is the recommendation. A display/script face on body text or UI labels is E-16's check.
+- **Restyle fix**: Consolidate to 1 (ideally) or 2 families; replace an extra family with a different weight/size of the primary family and remap all text styles.
+- **Also cited as**: F-18 (p.96-97, typography checklist); E-20 (p.76)
 - **Severity**: high ; **Tags**: typography, craft, hierarchy
-
-### E-20 Best practice: one versatile font, vary weight and size for dynamics  (p.76)
-- **Rule**: For a clean, professional look, stick to one versatile font and create dynamics via different weights and sizes.
-- **Why**: Cleaner and more professional.
-- **Do / Don't**: Do: all-Inter example (see E-19).
-- **Audit check**: Is hierarchy built with weight/size in a single family rather than extra families?
-- **Restyle fix**: Replace secondary family with a different weight/size of the primary family.
-- **Severity**: medium ; **Tags**: typography, hierarchy
 
 ### E-21 If using two fonts: one for headings, one for body, from proven pairings  (p.76)
 - **Rule**: Experienced designers can use two fonts: one for headings, another for paragraphs. Pairs named: Playfair Display (headings) + Sources Sans Pro (body); Raleway + Merriweather; Montserrat + Open Sans. Figma's curated pairing list: www.figma.com/google-fonts.
@@ -77,12 +69,13 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Restyle fix**: Assign one family to headings, the other to body; use a pair from the list.
 - **Severity**: low ; **Tags**: typography
 
-### E-22 Keep body-copy line length at 45-75 characters on desktop  (p.76-77)
+### E-22 Keep body-copy line length at 45-75 characters on desktop  (p.76-77, reaffirmed p.78)
 - **Rule**: For body copy on desktop, line length should be 45-75 characters per line (research-backed sweet spot). These are guidelines, not strict rules.
-- **Why**: Optimises readability/visual appeal; keeps focus and prevents users feeling overwhelmed or losing their place.
-- **Do / Don't**: Diagram with ruler markers 0, 20, 45, 75, 100 characters in a browser frame. Green (good) text blocks: one spanning to ~75, another ending at roughly 45 (from visual). Pink (bad) blocks: a narrow block of ~20 characters per line (too short, choppy) and a wide block running out to ~100 characters (too long).
+- **Why**: Optimises readability/visual appeal; keeps focus and prevents users feeling overwhelmed or losing their place. Text across the whole page width makes the eyes travel far from the end of one line to the start of the next, increasing eye strain (p.78).
+- **Do / Don't**: Diagram with ruler markers 0, 20, 45, 75, 100 characters in a browser frame. Green (good) text blocks: one spanning to ~75, another ending at roughly 45 (from visual). Pink (bad) blocks: a narrow block of ~20 characters per line (too short, choppy) and a wide block running out to ~100 characters (too long). Applied bad example (p.78, from visual): a dog-community landing page whose "Why people love dogs" paragraph runs the full container width (~100+ characters per line, 4 lines) in small grey text; the two valid fixes are E-27 and E-28.
 - **Audit check**: Measure real characters per line of the rendered body paragraph (browser: `Range.getClientRects()` per line plus the line's text length; or font metrics) – do not infer it from a `ch` value: 1ch is the width of the `0` glyph, not an average character (one proportional UI font measured 72ch ≈ 93 real characters per line, while 36em ≈ 73.5; inference from a real-project measurement). Flag if >75 or <45 on desktop (e.g. no `max-width` on a paragraph in a wide container, `max-w-none`, full-width text).
 - **Restyle fix**: Cap the column in `em`/`rem`; rule of thumb for proportional UI fonts about 30–36em gives 45–75 characters (inference – 36em ≈ 73.5 characters in one measured font, about 2.0 characters/em; verify per font by re-measuring). Use `ch` only for monospace fonts. Centre or left-align the constrained column; `max-w-prose` (65ch) is not a safe shortcut for proportional fonts.
+- **Also cited as**: E-26 (p.78)
 - **Severity**: high ; **Tags**: typography, layout, accessibility
 
 ### E-23 On mobile aim for 30-40 characters per line  (p.77)
@@ -109,20 +102,12 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Restyle fix**: Tune per breakpoint.
 - **Severity**: low ; **Tags**: typography, layout
 
-### E-26 Don't let body text span the full page width  (p.78)
-- **Rule**: Text stretching across the whole page width is hard to read; constrain it.
-- **Why**: Eyes must travel a long distance from end of one line to start of next, increasing eye strain and reducing readability.
-- **Do / Don't**: Don't: dog-community landing page – below the hero, heading "Why people love dogs" and a paragraph running the full container width (~100+ characters per line, 4 lines), small grey text (from visual).
-- **Audit check**: Paragraph container whose rendered lines exceed ~75 real characters (measure per line in the browser, see E-22; do not convert from `ch`, since 1ch is the width of `0`, not an average character) with long unbroken lines.
-- **Restyle fix**: Add a `max-width` that yields ≤ 75 real characters per line; for proportional UI fonts about 30–36em is a starting point (inference – verify per font).
-- **Severity**: high ; **Tags**: typography, layout
-
-### E-27 Narrow centered text column (≤75 chars) is a valid fix  (p.79)
-- **Rule**: Center-align the text *block* below the image/intro and limit line length to max 75 characters.
+### E-27 Narrow centred text block (≤75 chars, lines left-aligned) is a valid fix  (p.79)
+- **Rule**: Centre the text *block* (the container, not the lines) below the image/intro and limit line length to max 75 characters. The lines inside the block stay left-aligned (A-24).
 - **Why**: Eyes travel less, easier to move from line end to next line start.
 - **Do / Don't**: Do: paragraph block ("Why people love dogs", 4 lines at ~70 chars) is a narrower column positioned in the centre of the container; the heading is left-aligned with the paragraph inside the column (from visual – the block is centred, text itself remains left-aligned).
-- **Audit check**: Text block in wide container is constrained to ≤75 real characters per line (measure it, see E-22) and centred (`mx-auto max-w-…`).
-- **Restyle fix**: Wrap in centred container with max-width ≈75 characters.
+- **Audit check**: Text block in wide container is constrained to ≤75 real characters per line (measure it, see E-22) and centred (`mx-auto max-w-…`) with its text left-aligned. `text-center` on a multi-line paragraph is not this fix; it is A-24's violation.
+- **Restyle fix**: Wrap in centred container with max-width ≈75 characters; keep `text-align: left` inside it.
 - **Severity**: medium ; **Tags**: typography, layout, alignment
 
 ### E-28 Narrow left-aligned text column (≤75 chars) is the other valid fix  (p.80)
@@ -151,29 +136,21 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Severity**: medium ; **Tags**: typography, hierarchy, layout, spacing
 
 ### E-31 Avoid pure black (#000000) text on white, and pure white (#FFFFFF) on dark  (p.83, reaffirmed p.96)
-- **Rule**: Don't use #000000 text on white backgrounds or #FFFFFF text on dark backgrounds. Use off-black/dark grey for headings and a lighter grey for body text.
+- **Rule**: Don't use #000000 text on white backgrounds or #FFFFFF text on dark backgrounds. Use off-black/dark grey for headings and a lighter grey for body text, both soft. Reference values from the p.83 example: light mode (on white) heading #1A1A1A, body #4E4E4E; dark mode (on black) heading #F2F2F2, body #CACACA.
 - **Why**: Pure extremes are hard on the eyes and disrupt visual harmony; a softer scheme is soothing, sophisticated and balanced; dark grey headings say "this is significant" without screaming; lighter grey text stays readable without overwhelming.
-- **Do / Don't**: Don't: dark card Heading #FFFFFF / Body #FFFFFF on black; light card Heading #000000 / Body #000000 on white. Do: see E-32. The p.96 checklist repeats it: the p.95 good card uses #1B000D for headings and #5E5458 for paragraphs instead of #000000 for both.
-- **Audit check**: Grep CSS/tokens for `color: #000`, `#000000`, `black`, `#fff`/`#ffffff`/`white` used as text colour on respective extremes (`text-black`, `text-white` on `bg-black`/`bg-white`/very dark).
-- **Restyle fix**: Replace with off-black/dark-grey tokens and lighter grey body (E-32 values, or #1B000D heading / #5E5458 body from p.95) that still passes 4.5:1.
-- **Also cited as**: F-13 (p.96, typography checklist)
-- **Severity**: medium ; **Tags**: contrast, color, typography, dark-mode
-
-### E-32 Use graded greys: darker heading, lighter body text (reference values)  (p.83)
-- **Rule**: Heading darker/stronger than body text, both soft. Reference values from the example — Dark mode (on black background): heading #F2F2F2, body #CACACA. Light mode (on white background): heading #1A1A1A, body #4E4E4E.
-- **Why**: Refined contrast "that just feels right" while keeping a heading/body hierarchy.
-- **Do / Don't**: Do: example "The scoop on ice cream" card in both DARK and LIGHT variants using values above; heading visibly brighter/darker than body. Don't: identical colour for heading and body (#FFFFFF/#FFFFFF, #000000/#000000).
-- **Audit check**: Heading and body use different, non-extreme colours; light theme text ≈ #1A1A1A heading / ≈ #4E4E4E body (contrast of #4E4E4E on white = 8.32:1 – computed, still above WCAG AA); dark theme ≈ #F2F2F2 / ≈ #CACACA. Flag body greys lighter than AA 4.5:1 (inference: threshold not on p.83).
-- **Restyle fix**: Set text tokens: light — heading #1A1A1A, body #4E4E4E; dark — heading #F2F2F2, body #CACACA.
+- **Do / Don't**: Don't: dark card Heading #FFFFFF / Body #FFFFFF on black; light card Heading #000000 / Body #000000 on white. Do: "The scoop on ice cream" card in both DARK and LIGHT variants using the reference values, heading visibly brighter/darker than body. The p.96 checklist repeats it: the p.95 good card uses #1B000D for headings and #5E5458 for paragraphs instead of #000000 for both.
+- **Audit check**: Grep CSS/tokens for `color: #000`, `#000000`, `black`, `#fff`/`#ffffff`/`white` used as text colour on respective extremes (`text-black`, `text-white` on `bg-black`/`bg-white`/very dark). Compare text tokens with the reference values (#4E4E4E on white = 8.32:1, computed). The same colour for heading and body is A-12's check; body text below 4.5:1 is F-09's.
+- **Restyle fix**: Set text tokens: light — heading #1A1A1A, body #4E4E4E; dark — heading #F2F2F2, body #CACACA (or #1B000D heading / #5E5458 body from p.95); re-check that body still passes 4.5:1.
+- **Also cited as**: F-13 (p.96, typography checklist); E-32 (p.83, reference values)
 - **Severity**: medium ; **Tags**: contrast, color, typography, hierarchy, dark-mode
 
-### E-33 Use heavier weights for headings and lighter for body  (p.84, reaffirmed p.96-97)
-- **Rule**: Headings: bold, semibold or medium; paragraphs: regular, sometimes light. Don't use the same weight for heading and body.
+### E-33 Use heavier weights for headings and lighter for body  (p.84, reaffirmed p.22, p.96-97)
+- **Rule**: Headings: bold, semibold or medium; paragraphs: regular, sometimes light. Don't use the same weight for heading and body. Weight and style are one of the five ways to create contrast between text roles (p.22): titles, labels and key values heavier than body and meta text.
 - **Why**: Weight adds visual interest and tells users what is most important; thin body weights stay readable and don't compete with headings.
 - **Do / Don't**: Don't: card "The canine connection" with heading Regular and body Regular – hard to tell what's important. Do: heading Bold, body Regular – clear what to focus on and what to skim.
-- **Audit check**: Compare `font-weight` of headings vs body: equal (e.g. 400/400) → flag. Headings should be ≥500 (medium/semibold/bold), body 300-400. Heading weight ≤ body weight is a violation unless the heading is clearly larger than the body (F-01); body weight < 400 → see F-03.
-- **Restyle fix**: Set headings to 500-700 and body to 400 (or 300).
-- **Also cited as**: F-15 (p.96-97, typography checklist)
+- **Audit check**: Compare `font-weight` of headings vs body: equal (e.g. 400/400) → flag. Headings should be ≥500 (medium/semibold/bold), body 300-400. Heading weight ≤ body weight is a violation unless the heading is clearly larger than the body (F-01); body weight < 400 → see F-03. Also flag a screen where all text uses one weight (everything `font-normal` or everything `font-semibold`), labels and values included (p.22).
+- **Restyle fix**: Set headings to 500-700 and body to 400 (or 300); assign weights by role and reuse them (titles/values 600–700, body/meta 400).
+- **Also cited as**: F-15 (p.96-97, typography checklist); B-05 (p.22)
 - **Severity**: high ; **Tags**: typography, hierarchy
 
 ## Typography: exceptions and extremes to avoid (p.85-87)
@@ -204,12 +181,13 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 
 ## Typography: size, line-height, contrast, alignment (p.88-94)
 
-### F-04 Use size to signal which text is important  (p.88)
-- **Rule**: Size is the most direct way to establish hierarchy; bigger elements attract more attention. Make the message that matters most the largest.
+### F-04 Use size to signal which text is important  (p.88, reaffirmed p.22)
+- **Rule**: Size is the most direct way to establish hierarchy; bigger elements attract more attention. Make the message that matters most the largest. Size contrast is one of the five ways to create contrast (p.22).
 - **Why**: Users read the biggest text first; if the wrong text is biggest they act on the wrong message (analogy: giant "Start the engine and go full speed" vs. small "Wait until you see the green light!" at a red light → crash).
 - **Do / Don't**: Two cards with a traffic-light image. Bad: "Wait until you see the green light!" tiny, "Start the engine and go full speed" large. Good: "Wait until you see the green light!" large, "Start the engine and go full speed" small.
-- **Audit check**: Is the largest text on each card/section the one the user most needs to see (primary message, warning, key value)? Is a secondary/optional/ancillary text larger than the critical one?
+- **Audit check**: Is the largest text on each card/section the one the user most needs to see (primary message, warning, key value)? Is a secondary/optional/ancillary text larger than the critical one? Is there a visible size step between the primary element (title, key metric, CTA) and secondary text, or do adjacent type levels differ by almost nothing (p.22)? Heading vs body size is F-05's check.
 - **Restyle fix**: Re-assign type scale so the most important text gets the largest size and secondary text is reduced.
+- **Also cited as**: B-06 (p.22)
 - **Severity**: high ; **Tags**: hierarchy, typography
 
 ### F-05 Make headings clearly bigger than body text  (p.89)
@@ -259,7 +237,7 @@ Sources: The UI/UX Playbook (uxpeak; IDs A-… to H-…, page numbers are PDF pa
 - **Rule**: Combine all principles on one card. Good card spec: heading line-height 120%, font-size 28px, weight Bold, colour `#1B000D` (near-black with tint); body line-height 160%, font-size 18px, weight Regular, colour `#5E5458` (softer than heading); button label font-size 18px, weight Semibold, colour `#141B12`; left-aligned text; WCAG AA and AAA Pass. Bad card spec: heading line-height 170%, 22px, Medium, `#000000`; body line-height 110%, 18px, Regular, `#000000`; button label 22px, Regular, `#FFFFFF` on pink; centre-aligned; button label WCAG AA Fail / AAA Fail.
 - **Why**: Line height, contrast, weight, size and colour differences together make text more readable and engaging ("elevate design from good to great").
 - **Do / Don't**: Card with Japan illustration, title "Exploring the land of the rising sun: A journey through Japan's rich culture and history", paragraph, pink "Learn more →" button. Bad: centred text; heading only 22px (barely > 18px body), medium weight, pure black; heading line-height 170% vs body 110% (inverted); pure black body (same as heading); white button label on pink fails contrast. Good: left-aligned; heading 28px bold, tight 120%; body 18px regular grey-brown, loose 160%; heading darker than body; dark semibold button label on pink passes.
-- **Audit check**: Test each point: heading/body size gap (28 vs 18 ≈ 1.55x), heading weight > body weight, heading darker than body, heading LH < body LH, pure #000/#FFF not used, button label contrast passes, paragraph left-aligned.
+- **Audit check**: Reference spec, not a finding of its own. Test each point and report a failing one under the rule that owns it: heading/body size gap (28 vs 18 ≈ 1.55x) F-05, heading weight > body weight E-33, heading darker than body A-12, heading LH < body LH F-08, pure #000/#FFF not used E-31, button label contrast passes F-12, paragraph left-aligned A-24. Don't add an F-11 finding on top of them.
 - **Restyle fix**: Apply the good spec: heading 28/120% bold `#1B000D`; body 18/160% regular `#5E5458`; button text semibold dark (`#141B12`) on light-mid pink; left-align.
 - **Severity**: medium ; **Tags**: typography, hierarchy, contrast, buttons
 

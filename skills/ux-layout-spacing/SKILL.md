@@ -5,7 +5,7 @@ description: "Knowledge on alignment, whitespace, spacing scales, layout grids, 
 
 # UI Layout, Spacing & Consistency
 
-Covers alignment (A-21..A-28, B-01), whitespace and spacing systems (B-13..B-16), layout (B-18..B-23), balance (C-02..C-05), consistency (C-07..C-16) and wide-screen form containment (H-05, H-06).
+Covers alignment (A-21..A-28, B-01), whitespace and spacing systems (B-13..B-16), layout (B-18..B-23), balance (C-02..C-04), consistency (C-07..C-15) and wide-screen form containment (H-05, H-06).
 Use it to find misaligned, cramped, off-scale or inconsistent UI and to prescribe token-based fixes.
 
 ## How to use
@@ -22,12 +22,12 @@ Use it to find misaligned, cramped, off-scale or inconsistent UI and to prescrib
 - C-07 — same component role (title, button, input) differs in size/radius/colour/padding across screens → consolidate to one shared component/token; vary only content/imagery. (high, p.38)
 - C-09 — more than 1 primary-button fill per screen (e.g. buttons tinted per card image) → one primary + one secondary style everywhere (playbook: dark fill main, light grey secondary). Includes equivalent alternatives in one group (sign-in providers, payment methods) styled differently, e.g. a brand-filled "Continue with Facebook" beside an outlined "Continue with Google" → one shared style, identity in the logo (inference). (high, p.40-41)
 - C-08 — mixed radii (0 beside rounded-full, round images + square buttons) → one radius family via tokens for cards, buttons, media, avatars. (p.39)
-- B-01 / A-22 / A-23 — siblings mix `text-center` and left, body/button not on title/icon left edge, list items with different x/width → one alignment strategy per component; icon+title header row, body/button on the common left edge; identical x/width for list items. (p.17-18, p.20)
+- B-01 / A-21 / A-23 — siblings mix `text-center` and left, body/button not on title/icon left edge, list items with different x/width → one alignment strategy per component; icon+title header row, body/button on the common left edge; identical x/width for list items. (p.17-18, p.20)
 - A-24 / A-25 / A-26 — centred or right-aligned paragraphs; left/centred numeric columns; long centred copy → left-align body and lists; right-align numbers (and RTL); centre only short titles/CTAs. (p.18)
 - C-11 / C-13 — 3+ cards with different heights or CTAs at different y → stretch to equal height, flex column, CTA wrapper `mt-auto`. (C-11 p.43; C-13 p.44)
-- C-05 / C-02 — hero image or full-width tall CTA dominates a content card while body text is tiny → shrink image, content-width compact pill CTA, enlarge the description/rating text while keeping the heading modest (about the same size). (p.36-37)
+- C-02 — hero image or full-width tall CTA dominates a content card while body text is tiny → shrink image, content-width compact pill CTA, enlarge the description/rating text while keeping the heading modest (about the same size). (p.36-37)
 - H-05 / H-06 — inputs/CTAs spanning near-full width at ≥1440px → put form in a bounded centred card with generous side whitespace. (p.130-131)
-- C-14 / C-16 — mixed outline/filled icons, stroke widths, sizes or libraries on one screen → one icon set and style; mixing only for state (C-15, filled = selected tab). (p.45-46)
+- C-14 — mixed outline/filled icons, stroke widths, sizes or libraries on one screen → one icon set and style; mixing only for state (C-15, filled = selected tab). (p.45-46)
 - B-21 — card order not image → name → description → price → CTA (price above image, description after CTA) → reorder. (p.32)
 
 ## Code signals
@@ -35,12 +35,12 @@ Use it to find misaligned, cramped, off-scale or inconsistent UI and to prescrib
 - Positioning hacks instead of flex/grid: `position:\s*absolute` with manual `top/left`, stacked `margin-top` nudges, `relative top-[..]` (A-28).
 - Mixed alignment inside one container: `text-center` on some children and `text-left` or none on siblings; stray `items-center` on single children (B-01, A-26).
 - Paragraph/list with `text-center`/`text-right`; numeric `<td>`/columns without `text-right` (A-24, A-25).
-- Icon floated beside multi-line paragraph (`float-left`, flex row with icon + text block holding body and button) → indented body (A-22).
+- Icon floated beside multi-line paragraph (`float-left`, flex row with icon + text block holding body and button) → indented body (A-21).
 - Radius spread: collect `rounded-*`, `border-radius` values; more than the token scale, or `rounded-none`/`0` next to `rounded-full` siblings (C-08).
 - Button fills: collect background colours of `.btn`/`<Button>` per screen; >1 primary fill, or fill derived from card/image colour (C-09).
 - Card grids lacking `items-stretch`/`h-full`/equal grid rows; card without `flex flex-col` and CTA without `mt-auto` (C-11, C-13).
 - Inputs/buttons `w-full` or `width:100%` with no `max-w-*`/`max-width` wrapper at desktop (H-05); form not inside a card (bg + radius + shadow) (H-06).
-- Multiple icon imports (`lucide-react` + `react-icons` + `@heroicons`), mixed `fill=`/`stroke=`, different `size`/`strokeWidth` props (C-14, C-16).
+- Multiple icon imports (`lucide-react` + `react-icons` + `@heroicons`), mixed `fill=`/`stroke=`, different `size`/`strokeWidth` props (C-14).
 - Figma exports: spacing not bound to tokens/variables, no auto-layout, no layout grid (A-27, A-28, B-15).
 - Screenshots: overlay a column grid; check shared left edges, equal gaps for equal relationships, ragged card bottoms, CTA baselines.
 

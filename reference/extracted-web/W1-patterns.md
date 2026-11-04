@@ -146,7 +146,7 @@
 - **Why**: Pure white glares and fatigues the eyes; opacity tiers keep hierarchy without new hues.
 - **Do / Don't**: Do use opacity levels for emphasis. Don't use #FFF for all text.
 - **Audit check**: grep `#fff`, `#ffffff`, `text-white` on dark backgrounds, esp. for body text.
-- **Restyle fix**: Use an off-white body color and `rgba(255,255,255,α)` tiers for secondary/disabled text.
+- **Restyle fix**: Use an off-white body color and `rgba(255,255,255,α)` tiers for secondary/disabled text; every tier except disabled must still reach 4.5:1 against its surface (F-09; measure with `contrast.mjs --over`).
 - **Severity**: medium ; **Tags**: dark-mode, typography, hierarchy, contrast
 
 ### W1-19 Build shadows from three stacked layers  (src: depth-layers)
@@ -476,7 +476,7 @@
 - **Severity**: medium ; **Tags**: accessibility, mobile, interaction-cost
 
 ### W1-59 Give dropdown triggers a 48px target with a caret  (src: dropdown-design)
-- **Rule**: A dropdown trigger should look pressable: hover state included, a caret icon showing, and a touch area of 48px; a 30px box with a faint outline fails.
+- **Rule**: A dropdown trigger should look pressable: hover state included, a caret icon showing, and a touch area of 48px; a 30px box with a faint outline fails. 48px is the target for form-control triggers; 44px is the floor for any touch target (W2-83).
 - **Why**: Obvious affordance and a target that's easy to reach.
 - **Do / Don't**: Do give it a 48px touch area, a caret and hover feedback. Don't ship a small trigger with weak contrast.
 - **Audit check**: Check trigger height (<48px, `h-8`/`h-7`), missing chevron icon, missing `hover:` style.
@@ -638,7 +638,7 @@
 - **Why**: Keeps actions tidy and layout steady.
 - **Do / Don't**: Do anchor revealed actions to the bottom edge. Don't cover the title with buttons or push them past the card edge.
 - **Audit check**: Check hover-revealed buttons for absolute positioning overlapping title and for `transition-delay` ~60ms steps.
-- **Restyle fix**: Position actions in the bottom bar with 60ms staggered delays.
+- **Restyle fix**: Position actions in the bottom bar with 60ms staggered delays. Only extras (favourite, share) may wait for hover; the card's main action stays visible, and on touch (`hover: none`) all actions show without hover (W2-81, W2-82).
 - **Severity**: low ; **Tags**: cards, motion, layout
 
 ### W1-79 Signal card interactivity with an edge accent  (src: card-hover-anatomy)
@@ -658,7 +658,7 @@
 - **Severity**: medium ; **Tags**: copy, typography, hierarchy
 
 ### W1-81 Keep one accent and drop background blobs  (src: de-ai-landing-hero)
-- **Rule**: Pair a neutral background with a single splash of color, placed only on the product screenshot and primary button: one accent, zero blobs.
+- **Rule**: Pair a neutral background with a single splash of color, placed only on the product screenshot and primary button: one accent, zero blobs. A decorative blob is a blurred colour shape with no job; one soft glow behind a product shot that uses the accent (W2-15) is not a blob.
 - **Why**: Purple gradient smears add energy but no content.
 - **Do / Don't**: Do keep the accent for the screenshot and primary CTA. Don't add decorative gradient blobs.
 - **Audit check**: grep `blur-3xl`, `radial-gradient` blobs, absolute gradient circles in hero.
@@ -750,11 +750,11 @@
 - **Severity**: medium ; **Tags**: copy, buttons, interaction-cost
 
 ### W1-92 Reserve red for destruction and move delete off the confirm spot  (src: destructive-actions)
-- **Rule**: Spend red only on destructive actions (not logout, badges, alerts), and never place a destructive button where confirm normally sits.
+- **Rule**: Among actions, spend red only on destructive ones (not logout, a red notification badge or a decorative accent), and never place a destructive button where confirm normally sits. Error status colour (field errors, error alerts) stays red by convention (E-11).
 - **Why**: Overused red cries wolf, and muscle memory clicks primary spots blind.
 - **Do / Don't**: Do reserve red and reposition delete. Don't put delete in the usual confirm position.
 - **Audit check**: grep `bg-red-*`/`text-red-*`/`destructive` on non-destructive elements; check button order in dialogs.
-- **Restyle fix**: Recolor non-destructive red usages and reorder dialog actions. (On conflict the playbook wins: see G-12, Cancel left / destructive right.)
+- **Restyle fix**: Recolor non-destructive red actions and decorative red and reorder dialog actions; leave error states red. (On conflict the playbook wins: see G-12, Cancel left / destructive right, and E-11, red = error.)
 - **Severity**: medium ; **Tags**: color, buttons, interaction-cost
 
 ### W1-93 Add friction to irreversible deletes  (src: destructive-actions)
@@ -786,11 +786,11 @@
 - **Why**: Slow replies make users mentally check out.
 - **Do / Don't**: Do acknowledge every interaction within 400ms. Don't hold all visual response until the server answers.
 - **Audit check**: Check async actions for immediate loading/pressed state; look for await before any UI update.
-- **Restyle fix**: Add immediate acknowledgment (state change, spinner or skeleton).
+- **Restyle fix**: Add immediate acknowledgment: a pressed or pending state on the control at once (W1-03, W1-95); a spinner or skeleton only once the wait passes ~300ms (W2-62).
 - **Severity**: high ; **Tags**: states, interaction-cost, motion
 
 ### W1-97 Use skeletons, optimistic updates and progress for waits  (src: doherty-threshold)
-- **Rule**: Show placeholder skeleton shapes as soon as a screen opens, update optimistically when success is near-certain, and use spinners, progress or inline status for waits beyond the threshold.
+- **Rule**: Never leave a screen blank while it loads: show placeholder skeleton shapes once the wait passes ~300ms (W2-62), update optimistically when success is near-certain, and use spinners, progress or inline status for waits beyond the threshold.
 - **Why**: Unavoidable waits still feel responsive.
 - **Do / Don't**: Do display skeletons and progress. Don't leave the screen empty or frozen while data loads.
 - **Audit check**: grep loading branches returning `null` or blank; check for `Skeleton`/`animate-pulse` and progress components.

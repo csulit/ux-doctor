@@ -2,11 +2,9 @@
 
 | ID | Rule | Page/Src (p.N = playbook PDF page; web:slug = web rule, no page) | Severity | Tags |
 |---|---|---|---|---|
-| G-02 | Don't hide content behind promotional banners that need a tap | p.111, p.112 | medium | interaction-cost, layout, cards, imagery, hierarchy |
-| G-03 | Show a curated, relevant list immediately (e.g. "Top 10 easy recommended recipes") | p.113 | medium | interaction-cost, copy, layout |
-| G-04 | Design each input field for the type of data it collects | p.114 | medium | forms, interaction-cost |
+| G-02 | Don't hide content behind promotional banners that need a tap | p.111, p.112, reaffirmed p.113 | medium | interaction-cost, layout, cards, imagery, hierarchy, copy |
 | G-05 | Use separate large digit boxes for verification codes | p.114, p.115 | medium | forms, typography, interaction-cost |
-| G-06 | Match field length to expected data (short fields for CVC, expiry, zip) and pair them on a row | p.115, p.116 | medium | forms, layout, spacing, interaction-cost |
+| G-06 | Match field length to expected data (short fields for CVC, expiry, zip) and pair them on a row | p.115, p.116, reaffirmed p.114 | medium | forms, layout, spacing, interaction-cost |
 | G-07 | Don't use a "Confirm password" field | p.117, p.118 | medium | forms, interaction-cost |
 | G-08 | Add a show/hide toggle to password fields | p.118 | medium | forms, icons, accessibility, interaction-cost |
 | G-09 | Use inline, real-time password validation | p.119 | medium | forms, states, color, interaction-cost |
@@ -20,10 +18,8 @@
 | H-02 | Be creative but keep every element relevant | p.127 | medium | hierarchy, copy, layout |
 | H-03 | Remove unrelated ads and promos from task flows | p.128 | high | interaction-cost, hierarchy, forms, buttons, layout |
 | H-04 | Use action-free imagery beside forms | p.129 | medium | imagery, forms, layout, hierarchy |
-| H-09 | Place primary actions in the thumb zone | p.134 | high | mobile, interaction-cost, buttons, navigation, accessibility |
-| H-10 | Anchor onboarding CTAs low on the screen, within thumb reach | p.135-136 | medium | mobile, buttons, interaction-cost, layout |
-| H-11 | Don't leave empty states bare | p.136 | high | states, copy, interaction-cost |
-| H-12 | Build empty states from illustration, benefit headline, tips and a CTA | p.136-137 | medium | states, imagery, copy, buttons, hierarchy |
+| H-09 | Place primary actions in the thumb zone | p.134, reaffirmed p.135-136 | high | mobile, interaction-cost, buttons, navigation, accessibility |
+| H-12 | Don't leave empty states bare: build them from illustration, benefit headline, tips and a CTA | p.136-137 | high | states, imagery, copy, buttons, hierarchy, interaction-cost |
 | H-13 | Error states must explain, offer a fix and match the app's style | p.138 | high | states, copy, forms, interaction-cost |
 | H-14 | Offer helpful links or suggestions on 404 pages | p.139 | medium | states, navigation, copy, interaction-cost |
 | H-15 | Express brand personality in error pages | p.140 | low | states, imagery, copy, craft |

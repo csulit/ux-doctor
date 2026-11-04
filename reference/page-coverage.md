@@ -18,7 +18,7 @@
 - p.14 — Clarity intro + mistake 1 oversimplification: icon-only smart home toggles vs labelled (A-17, A-18).
 - p.15 — Mistake 2 overwhelming complexity: cluttered habit dashboard vs clean fitness dashboard (A-19).
 - p.16 — Mistake 3 misguided UX: "Unselect items you want to remove" vs "Select…" (A-20).
-- p.17 — Alignment intro; misjudged alignment in cactus card (A-21, A-22).
+- p.17 — Alignment intro; misjudged alignment in cactus card (A-21).
 - p.18 — Forgotten alignment in Resources list; left / right / center alignment (A-23, A-24, A-25, A-26).
 - p.19 — Useful alignment tips: use grids (layout grid settings), use auto-layout (A-27, A-28).
 
@@ -26,9 +26,9 @@
 
 - p.20 (printed 19): tail of Alignment chapter – auto-layout panel visual (gap 24 / padding 32) and "Be consistent" alignment (Left & Center = bad, Left = good) → B-01.
 - p.21 (printed 20): Contrast intro + why (readability/guidance/accessibility) + status-badge contrast-ratio example (2.84/1.81/1.92 vs 4.8/4.94/6.54) → B-02, B-03.
-- p.22 (printed 21): five ways to apply contrast (colour, weight, size, borders, shadows) + text over images (overlay or background blur; panda cards) → B-04–B-09.
+- p.22 (printed 21): five ways to apply contrast (colour, weight, size, borders, shadows) + text over images (overlay or background blur; panda cards) → B-04, B-07, B-09 (weight → E-33, size → F-04, shadows → D-03).
 - p.23 (printed 22): Simplicity intro/why + cart comparison (cluttered vs simple) → B-10, B-11.
-- p.24 (printed 23): cart explanation text + "Understand what is important for the user" → B-11, B-12.
+- p.24 (printed 23): cart explanation text + "Understand what is important for the user" → B-11, B-10.
 - p.25 (printed 24): Whitespace definition/benefits + sidebar comparison (tight vs airy) → B-13.
 - p.26 (printed 25): sidebar conclusion + "Start with too much space" + customer-growth card (loose vs cramped, both bad) → B-13, B-14.
 - p.27 (printed 26): scale whitespace down gradually; loose (bad) vs balanced (good) card → B-14.
@@ -90,14 +90,14 @@
 - p073 (printed 72): script typeface beauty example (EVELIA); sans-serif for tech/music/messaging (Tucard example) (E-14, E-15).
 - p074 (printed 73): readable and aesthetically pleasing font – blackletter vs clean serif/sans article card (E-16).
 - p075 (printed 74): reliable font list, licensing/Google Fonts, max 2 fonts – 4-family vs all-Inter music card (E-17, E-18, E-19).
-- p076 (printed 75): one versatile font best practice, two-font pairings, Figma pairing resource, ideal line length 45-75 desktop intro (E-20, E-21, E-22).
+- p076 (printed 75): one versatile font best practice, two-font pairings, Figma pairing resource, ideal line length 45-75 desktop intro (E-19, E-21, E-22).
 - p077 (printed 76): line-length ruler diagram (0/20/45/75/100), mobile 30-40, measuring tools, device flexibility (E-22, E-23, E-24, E-25).
-- p078 (printed 77): bad example – body text stretched across full page width (E-26).
+- p078 (printed 77): bad example – body text stretched across full page width (E-22).
 - p079 (printed 78): good example 1 – text block centred, ≤75 characters (E-27).
 - p080 (printed 79): good example 2 – left-aligned, ≤75 characters (E-28).
 - p081 (printed 80): break up long paragraphs – dense vs three short paragraphs (E-29).
 - p082 (printed 81): subheadings with icons/lines/space – GreenMeal before/after (E-30).
-- p083 (printed 82): text contrast – avoid pure black/white; graded grey hex values for dark and light themes (E-31, E-32).
+- p083 (printed 82): text contrast – avoid pure black/white; graded grey hex values for dark and light themes (E-31).
 - p084 (printed 83): font weights – Regular/Regular (bad) vs Bold/Regular (good) (E-33).
 
 ### F-pages-085-108.md
@@ -115,7 +115,7 @@
 - p.95 — Typography test: full spec comparison of bad vs good Japan card (F-11, F-12).
 - p.96 — "Things to avoid" checklist (pure black/white, same colour/weight, bigger heading LH, bad contrast for aesthetics, <10px, extra thin weights, >2 fonts, compromising fonts) (E-31, A-12, E-33, F-08, E-19, F-02, F-03, F-06, F-09).
 - p.97 — "Things to do" checklist (darker headings/lighter paragraphs, weights, line-height, AA contrast, 16px, sans-serif body, ≤2 fonts, left align, paragraph spacing) (A-12, E-33, F-08, F-09, F-06, F-17, E-19, A-24, F-19).
-- p.98 — Interaction cost definition, three components (cognitive/physical/time), ideal zero vs zig-zag diagram (F-20, F-21, F-23).
+- p.98 — Interaction cost definition, three components (cognitive/physical/time), ideal zero vs zig-zag diagram (F-20, F-21).
 - p.99 — Items to minimise (reading, scrolling, searching, understanding, clicking, typing, waiting, remembering) + gesture-icon illustration (F-22).
 - p.100 — Strategy 1: keep related actions close, Fitts's Law, Spotify playback bar (F-24).
 - p.101 — Strategy 2: minimise choice, Hick's Law, Uber Eats curated rows; Strategy 3 intro: working memory, Miller's 7±2 (F-25, F-26).
@@ -125,7 +125,7 @@
 - p.105 — Strategy 6: streamline tasks, address autofill/typeahead checkout screens (F-29).
 - p.106 — Strategy 7: reduce repetition, spreadsheet fill-down on A1:A17 (F-30).
 - p.107 — Bad product page (dropdown colour + quantity, far "Add to cart"); cost = 5 clicks, 1 scroll, mouse move (F-31).
-- p.108 — Improved product page: visible colour swatches, quantity stepper, CTA next to quantity (F-31, F-32, F-33, F-34).
+- p.108 — Improved product page: visible colour swatches, quantity stepper, CTA next to quantity (F-31, F-32, F-33, F-24).
 
 ### G-pages-109-126.md
 
@@ -133,8 +133,8 @@
 - p110: "Bonus tips" chapter opener and intro text. A collage of thumbnails previews later examples (verification code, Discover, payment). Intro/promo.
 - p111: Reduce user barriers by exposing content directly. Bad example: the Discover screen with promotional banners and "Explore now" (G-02).
 - p112: Why it's important. Good example: the Discover screen with real recipe and food cards plus "View all" (G-02).
-- p113: Curated "Top 10" list with the three benefits: quick value, reduced friction, relevancy (G-03).
-- p114: Design fields for the type of input. Verification code compare: one long field (bad) vs 4 big digit boxes (good) (G-04, G-05).
+- p113: Curated "Top 10" list with the three benefits: quick value, reduced friction, relevancy (G-02).
+- p114: Design fields for the type of input. Verification code compare: one long field (bad) vs 4 big digit boxes (good) (G-06, G-05).
 - p115: Explains the code boxes. Card-details form compare: long stacked fields vs compact grouped fields (G-05, G-06).
 - p116: Explains the CVC/expiry/zip short fields (CVC 3 or 4 digits); closing: align field design with expected data (G-06).
 - p117: Don't use a confirm password field: interaction cost and error-prone. Compare: two fields vs one with an eye icon (G-07).
@@ -158,8 +158,8 @@
 - p.132 — "Leverage overlapping images": two bad Versace Eros cards, one segmented and one with a clashing overlap (H-07).
 - p.133 — Third card with an outline matching the background (H-07 explanation, H-08).
 - p.134 — "Design for the thumb zone": phone heat map with hard, stretch and easy zones (H-09).
-- p.135 — Real-estate welcome screens: CTA in the top-right (bad) vs bottom thumb zone (good) (H-10).
-- p.136 — End of thumb-zone text, then "Turning empty states into opportunities": bare vs designed empty state (H-10, H-11, H-12).
+- p.135 — Real-estate welcome screens: CTA in the top-right (bad) vs bottom thumb zone (good) (H-09).
+- p.136 — End of thumb-zone text, then "Turning empty states into opportunities": bare vs designed empty state (H-09, H-12).
 - p.137 — Explanation of the good empty state: headline, illustration, tips, CTA (H-12).
 - p.138 — "Turn mistakes into positive experiences": Google 404 as the bad example and the 3 criteria of a good error state (H-13).
 - p.139 — Airbnb "Oops!" 404 with helpful links as the good example (H-14).

@@ -5,14 +5,14 @@ description: "Knowledge on interaction cost — the clicks, typing, scrolling, m
 
 # Interaction Cost
 
-Covers how to measure and reduce the mental, physical and time effort a user spends reaching a goal (F-20..F-34) and one-click ordering (G-01).
+Covers how to measure and reduce the mental, physical and time effort a user spends reaching a goal (F-20..F-33) and one-click ordering (G-01).
 Use it to count effort in key flows, rank detours, and prescribe shorter paths.
 
 ## How to use
 - Read `references/index.md` first; open `references/rules.md` only for the rule IDs relevant to the current finding (search by ID, e.g. `grep -n '^### F-31' references/rules.md`).
 - Cite rule IDs and pages in every finding (e.g. "F-31, p.107-108").
 - For each key task (checkout, signup, configure+buy) count clicks, keystrokes, scrolls, page loads, decisions and compare with the minimum possible (F-20). Classify each friction point as cognitive, physical or time (F-21).
-- Prioritise highest-frequency tasks with highest effort; zero cost is unrealistic (F-23).
+- Prioritise highest-frequency tasks with highest effort; zero cost is unrealistic (F-20).
 
 ## Top checks
 - F-20 — key task takes more clicks/keystrokes/scrolls/decisions than the shortest path → shorten the path, apply F-24..F-30. (high, p.98)
@@ -21,7 +21,7 @@ Use it to count effort in key flows, rank detours, and prescribe shorter paths.
 - F-25 — many equal-weight options shown at once (nav items, cards, filters, menu entries) → curate a "Popular"/recommended subset, top N + "See all", disclose the rest progressively. Single-choice answer lists finer than the product uses, or ranges sharing a boundary ("6 to 7", "7 to 8") → merge to the needed granularity with non-overlapping ranges (inference). (high, p.101)
 - F-32 — colour/material/pattern choices as text only ("Green") → visual swatches with a ringed selected state. (p.108)
 - F-33 — quantity as `<select>` or stepper without direct entry → − / editable number / + stepper. (p.108)
-- F-34 — primary CTA far from the inputs it commits (far-right, detached) → place adjacent to the last input (right of or below the stepper). (p.108)
+- F-24 (p.108 example) — primary CTA far from the inputs it commits (far-right, detached) → place adjacent to the last input (right of or below the stepper). (p.108)
 - F-24 — action distant from its subject, tiny hit area, or behind another screen → anchor controls next to/persistently with the target, enlarge hit area (Fitts's Law). (p.100)
 - F-26 — wall of text or >~7 ungrouped items, no headings → chunk into groups of ≲7 (≈7±2 working memory), add headings, "Show more"/"Show all N"; clamp secondary card descriptions to a few lines with an in-place "Read more" (inference). (p.101-102)
 - F-28 — user must remember state from earlier screens/sessions, unlabeled or unconventional icons → "Continue/recent" shortcuts, visible progress, conventional labelled icons. (p.104)
@@ -36,7 +36,7 @@ Use it to count effort in key flows, rank detours, and prescribe shorter paths.
 - `<select name="quantity"`, or `type="number"` without +/- buttons; stepper lacking an editable input (F-33).
 - Form inputs missing `autocomplete` (`name`, `email`, `tel`, `street-address`, `postal-code`, `cc-number`, `cc-exp`, `cc-csc`); address as separate free-text fields with no lookup (F-29).
 - Multi-page/wizard flows where steps contain one field or duplicate saved data; step count vs minimum (F-29).
-- Submit/"Add to cart" button in a different container/column or `ml-auto`/`justify-end` far from the inputs (F-34).
+- Submit/"Add to cart" button in a different container/column or `ml-auto`/`justify-end` far from the inputs (F-24).
 - Small interactive elements: icon buttons with no padding, hit area visibly small (check rendered size) (F-24).
 - Nav/menu/filter arrays with many same-weight entries; lists rendering full catalogue without curated sections or "See all" (F-25, F-26).
 - `autoplay`, auto-rotating carousels, modal/newsletter pop-ups on mount (`useEffect` + `setTimeout` opening a dialog), cookie/promo banners stacked above task content (F-27).
@@ -47,7 +47,7 @@ Use it to count effort in key flows, rank detours, and prescribe shorter paths.
 
 ## Restyle defaults
 - Inline swatches (ringed selected state) for colour/visual attributes; segmented control or chips for small option sets (F-31, F-32).
-- Quantity stepper − / editable number / + (default 1), with "Add to cart" immediately right of it, below the swatches (F-33, F-34, G-01).
+- Quantity stepper − / editable number / + (default 1), with "Add to cart" immediately right of it, below the swatches (F-33, F-24, G-01).
 - Product CTA pair: outlined "Add to cart" + filled "Buy now", one filled primary per decision area (G-01).
 - Curated carousels/sections with top N + "See all"; filters in a sidebar rather than dumping the list (F-25).
 - Section headings and boxed chunks; truncate long text/lists with "Show more"/"Show all N"; sticky action card for the main CTA on long pages (F-26).
