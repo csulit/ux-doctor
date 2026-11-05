@@ -1,6 +1,6 @@
 {
   "name": "ux-doctor",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "UI/UX audit, design review and restyle skills and commands based on The UI/UX Playbook (Pi package; also a Claude Code, Codex and Cursor plugin).",
   "keywords": [
     "pi-package",
