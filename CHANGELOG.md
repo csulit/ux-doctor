@@ -4,6 +4,8 @@ All notable changes to this project are documented here. Format: [Keep a Changel
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-05
+
 ### Changed
 - Rule set made agent-sized (see `docs/agent-usability-audit.md`): 417 → 357 rules. 39 restatements are folded into the rule they repeat (A-06 → A-07, F-02 → F-09, W1-12/W1-13 → F-09, W1-14/W2-24 → E-10, W2-53/W2-54 → H-12, W2-58/W2-59 → H-13, W3-02 → G-08, and 32 more web rules); their IDs resolve as aliases. 21 web rules that are perception heuristics or engineering advice with no visible UI effect are removed (golden ratio, peak-end, Zeigarnik, serial position, live cursors, `:has()`, z-index stacking, scroll timelines, cursor pagination and others).
 - Every rule has a `kind`: `check` (yields findings), `default` (a value to build with) or `principle` (background, never a finding); `rule.mjs` and `score.mjs` enforce it.
