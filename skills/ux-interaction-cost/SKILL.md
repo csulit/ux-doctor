@@ -1,66 +1,36 @@
 ---
 name: ux-interaction-cost
-description: "Knowledge on interaction cost — the clicks, typing, scrolling, memory and time a UI demands — with Fitts's and Hick's Law, recognition over recall, autofill, dropdown-vs-visible options, steppers and one-click buy. Use when auditing, reviewing or restyling flows, forms, checkout or product pages for friction, step count or effort."
+description: "Knowledge on interaction cost — the clicks, typing, scrolling, memory, reach and waiting a UI demands — with Fitts's and Hick's Law, recognition over recall, autofill, visible options, steppers, touch targets, hover-only actions, response time and motion that hides content. Use when auditing, reviewing or restyling flows, forms, checkout, product pages, navigation or mobile UI for friction, step count, reach or responsiveness."
 ---
 
 # Interaction Cost
 
-Covers how to measure and reduce the mental, physical and time effort a user spends reaching a goal (F-20..F-33) and one-click ordering (G-01).
-Use it to count effort in key flows, rank detours, and prescribe shorter paths.
+Counts the mental, physical and time effort a user spends reaching a goal, and prescribes shorter paths. Playbook rules F-20..F-33 and G-01; core web rules W1-03, W1-96, W1-97, W2-62 (response time), W2-81, W2-82, W2-83 (touch and hover), W2-72 (navigation), W2-64 (optimistic UI), W5-03, W5-04 (scroll motion, `source: web`).
 
 ## How to use
-- Read `references/index.md` first; open `references/rules.md` only for the rule IDs relevant to the current finding (search by ID, e.g. `grep -n '^### F-31' references/rules.md`).
-- Cite rule IDs and pages in every finding (e.g. "F-31, p.107-108").
-- For each key task (checkout, signup, configure+buy) count clicks, keystrokes, scrolls, page loads, decisions and compare with the minimum possible (F-20). Classify each friction point as cognitive, physical or time (F-21).
-- Prioritise highest-frequency tasks with highest effort; zero cost is unrealistic (F-20).
+Start from the Critical 20 (`../ux-doctor/references/critical.md`), then the top checks below. Open a rule only for a candidate finding: `node ../ux-doctor/scripts/rule.mjs F-31`, or `references/index.md` → `references/rules.md`. Only `check` rules become findings. Record counted clicks, scrolls and waits in the finding's evidence.
 
 ## Top checks
-- F-20 — key task takes more clicks/keystrokes/scrolls/decisions than the shortest path → shorten the path, apply F-24..F-30. (high, p.98)
-- F-31 — small option set (colour, size, plan) hidden in a `<select>`/nested menu → show inline as swatches, segmented control or radio chips. Playbook baseline: 2 clicks + scroll for colour, 2 more + scroll for quantity = 5 clicks, 1 scroll (plus a short mouse move) to add two red chairs; improved: a colour change = 1 click + short mouse move. (high, p.107-108) The "≈ ≤5-6 options" cut-off for "small set" is an (inference), not stated in the playbook.
-- F-29 — avoidable steps, retyped saved data, no address lookup → merge/remove steps, `autocomplete` attributes, address typeahead, saved payment prefilled. (high, p.105)
-- F-25 — many equal-weight options shown at once (nav items, cards, filters, menu entries) → curate a "Popular"/recommended subset, top N + "See all", disclose the rest progressively. Single-choice answer lists finer than the product uses, or ranges sharing a boundary ("6 to 7", "7 to 8") → merge to the needed granularity with non-overlapping ranges (inference). (high, p.101)
-- F-32 — colour/material/pattern choices as text only ("Green") → visual swatches with a ringed selected state. (p.108)
-- F-33 — quantity as `<select>` or stepper without direct entry → − / editable number / + stepper. (p.108)
-- F-24 (p.108 example) — primary CTA far from the inputs it commits (far-right, detached) → place adjacent to the last input (right of or below the stepper). (p.108)
-- F-24 — action distant from its subject, tiny hit area, or behind another screen → anchor controls next to/persistently with the target, enlarge hit area (Fitts's Law). (p.100)
-- F-26 — wall of text or >~7 ungrouped items, no headings → chunk into groups of ≲7 (≈7±2 working memory), add headings, "Show more"/"Show all N"; clamp secondary card descriptions to a few lines with an in-place "Read more" (inference). (p.101-102)
-- F-28 — user must remember state from earlier screens/sessions, unlabeled or unconventional icons → "Continue/recent" shortcuts, visible progress, conventional labelled icons. (p.104)
-- F-30 — per-item repeated work with no bulk select, duplicate, templates or remembered choices → add multi-select + bulk actions, defaults, copy/duplicate. (p.106)
-- F-27 — auto-playing/animated banners, pop-ups on load, ads, competing visuals on task or reading screens → remove or defer; keep content and essential nav. (p.103)
-- W4-04 (web, medium) — several independent questions stacked on one step of a questionnaire/onboarding stepper, or the step's action below the fold → one question + visible action per step, after dropping unused questions (F-29); related data-entry fields stay together (W3-10). Label `source: web`.
-- F-22 — long reading before action, long scroll to CTA, search needed, heavy typing, load waits, info to remember → cut copy, surface info, shorten forms, keep context visible. (p.99)
-- G-01 — returning user cannot buy in one step → add a filled "Buy now" beside an outlined "Add to cart", backed by saved address and payment; which is primary is a deliberate business choice. (p.109)
+- F-29 / F-22 (p.99, p.105) — avoidable steps, retyped saved data, no address lookup, long scroll or reading before the action → merge or drop steps, `autocomplete` attributes, prefilled saved data.
+- F-31 / F-33 (p.107-108) — a small option set (colour, size, plan, quantity) hidden in a `<select>` → inline swatches, segmented control or chips; quantity as − / editable number / +.
+- F-25 / F-26 (p.101-102) — many equal-weight options or a wall of ungrouped items → a curated subset with "See all"; groups of about 7 with headings.
+- F-24 (p.100, p.108) — the action far from what it commits, or a tiny hit area → place it next to its inputs; enlarge the target.
+- W2-81 / W2-83 (web) — a primary action revealed only on hover; touch targets under 24px (target 44px) → always-visible primary actions; pad icon buttons to 44px.
+- W1-96 / W2-62 (web) — an action with no visible response within ~400ms, or a spinner flashing under ~300ms → pressed and pending state at once, skeleton or progress only past ~300ms.
+- W5-04 / F-27 (web, p.103) — content hidden until a scroll trigger fires; auto-playing banners or pop-ups on load in task or reading flows → render content without the animation; remove or defer distractions.
 
 ## Code signals
-- `<select` / `role="combobox"` / `Dropdown`/`Listbox` with few options for colour, size, quantity (F-31, F-33).
-- `<select name="quantity"`, or `type="number"` without +/- buttons; stepper lacking an editable input (F-33).
-- Form inputs missing `autocomplete` (`name`, `email`, `tel`, `street-address`, `postal-code`, `cc-number`, `cc-exp`, `cc-csc`); address as separate free-text fields with no lookup (F-29).
-- Multi-page/wizard flows where steps contain one field or duplicate saved data; step count vs minimum (F-29).
-- Submit/"Add to cart" button in a different container/column or `ml-auto`/`justify-end` far from the inputs (F-24).
-- Small interactive elements: icon buttons with no padding, hit area visibly small (check rendered size) (F-24).
-- Nav/menu/filter arrays with many same-weight entries; lists rendering full catalogue without curated sections or "See all" (F-25, F-26).
-- `autoplay`, auto-rotating carousels, modal/newsletter pop-ups on mount (`useEffect` + `setTimeout` opening a dialog), cookie/promo banners stacked above task content (F-27).
-- Icon-only buttons without `aria-label`/visible label; no "recent", "continue" or progress UI where users resume tasks (F-28).
-- Tables/lists with per-row action buttons only, no checkbox column/bulk action bar (F-30).
-- Product page: no one-step purchase CTA for signed-in users with stored data (G-01).
-- Screenshots/flows: tally clicks, typing, scrolls, waits per task; record the count in the finding.
+- `<select` / `Listbox` with few options for colour, size or quantity; `type="number"` without +/- buttons (F-31, F-33).
+- Inputs missing `autocomplete` (`email`, `tel`, `street-address`, `postal-code`, `cc-number`, `cc-exp`) (F-29).
+- Submit or "Add to cart" in a different column, `ml-auto` far from its inputs (F-24).
+- Actions inside `group-hover:`/`:hover` only; `:hover` styles without `@media (hover: hover)` (W2-81, W2-82); icon buttons `w-5 h-5` with no padding (W2-83).
+- Async handlers with no pending state; spinners rendered without a delay (W1-96, W2-62).
+- `whileInView`/`data-aos` on every section, sections starting at `opacity-0` (W5-03, W5-04); `autoplay` carousels, dialogs opened in `useEffect` on mount (F-27).
+- Desktop nav collapsed into a hamburger at every breakpoint (W2-72).
+- Optimistic updates around payment or delete calls (W2-64).
 
-## Restyle defaults
-- Inline swatches (ringed selected state) for colour/visual attributes; segmented control or chips for small option sets (F-31, F-32).
-- Quantity stepper − / editable number / + (default 1), with "Add to cart" immediately right of it, below the swatches (F-33, F-24, G-01).
-- Product CTA pair: outlined "Add to cart" + filled "Buy now", one filled primary per decision area (G-01).
-- Curated carousels/sections with top N + "See all"; filters in a sidebar rather than dumping the list (F-25).
-- Section headings and boxed chunks; truncate long text/lists with "Show more"/"Show all N"; sticky action card for the main CTA on long pages (F-26).
-- Persistent anchored controls near their target (F-24).
-- Autofill via `autocomplete`, address typeahead, pre-filled saved payment, merge or drop non-outcome steps (F-29).
-- "Continue watching/recent" row with progress bars, labelled conventional icons (F-28).
-- Multi-select with bulk actions, duplicate, templates, remembered previous choices (F-30).
-- Strip pop-ups/banners/decorative visuals from focus pages; single narrow centred column for reading (F-27).
-- Minimum hit-area size: 44×44px (iOS) / 48dp (Material) (general practice; the playbook gives no number).
-
-## Pairs well with
-- `ux-ui-patterns` — forms, checkout, product page, empty/error states.
-- `ux-hierarchy-clarity` — primary vs secondary CTA, curated emphasis.
-- `ux-layout-spacing` — CTA proximity, grouping/chunking, form layout.
-- `ux-typography` — copy length, scannability.
-- `ux-depth-craft` — button/selected-state affordance.
+## Restyle
+Values (touch targets, timing): `../ux-doctor/references/defaults.md`. Specific to this skill:
+- Product page: inline swatches with a ringed selected state, a stepper with "Add to cart" right beside it, a filled "Buy now" next to an outlined "Add to cart" for returning users (F-32, F-33, F-24, G-01).
+- Long lists: curated sections with top N + "See all"; "Show more" for long text; a sticky action card on long pages (F-25, F-26).
+- Resuming tasks: "Continue/recent" rows with progress, conventional labelled icons (F-28); repetitive work gets multi-select and bulk actions (F-30).

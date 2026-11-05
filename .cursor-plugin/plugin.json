@@ -1,7 +1,7 @@
 {
   "name": "ux-doctor",
   "version": "0.2.0",
-  "description": "Audit, design-review and restyle UIs against 161 rules from The UI/UX Playbook.",
+  "description": "Audit, design-review and restyle UIs against 159 rules from The UI/UX Playbook plus 198 web-pattern tips.",
   "keywords": [
     "ui",
     "ux",

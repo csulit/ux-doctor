@@ -22,6 +22,23 @@ The fix is mostly subtraction, plus a few scripts:
 4. Compute scores with a script instead of having the agent do the arithmetic.
 5. Add a lightweight "build" path for the most common agent job: writing new UI.
 
+## Status: implemented
+
+All nine recommendations are now in the plugin. The measured result:
+
+| | Before | After |
+|---|---|---|
+| Rules | 417 (161 playbook + 256 web) | 357 (159 playbook + 56 core web + 142 extended web) |
+| `check` rules an audit pass considers | 417 | 178 |
+| Tension rows (`rule-tensions.md`) | 77 | 6 |
+| Top checks | 117 | 49, plus the Critical 20 |
+| `high` rules | 88 | 23 |
+| Instruction load before rule bodies | ~41k tokens | ~14.7k tokens (core + method + references + 7 `SKILL.md`), ~21.5k with every index |
+| Places a default value lives | 4 | 1 (`defaults.md`) |
+| Scoring arithmetic by the agent | yes | no (`score.mjs`) |
+
+`npm run validate` now enforces these limits, so they can't creep back up. The findings below describe the plugin **before** the change.
+
 ## What the agent has to hold (measured)
 
 | Load | Today | Notes |

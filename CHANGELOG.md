@@ -4,6 +4,22 @@ All notable changes to this project are documented here. Format: [Keep a Changel
 
 ## [Unreleased]
 
+### Changed
+- Rule set made agent-sized (see `docs/agent-usability-audit.md`): 417 → 357 rules. 39 restatements are folded into the rule they repeat (A-06 → A-07, F-02 → F-09, W1-12/W1-13 → F-09, W1-14/W2-24 → E-10, W2-53/W2-54 → H-12, W2-58/W2-59 → H-13, W3-02 → G-08, and 32 more web rules); their IDs resolve as aliases. 21 web rules that are perception heuristics or engineering advice with no visible UI effect are removed (golden ratio, peak-end, Zeigarnik, serial position, live cursors, `:has()`, z-index stacking, scroll timelines, cursor pagination and others).
+- Every rule has a `kind`: `check` (yields findings), `default` (a value to build with) or `principle` (background, never a finding); `rule.mjs` and `score.mjs` enforce it.
+- 56 core web rules (field states, focus, touch, response time, destructive actions, AI-look tells) move into the seven dimension skills next to the playbook rules they complement; `ux-web-patterns` becomes a lookup-only extended reference that audit passes don't load. Web findings no longer score at half weight.
+- Conflicts are resolved inside the rules: a yielding rule states it in a new `scope` field. `rule-tensions.md` shrinks from 77 rows to the 6 genuine trade-offs; the restatement table is gone.
+- Severity re-rated: `high` (23 rules, was 88) means a task breaks or a hard floor fails. Tags: at most 2 per rule, `craft` retired. `rule.mjs` prints kind, skill and scope, ranks core rules before extended ones and shows per-skill counts for broad queries.
+- Each dimension skill has at most 7 top checks (was 12-17) and points to `defaults.md` instead of restating values. The duplicate-CTA procedure moves to `references/duplicate-cta.md`, loaded only when a CTA is doubled.
+- Audit groups rebalanced (typography + colour, interaction cost + UI patterns); commands, agents, `rules/ux-doctor.mdc` and `AGENTS.md` point to the method skills instead of restating their boundaries. `numeric-cheatsheet.md` keeps only actionable values.
+
+### Added
+- `references/critical.md`: the Critical 20 checks, each with a matching build instruction.
+- `references/defaults.md`: one value per property with its hard floor and target (touch targets: 24px floor, 44px target; line length, contrast, type, spacing, radius, shadows, motion).
+- `scripts/score.mjs`: lints audit findings (`.ux-doctor/findings.json`) and computes final severities, dimension scores, the grade and contested ranges; tests in `test/score.test.mjs`.
+- `ux-build` skill: lightweight guidance for writing UI (project tokens, defaults, Critical 20) without the audit ceremony.
+- `npm run validate` guards the limits: ≤ 7 top checks per dimension skill, ≤ 30 high rules, 20 critical rows, ≤ 10 tension rows, ≤ 2 tags and a valid kind per rule.
+
 ## [0.2.0] - 2026-11-04
 
 ### Added

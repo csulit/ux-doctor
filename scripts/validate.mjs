@@ -41,16 +41,20 @@ for (const dir of ["skills", "commands", "agents"]) for (const f of handMd(dir))
   const mapped = new Set([...txt.matchAll(/\b([A-H]-\d{2}|W\d-\d{2}) → ([A-H]-\d{2}|W\d-\d{2})\b/g)].filter((m) => aliasOf.get(m[1]) === m[2]).map((m) => m.index));
   for (const m of txt.matchAll(/\b([A-H]-\d{2}|W\d-\d{2})\b/g)) if (!ids.has(m[1]) && !mapped.has(m.index) && !/^[A-H]-00$/.test(m[1])) errs.push(`${dir}/${f}: unknown rule ${m[1]}${aliasOf.has(m[1]) ? ` (merged into ${aliasOf.get(m[1])}; cite that, or write "${m[1]} → ${aliasOf.get(m[1])}")` : ""}`);
 }
-// duplicate-CTA guidance has one canonical home (ux-hierarchy-clarity); other files point to it instead of restating it
+// agent-facing limits: the priority signals stay small enough to mean something
 {
   const read = (p) => (existsSync(join(root, p)) ? readFileSync(join(root, p), "utf8") : "");
-  const canon = "skills/ux-hierarchy-clarity/SKILL.md", low = read(canon).toLowerCase(), phrase = "outline-only only lowers major to minor", restated = [phrase, "hero cta a different job", "hide the header copy until"];
-  const weak = ["same-destination test", phrase, "never a resolution", "persistent conversion route", "at top:", "both scroll states", "prefers-reduced-motion", "no empty slot"].filter((c) => !low.includes(c));
-  if (weak.length) errs.push(`${canon}: canonical duplicate-CTA guidance was removed or weakened (missing: ${weak.join("; ")})`);
-  for (const dir of ["skills", "commands", "agents"]) for (const f of handMd(dir))
-    if (`${dir}/${f}` !== canon && restated.some((c) => read(`${dir}/${f}`).toLowerCase().includes(c))) errs.push(`${dir}/${f}: restates the duplicate-CTA fix — point to the same-destination test in ux-hierarchy-clarity instead`);
-  for (const p of ["skills/restyle-method/SKILL.md", "skills/ux-web-patterns/SKILL.md", "skills/ux-doctor/references/rule-tensions.md"])
-    if (!read(p).includes("same-destination test")) errs.push(`${p}: must point to the same-destination test in ux-hierarchy-clarity`);
+  const DIMS = ["ux-hierarchy-clarity", "ux-layout-spacing", "ux-depth-craft", "ux-color", "ux-typography", "ux-interaction-cost", "ux-ui-patterns"];
+  for (const d of DIMS) { const top = (read(`skills/${d}/SKILL.md`).split("## Top checks")[1] || "").split(/\n## /)[0].match(/^- /gm)?.length ?? 0;
+    if (!top || top > 7) errs.push(`skills/${d}/SKILL.md: needs 1-7 Top checks, has ${top}`); }
+  const high = rules.filter((r) => r.severity === "high").length; if (high > 30) errs.push(`${high} rules rated high (max 30): high means a task breaks or a hard floor fails`);
+  const crit = (read("skills/ux-doctor/references/critical.md").match(/^\| \d+ \|/gm) || []).length; if (crit !== 20) errs.push(`skills/ux-doctor/references/critical.md: expected 20 rows, found ${crit}`);
+  const tensions = (read("skills/ux-doctor/references/rule-tensions.md").match(/^\| (?!IDs |---)/gm) || []).length; if (tensions > 10) errs.push(`rule-tensions.md: ${tensions} rows (max 10); put the resolution into the yielding rule's Scope field instead`);
+  for (const r of rules) { if (!["check", "default", "principle"].includes(r.kind)) errs.push(`${r.id}: kind "${r.kind}"`); if (r.tags.length > 2 || r.tags.includes("craft")) errs.push(`${r.id}: at most 2 tags, no "craft"`); }
+  const dup = "skills/ux-doctor/references/duplicate-cta.md";
+  if (!read(dup).includes("same-destination test")) errs.push(`${dup}: missing or lost the same-destination test`);
+  for (const p of ["skills/ux-hierarchy-clarity/SKILL.md", "skills/audit-method/SKILL.md", "skills/review-method/SKILL.md", "skills/restyle-method/SKILL.md"])
+    if (!read(p).includes("duplicate-cta.md")) errs.push(`${p}: must point to ux-doctor/references/duplicate-cta.md`);
   if (!read("skills/restyle-method/SKILL.md").includes("keeps: verified")) errs.push("skills/restyle-method/SKILL.md: must require verifying audit `keeps:` claims (`keeps: verified`)");
 }
 // each skill's references/index.md lists every rule of that skill
@@ -102,6 +106,10 @@ else { const a = run("contrast.mjs", ["rgba(0,0,0,.2)", "#fff"]); if (a.status !
   const b = run("contrast.mjs", ["rgba(0,0,0,.2)", "#fff", "--over", "#fff"]); let j = null; try { j = JSON.parse(b.stdout); } catch {}
   if (![0, 1].includes(b.status) || typeof j?.ratio !== "number") errs.push(`contrast --over: expected exit 0/1 and a numeric ratio, got exit ${b.status} ${b.stderr.slice(0, 200)}`);
   const c = run("contrast.mjs", ["#626262", "#fff"]); if (c.status !== 0 || !/"ratio":6\.1\b/.test(c.stdout)) errs.push("contrast #626262/#fff: expected exit 0 and ratio 6.1"); }
+if (!existsSync(join(scriptDir, "score.mjs"))) errs.push("score.mjs missing");
+else { const sample = JSON.stringify({ findings: [{ rule: "F-09", placement: "primary", title: "t", where: "a.css · .x · line 1 @ abc1234", evidence: "2.5:1", label: "verified", impact: "i", fix: "f — keeps: k" }] });
+  const a = spawnSync(process.execPath, [join(scriptDir, "score.mjs"), "-", "--json"], { encoding: "utf8", input: sample, timeout: 10000 }); let j = null; try { j = JSON.parse(a.stdout); } catch {}
+  if (a.status !== 0 || j?.findings?.[0]?.severity !== "major") errs.push(`score.mjs on a high-severity finding: expected exit 0 and severity major, got exit ${a.status} ${a.stderr.slice(0, 200)}`); }
 if (!existsSync(join(scriptDir, "rule.mjs"))) errs.push("rule.mjs missing");
 else { const a = run("rule.mjs", ["F-06"]); if (a.status !== 0 || !a.stdout.includes("F-06")) errs.push(`rule.mjs F-06: expected exit 0 and output containing F-06, got exit ${a.status}`);
   const b = run("rule.mjs", ["zzzz-nomatch"]); if (b.status !== 1) errs.push(`rule.mjs zzzz-nomatch: expected exit 1, got ${b.status}`); }
