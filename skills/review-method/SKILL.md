@@ -5,7 +5,7 @@ description: "Procedure for a focused design review of a change set (git diff, P
 
 # Review method (read-only)
 
-Never edit project files. The only permitted write is optional screenshots under `.ux-doctor/shots/`, made by the **main agent** (never by the read-only `ux-reviewer` subagent). Never start servers or install anything. Severity, evidence labels, lowering, constraints: `../ux-doctor/SKILL.md`; finding block, tools: `../ux-doctor/references/finding-format.md`.
+Never edit project files. The only permitted write is optional screenshots under `.ux-doctor/shots/`, made by the **main agent** (never by the read-only `ux-reviewer` subagent). Never start servers or install anything. Severity, evidence labels, constraints: `../ux-doctor/SKILL.md`; finding fields and tools: `../ux-doctor/references/finding-format.md`.
 
 Goal: a short, actionable critique of *what changed* — not an audit of the whole product.
 
@@ -20,19 +20,19 @@ Keep only UI-relevant hunks (markup, CSS/Tailwind, theme/tokens, assets). If non
 For each touched component read the whole file, one hop of usage and the project's tokens/theme. The new UI must be consistent with sibling components (playbook "Consistency" rules) unless the change is an intentional system update. Read the project constraints (ground rule 1, `../ux-doctor/SKILL.md`): **a diff that breaches one is a blocker, citing the project file and line**.
 
 ## 3. Pick the knowledge
-Choose the 2–4 knowledge skills the diff touches (a card → `ux-layout-spacing`, `ux-depth-craft`, `ux-typography`; a form → `ux-ui-patterns`, `ux-interaction-cost`); use each `references/index.md` and open only matching rules. Measure instead of guessing (`../ux-doctor/references/finding-format.md`, `contrast.mjs`, `rule.mjs`). If the diff touches a layout, header, nav or hero component, the **main agent** runs `node <ux-doctor skill folder>/scripts/cta-scan.mjs <url> --render --shots .ux-doctor/shots` on the affected routes (only against an already running server; or views a given screenshot) **before judging hierarchy or CTAs and before delegating** — header and hero together make up the first viewport. A diff that hides, removes or moves a header/nav CTA is checked per the same-destination test in `ux-hierarchy-clarity` (persistent route at both scroll states, no orphaned slot); the main agent also captures the header after scrolling past the hero CTA (browser tool) before delegating, since the `ux-reviewer` agent cannot take screenshots. Check `../ux-doctor/references/rule-tensions.md` for suggestions that pull against each other.
+Check the touched UI against the **Critical 20** (`../ux-doctor/references/critical.md`) first. Then choose the 2–4 dimension skills the diff touches (a card → `ux-layout-spacing`, `ux-depth-craft`, `ux-typography`; a form → `ux-ui-patterns`, `ux-interaction-cost`) and read their **Top checks**; open a rule entry only for a candidate comment (`rule.mjs <ID>`). For a component no dimension rule covers, look it up in the extended `ux-web-patterns` with `rule.mjs`. Values and hard floors: `../ux-doctor/references/defaults.md`. Measure instead of guessing (`contrast.mjs`). If the diff touches a layout, header, nav or hero component, the **main agent** runs `node <ux-doctor skill folder>/scripts/cta-scan.mjs <url> --render --shots .ux-doctor/shots` on the affected routes (only against an already running server; or views a given screenshot) **before judging hierarchy or CTAs and before delegating**. A diff that hides, removes or moves a header/nav CTA, or a doubled CTA, is checked with the same-destination test in `../ux-doctor/references/duplicate-cta.md`; the main agent captures the header after scrolling past the hero CTA (browser tool) before delegating, since the `ux-reviewer` agent cannot take screenshots. Check `../ux-doctor/references/rule-tensions.md` when two suggestions touch the same property.
 
 ## 4. Output
 ```
 ## Design review — <what> (<n files>)
-Verdict: approve | approve with comments | changes requested      (changes requested only if a blocker/major exists)
+Verdict: approve | approve with comments | changes requested      (changes requested only if a blocker/major exists; severity per the table in ../ux-doctor/SKILL.md)
 ### Must fix   (blocker/major)   — finding blocks
 ### Should fix (minor)           — finding blocks, one line each if trivial
 ### Nits       (polish)          — bullet list
 ### Good       — 2-4 things done well, with rule IDs (none may contradict a finding)
 Advisory: <one line each — token-conforming values, accepted by design; unscored>
 ```
-Finding block = `../ux-doctor/references/finding-format.md`, anchored on the **new** code (`line N @ <short sha>`). Suggest the exact replacement classes/values. If the diff cannot be judged visually, mark visual claims `inferred`, say what you could not verify and which screenshot would settle it.
+Each comment carries the finding fields of `../ux-doctor/references/finding-format.md` (rule, where, evidence, label, impact, fix), rendered as a short block and anchored on the **new** code (`line N @ <short sha>`). Suggest the exact replacement classes/values. If the diff cannot be judged visually, mark visual claims `inferred`, say what you could not verify and which screenshot would settle it.
 
 ## Rules
 - Comment only on lines the change introduced or made worse; pre-existing issues go in one "Pre-existing, out of scope" line (max 3 items).

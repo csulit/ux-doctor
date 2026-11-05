@@ -5,12 +5,14 @@
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/15792/badge)](https://www.bestpractices.dev/projects/15792)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Audit, design-review and restyle UIs against **161 rules extracted page-by-page from *The UI/UX Playbook*** (uxpeak, 144 pp) plus a secondary layer of 256 web-pattern tips (paraphrased from public UX pattern pages and published guidance on generic AI-generated UI). One canonical source, packaged for **Claude Code, Codex, Cursor and Pi**.
+Build, audit, design-review and restyle UIs against **159 rules extracted page-by-page from *The UI/UX Playbook*** (uxpeak, 144 pp) plus 198 web-pattern tips (paraphrased from public UX pattern pages and published guidance on generic AI-generated UI). One canonical source, packaged for **Claude Code, Codex, Cursor and Pi**.
+
+Built for agents: every screen is checked against the **Critical 20** first, each dimension skill has at most 7 top checks, every property has one default value with a hard floor, and a script computes severities and grades. Only `check` rules become findings (`default` and `principle` rules guide building), and rules that yield to another say so in their own `scope`.
 
 ## Commands (4)
 | Command | What it does | Writes files? |
 |---|---|---|
-| `/ux-audit [target] [--focus d] [--quick]` | Scored, rule-cited audit (rendered evidence first, project rules respected) → `.ux-doctor/audit.md` | `.ux-doctor/` only (`audit.md`, `shots/`); never edits `.git/info/exclude` (prints the one-line command instead) |
+| `/ux-audit [target] [--focus d] [--quick]` | Scored, rule-cited audit (rendered evidence first, project rules respected) → `.ux-doctor/audit.md` | `.ux-doctor/` only (`audit.md`, `findings.json`, `shots/`); never edits `.git/info/exclude` (prints the one-line command instead) |
 | `/ux-review [PR \| paths \| image]` | Verdict + prioritized comments on a change | no project files; optional screenshots under `.ux-doctor/shots/`, made by the main agent only (the read-only `ux-reviewer` subagent never writes) |
 | `/ux-restyle [path] [--from-audit] [--scope …] [--dry-run] [--yes]` | Batched restyle (tokens → global → components → pages), measured | yes (after confirm); `--dry-run` writes nothing anywhere (embedded quick audit runs `cta-scan` without `--shots`, results in memory) |
 | `/ux-rules <topic \| ID>` | Look up playbook rules and exact numbers | no |
@@ -21,11 +23,14 @@ Restyle command per platform: `/ux-restyle --from-audit` (Pi, Cursor), `/ux-doct
 - `scripts/contrast.mjs <fg> <bg> [--large] [--over <hex>]` — WCAG ratio; `--over` flattens translucent colours.
 - `scripts/cta-scan.mjs <url|file.html|-> [--render] [--shots <dir>] [--json] [--scheme light|dark]` — CTAs in the first viewport, flags duplicate/competing primaries (`--render` drives an installed Chrome/Edge, downloads nothing, and needs **Node ≥ 22**; static mode and the other scripts need Node ≥ 20.1; `--shots` saves desktop/mobile PNGs).
 - `scripts/slop-scan.mjs <url|file|dir|-> [--json]` — counts AI-look tells (gradient text, blur blobs, eyebrow labels, card stripes, nested cards, emoji icons, per-section fade-ups, stock copy, …) with `file:line` hits and rule IDs; reports a tier, flags patterns not provenance (W5-01).
-- `scripts/rule.mjs <ID|tag|keyword>` — compact rule lookup. `references/rule-tensions.md` — known pairs of rules that pull against each other, with resolutions.
+- `scripts/rule.mjs <ID|tag|keyword>` — compact rule lookup (kind, scope, per-skill counts for broad queries).
+- `scripts/score.mjs <findings.json|->` — lints audit findings and computes final severities, dimension scores and the grade.
+- References: `critical.md` (the Critical 20), `defaults.md` (one value per property, hard floors), `rule-tensions.md` (the few genuine trade-offs), `duplicate-cta.md` (the same-destination test).
 
-## Skills (12) and agents (3)
-- Workflow skills: `audit-method`, `review-method`, `restyle-method`; core `ux-doctor` (severity, scoring, finding format).
-- Knowledge skills (progressive disclosure: `SKILL.md` → `references/index.md` → `references/rules.md`): `ux-hierarchy-clarity`, `ux-layout-spacing`, `ux-depth-craft`, `ux-color`, `ux-typography`, `ux-interaction-cost`, `ux-ui-patterns`, and `ux-web-patterns` (secondary: 256 paraphrased tips from public UX pattern pages and published AI-look guidance — states, motion, focus/touch, tokens, AI-look tells; labelled `source: web`).
+## Skills (13) and agents (3)
+- Workflow skills: `ux-build` (writing UI, no ceremony), `audit-method`, `review-method`, `restyle-method`; core `ux-doctor` (severity, evidence, Critical 20, defaults).
+- Dimension skills (progressive disclosure: `SKILL.md` top checks → `references/index.md` → `references/rules.md`): `ux-hierarchy-clarity`, `ux-layout-spacing`, `ux-depth-craft`, `ux-color`, `ux-typography`, `ux-interaction-cost`, `ux-ui-patterns`. Each holds its playbook rules plus the 56 core web rules for its dimension (states, focus, touch, response time, AI-look tells; labelled `source: web`).
+- `ux-web-patterns`: the extended web reference (142 rules on motion, tables, charts, pickers, overlays), lookup only, never loaded by audit passes.
 - Agents: `ux-auditor` (read-only, run ×4 in parallel by dimension group), `ux-reviewer` (read-only), `ux-restyler` (edits one approved batch).
 
 ## Install
@@ -45,9 +50,9 @@ Requirements: Node ≥ 20.1 for the bundled scripts; `cta-scan.mjs --render` nee
 skills/            Agent Skills (shared by all platforms)
 commands/          4 slash commands (Claude Code, Cursor, Pi)
 agents/            subagents (Claude Code, Cursor); platforms/codex/agents = generated TOML
-skills/ux-doctor/references/rules.json   all 417 rules (161 playbook + 256 web), machine readable
+skills/ux-doctor/references/rules.json   all 357 rules (159 playbook + 198 web), machine readable
 reference/         editable sources: extracted/*.md (playbook), extracted-web/*.md (web layer); generated: page-coverage.md; git-ignored: PDF, render/, pages/, web/
-scripts/           build-knowledge.mjs, sync-platforms.mjs, validate.mjs, check-paraphrase.mjs (dev)  (measuring tools ship with the skill: skills/ux-doctor/scripts/contrast.mjs, cta-scan.mjs, slop-scan.mjs, rule.mjs)
+scripts/           build-knowledge.mjs, sync-platforms.mjs, validate.mjs, check-paraphrase.mjs (dev)  (measuring tools ship with the skill: skills/ux-doctor/scripts/contrast.mjs, cta-scan.mjs, slop-scan.mjs, rule.mjs, score.mjs)
 ```
 Rebuild after editing `reference/extracted/*.md`: `npm run build && npm run validate`.
 

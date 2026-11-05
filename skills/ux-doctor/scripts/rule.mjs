@@ -32,6 +32,7 @@ catch (e) { die(`cannot read ../references/rules.json: ${e.message}`); }
 const low = (s) => String(s ?? "").toLowerCase();
 const cite = (r) => r.source === "web" ? (r.citation || `web:${String(r.pages).replace(/^web:\s*/, "")}`) : (r.citation || `p.${r.pages}`);
 const webNote = (r) => (r.source === "web" ? { url: r.url || null, pageNote: "no page" } : {});
+const tier = (r) => (r.source === "playbook" ? 0 : r.skill === "ux-web-patterns" ? 2 : 1);
 const SEV = { critical: 0, high: 1, medium: 2, low: 3 };
 let hits = [], by = "";
 const ids = words.map(low);
@@ -51,11 +52,12 @@ else {
     hits.sort((a, b) => score(b) - score(a)); // stable: keeps file order otherwise
   }
 }
-if (by !== "id") hits = hits.map((r, i) => [r, i]).sort(([a, i], [b, j]) => ((a.source === "playbook" ? 0 : 1) - (b.source === "playbook" ? 0 : 1)) || (by === "tag" ? (SEV[a.severity] ?? 9) - (SEV[b.severity] ?? 9) : 0) || i - j).map(([r]) => r);
+if (by !== "id") hits = hits.map((r, i) => [r, i]).sort(([a, i], [b, j]) => (tier(a) - tier(b)) || (by === "tag" ? (SEV[a.severity] ?? 9) - (SEV[b.severity] ?? 9) : 0) || i - j).map(([r]) => r);
 if (!hits.length) { console.error(`no rule matches "${words.join(" ")}" (tried ID, tag, keyword)`); process.exit(1); }
+const perSkill = () => hits.reduce((m, r) => ((m[r.skill] = (m[r.skill] || 0) + 1), m), {});
 const total = hits.length, shown = by === "id" ? hits : hits.slice(0, limit);
-if (json) console.log(JSON.stringify({ matchedBy: by, total, rules: shown.map((r, i) => ({ id: r.id, ...(mergedFrom[i] ? { mergedFrom: mergedFrom[i] } : {}), title: r.title, citation: cite(r), ...webNote(r), severity: r.severity, tags: r.tags, rule: r.rule, doDont: r.doDont, auditCheck: r.auditCheck, restyleFix: r.restyleFix })) }, null, 1));
+if (json) console.log(JSON.stringify({ matchedBy: by, total, rules: shown.map((r, i) => ({ id: r.id, ...(mergedFrom[i] ? { mergedFrom: mergedFrom[i] } : {}), title: r.title, citation: cite(r), ...webNote(r), kind: r.kind, severity: r.severity, skill: r.skill, tags: r.tags, rule: r.rule, doDont: r.doDont, auditCheck: r.auditCheck, restyleFix: r.restyleFix, ...(r.scope ? { scope: r.scope } : {}) })), ...(total > shown.length ? { bySkill: perSkill() } : {}) }, null, 1));
 else {
-  for (const [i, r] of shown.entries()) console.log(`${mergedFrom[i] ? `(${mergedFrom[i]} was merged into ${r.id})\n` : ""}${r.id}  ${r.title}\n  cite: ${cite(r)} | severity: ${r.severity} | tags: ${(r.tags || []).join(", ")}\n${r.source === "web" ? `  no page${r.url ? ` | url: ${r.url}` : ""}\n` : ""}  rule: ${r.rule}\n  do/don't: ${r.doDont}\n  audit: ${r.auditCheck}\n  restyle: ${r.restyleFix}\n`);
-  if (total > shown.length) console.log(`(${total - shown.length} more match by ${by}; raise --limit or narrow the query)`);
+  for (const [i, r] of shown.entries()) console.log(`${mergedFrom[i] ? `(${mergedFrom[i]} was merged into ${r.id})\n` : ""}${r.id}  ${r.title}\n  cite: ${cite(r)} | kind: ${r.kind} | severity: ${r.severity} | skill: ${r.skill} | tags: ${(r.tags || []).join(", ")}\n${r.source === "web" ? `  no page${r.url ? ` | url: ${r.url}` : ""}\n` : ""}  rule: ${r.rule}\n  do/don't: ${r.doDont}\n  audit: ${r.auditCheck}\n  restyle: ${r.restyleFix}\n${r.scope ? `  scope: ${r.scope}\n` : ""}`);
+  if (total > shown.length) console.log(`(${total - shown.length} more match by ${by}; per skill: ${Object.entries(perSkill()).map(([k, n]) => `${k} ${n}`).join(", ")}; add a second word or raise --limit)`);
 }

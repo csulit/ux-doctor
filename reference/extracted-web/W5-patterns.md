@@ -7,7 +7,9 @@
 - **Do / Don't**: Do give one grouped "AI-look tells" line that lists the tells found. Don't raise a separate finding for each tell, and don't claim the page was AI-generated.
 - **Audit check**: Run `node scripts/slop-scan.mjs <url|file|dir>` or check the tells by hand; report the count and the tier. Below 3 tells, mention them as one `(general practice)` note; at 3 or more, one grouped finding at this rule's severity. Hero tells (W1-80..W1-84) are still scored on their own rules at their own severity and count toward the tier; the grouped line names them by ID instead of scoring them twice. Two equal hero CTAs (W1-82) come from `cta-scan`, not slop-scan. Drop any tell the brief, `DESIGN.md` or the project tokens chose explicitly (Accepted by design).
 - **Restyle fix**: Fix the tells that cost clarity first (W1-80..W1-84, W5-04, W5-09), then replace the remaining defaults with one deliberate choice tied to the product (W5-02).
-- **Severity**: low ; **Tags**: craft, hierarchy
+- **Scope**: Glass is judged by D-16, D-18 and E-01, never counted as a tell. Inter, one radius language and an unchanged framework theme that passes the hard thresholds are never tells (E-17, C-08).
+- **Skill**: ux-hierarchy-clarity
+- **Severity**: low ; **Tags**: hierarchy
 
 ### W5-02 Check whether the look was chosen for this product  (src: ai-design-slop-review)
 - **Rule**: Ask whether anyone decided the type, palette and layout, rather than whether a model made them: if the same treatment would fit an unrelated product (say a booking tool, a CRM or a trading app) just as well, it is an accepted default.
@@ -15,7 +17,9 @@
 - **Do / Don't**: Do tie at least one visible decision (type, colour, imagery or layout) to the product's subject and audience. Don't call Inter, cards or rounded corners a defect by themselves (the playbook recommends Inter, E-17).
 - **Audit check**: Put the hero and one product screen next to the product's domain and ask what in them could not belong to an unrelated product; if nothing, note it under W5-01. Inferred; needs a render or screenshot.
 - **Restyle fix**: Needs a design decision: propose one product-specific choice (a real screenshot, domain imagery, a type pairing or an accent from the brand) instead of restyling everything.
-- **Severity**: low ; **Tags**: craft, typography, color
+- **Scope**: A default counts as one tell only when nothing in the brief, DESIGN.md or the tokens chose it; Inter and one radius language alone never count (E-17, C-08).
+- **Skill**: ux-hierarchy-clarity
+- **Severity**: low ; **Tags**: typography, color
 
 ### W5-03 Keep motion for user actions, not a fade-up on every section  (src: frontend-design-skill)
 - **Rule**: Motion the user did not trigger should be rare and should point at something; one orchestrated load or reveal works better than a fade-and-rise entrance on each section and a hover effect on every card, which is the generated default.
@@ -23,7 +27,9 @@
 - **Do / Don't**: Do animate responses to the user (open, expand, confirm) and at most one entrance moment per page. Don't attach the same scroll entrance to every section.
 - **Audit check**: Count scroll-entrance hooks on section roots (`whileInView`, `data-aos`, `useInView`, `IntersectionObserver` + `opacity-0`/`translate-y-*`, `animate-*fade*`); flag 3 or more. Check that a `prefers-reduced-motion: reduce` path exists.
 - **Restyle fix**: Remove the per-section entrances, keep one page-level moment if it carries meaning, and gate all non-essential motion behind `@media (prefers-reduced-motion: no-preference)`.
-- **Severity**: low ; **Tags**: motion, craft
+- **Scope**: Cascades of items that arrive from a user action or data load (W1-04) are fine, and so is scroll-driven motion for progress bars, sticky-header changes and one page-level moment.
+- **Skill**: ux-interaction-cost
+- **Severity**: low ; **Tags**: motion
 
 ### W5-04 Never hide content behind a scroll-triggered entrance  (src: ai-design-slop-review)
 - **Rule**: Content must be visible without its entrance animation: when a section starts transparent and waits for a scroll observer, a trigger that never fires leaves a blank section, which is a defect, not a matter of taste.
@@ -31,7 +37,8 @@
 - **Do / Don't**: Do start content visible and add the animation as an enhancement. Don't ship sections whose resting style is `opacity: 0` until a script runs.
 - **Audit check**: grep for elements that start hidden (`opacity-0`, `opacity: 0`, `initial={{ opacity: 0`) and only become visible through `whileInView`, `data-aos` or an observer; render with JavaScript disabled, with `prefers-reduced-motion: reduce`, and after jumping to an anchor further down, and check every section shows its content.
 - **Restyle fix**: Make the visible state the default and apply the hidden start only when script and motion are allowed (e.g. a class set by JS inside `prefers-reduced-motion: no-preference`), or use a CSS view timeline whose resting state is visible (W3-52).
-- **Severity**: high ; **Tags**: motion, states, accessibility
+- **Skill**: ux-interaction-cost
+- **Severity**: high ; **Tags**: motion, states
 
 ### W5-05 Don't single out one styled word in a headline  (src: frontend-design-skill)
 - **Rule**: Restyling just one word or phrase of a headline (italic serif, bold, a different colour or a gradient) is one of the commonest typographic defaults of generated pages; let the whole headline carry the emphasis.
@@ -39,7 +46,8 @@
 - **Do / Don't**: Do get headline emphasis from size, weight and placement. Don't wrap a single headline word in an italic serif, accent colour or gradient span by default.
 - **Audit check**: Look inside `h1`/`h2` for an `<em>`, `<i>` or `<span>` with `italic`, `font-serif`, an accent `text-*` colour or `bg-clip-text` around one or two words.
 - **Restyle fix**: Set the headline in one style; if a word truly needs stress, make it the subject of the sentence instead.
-- **Severity**: low ; **Tags**: typography, hierarchy, copy
+- **Skill**: ux-typography
+- **Severity**: low ; **Tags**: typography, hierarchy
 
 ### W5-06 Use eyebrows, labels and numbers only when they carry information  (src: frontend-design-skill)
 - **Rule**: Structural devices (eyebrow labels, dividers, numbering) should encode something about the content: a tracked all-caps label above every heading, or 01 / 02 / 03 markers on items that are not a sequence, is template chrome.
@@ -47,7 +55,8 @@
 - **Do / Don't**: Do number real steps and timelines. Don't put an uppercase kicker above each section heading or number a list of unrelated features.
 - **Audit check**: Count small `uppercase tracking-*` (or `text-transform: uppercase` + `letter-spacing`) labels directly before section headings; flag 3 or more. Check numbered markers (`01`, `02`, step circles) against whether the content is ordered.
 - **Restyle fix**: Delete eyebrows that restate the heading, keep one where it names a category the heading does not, and replace false numbering with plain headings.
-- **Severity**: low ; **Tags**: typography, hierarchy, craft
+- **Skill**: ux-typography
+- **Severity**: low ; **Tags**: typography, hierarchy
 
 ### W5-07 Strip template chrome from links, meta lines and labels  (src: frontend-design-skill)
 - **Rule**: Small habits mark a template whatever the subject: an arrow added to every link and button label, metadata strung together with centred dots, short labels split by a spaced dash after an all-caps word, and small data labels set in a monospace font.
@@ -55,7 +64,9 @@
 - **Do / Don't**: Do keep an arrow where it says "this goes somewhere else" (the one text-link secondary of W1-82). Don't append arrows to every control or build every label with dots and dashes.
 - **Audit check**: Count links/buttons whose text ends in `→`/`->`/an arrow icon (flag when most do), ` · ` separators in meta lines, ` — ` inside short labels, and `font-mono` on non-code labels.
 - **Restyle fix**: Keep arrows on links that leave the flow, write meta lines as plain text or separate fields, and use the body face for labels unless the content is code or tabular data.
-- **Severity**: low ; **Tags**: copy, typography, craft
+- **Scope**: Keep the arrow on the single hero text link (W1-82) and on links that leave the flow.
+- **Skill**: ux-typography
+- **Severity**: low ; **Tags**: copy, typography
 
 ### W5-08 Don't mark cards with a coloured edge stripe  (src: design-slop-score)
 - **Rule**: A coloured border on just the left or top edge of ordinary content cards is, in the words of a designer the source quotes, about as reliable a generated-design tell as em dashes are for generated text.
@@ -63,7 +74,9 @@
 - **Do / Don't**: Do separate cards with spacing, type and surface. Don't put a static accent stripe on every card (a hover edge cue on clickable cards, W1-79, and a status colour on alerts are different cases).
 - **Audit check**: grep cards for `border-l-[2-8]`/`border-t-[2-8]` with an accent colour, or `border-left: 3px+ solid <accent>` on rounded containers; ignore `blockquote` and status alerts whose colour encodes severity.
 - **Restyle fix**: Remove the stripe; if the cards need a category signal, use a label or icon that names it (W1-14 pairs colour with a second signal).
-- **Severity**: low ; **Tags**: cards, borders, color
+- **Scope**: A hover-only accent edge on clickable cards (W1-79) and status alerts whose edge colour encodes severity are exempt.
+- **Skill**: ux-depth-craft
+- **Severity**: low ; **Tags**: cards, borders
 
 ### W5-09 Don't nest cards or box single lines to fake hierarchy  (src: vercel-design-md)
 - **Rule**: Cards inside cards, and borders added to prop up a weak hierarchy, are a generated reflex; fix the hierarchy with spacing and type instead.
@@ -71,7 +84,8 @@
 - **Do / Don't**: Do use one container level for a group (a shared region is fine, W2-06). Don't wrap a card in another card or add a border just to separate things that spacing could separate.
 - **Audit check**: Look for a bordered/shadowed rounded container inside another (`rounded-* border`/`shadow-*` or `Card` inside `Card`/`CardContent`), and for borders that separate items already separated by spacing (inference).
 - **Restyle fix**: Remove the inner container's border and shadow, group its contents with spacing and a heading, and keep the outer surface.
-- **Severity**: medium ; **Tags**: cards, hierarchy, borders
+- **Skill**: ux-depth-craft
+- **Severity**: medium ; **Tags**: cards, hierarchy
 
 ### W5-10 Use icons that inform, not emoji bullets or stock icon tiles  (src: slop-taxonomy)
 - **Rule**: Emoji used as bullets (✨ 🚀 ⚡) and the obvious stock icon in a tinted rounded square for each feature (a bolt for speed, a shield for security, sparkles for AI) are defaults that decorate rather than explain.
@@ -79,7 +93,9 @@
 - **Do / Don't**: Do use icons that help scanning or name a real object or status (G-14 still applies). Don't decorate feature lists with emoji or put a generic icon tile on top of every card.
 - **Audit check**: Count pictographic emoji in headings, list items and buttons; count icon tiles (a small square or circle with a tinted background holding one icon) at the top of cards in a grid; flag 3 or more.
 - **Restyle fix**: Replace emoji with the project's icon set or nothing; swap generic icon tiles for product imagery (W1-84) or remove them and let the heading lead.
-- **Severity**: low ; **Tags**: icons, imagery, cards
+- **Scope**: Icons that name a real object or status stay (G-14), as do subheading icons from the project's icon set (E-30) and navigation-menu icons (H-16): count icon tiles only on feature or marketing cards. An emoji the brief chose is Accepted by design.
+- **Skill**: ux-layout-spacing
+- **Severity**: low ; **Tags**: icons, imagery
 
 ### W5-11 Write copy that could only belong to this product  (src: slop-taxonomy)
 - **Rule**: Generated pages reuse the same SaaS slogans ("build the future of …", "ship faster", "your AI-native …") and hedge with "may"; lines like these could describe any product and say nothing about this one.
@@ -87,6 +103,7 @@
 - **Do / Don't**: Do name the user, the task and the result in plain words. Don't fill sections with filler adjectives and slogans (the hero headline is W1-80; button labels are W2-67).
 - **Audit check**: grep visible copy for `seamless|effortless|supercharge|unleash|unlock|elevate|revolutioni[sz]e|game-?chang|cutting-edge|next-gen|empower|streamline|build the future|ship faster|AI-native|in today's`; flag 3 or more outside the hero.
 - **Restyle fix**: Rewrite each flagged line as a concrete claim (who, what, with what result); delete it if no concrete claim exists.
+- **Skill**: ux-hierarchy-clarity
 - **Severity**: medium ; **Tags**: copy
 
 ### W5-12 Don't ship a default palette cluster as the brand  (src: frontend-design-skill)
@@ -95,7 +112,9 @@
 - **Do / Don't**: Do use one of these looks when the brief explicitly requests it. Don't spend an open colour decision on one of them.
 - **Audit check**: Compare the page's background, accent and display face with the clusters above and with the framework's default tokens (unchanged shadcn/ui `--primary`/`--radius`; inference); count a match as one tell under W5-01 only if no brief or token file chose it.
 - **Restyle fix**: Needs a design decision: derive the accent and neutrals from the brand or product domain, then express them as tokens.
-- **Severity**: low ; **Tags**: color, craft
+- **Scope**: A default palette counts as one W5-01 tell only when nothing in the brief or tokens chose it; it is never a finding on its own.
+- **Skill**: ux-color
+- **Severity**: low ; **Tags**: color
 
 ### W5-13 Test layouts with real content, not demo-sized content  (src: ai-design-slop-review)
 - **Rule**: Generated layouts are sized for convenient content; check every view with long names (about forty characters), tables with zero, two and thousands of rows, negative and very large numbers, and missing images.
@@ -103,6 +122,7 @@
 - **Do / Don't**: Do try extreme but realistic content in each component before calling it done. Don't judge a screen only by the seeded demo data.
 - **Audit check**: Render the view with stress data (long strings, empty and huge lists, negative values, missing avatars) or find components without `truncate`/`line-clamp`/`min-w-0`/`overflow-wrap` on user text; flag overflow, collisions and clipped values.
 - **Restyle fix**: Add truncation with full text on demand, wrap or clamp long strings, reserve width for numbers with tabular figures, and design the empty and overflow states.
+- **Skill**: ux-layout-spacing
 - **Severity**: medium ; **Tags**: states, layout
 
 ### W5-14 Show a metric row only when it is the clearest form  (src: vercel-design-md)
@@ -111,4 +131,6 @@
 - **Do / Don't**: Do show units, periods and the comparison a number belongs to. Don't add a stat banner to fill space or restate numbers shown elsewhere at equal weight.
 - **Audit check**: Look for 3 or more sibling blocks each holding a large number and a short label (`text-3xl`+ followed by `text-sm`/`text-muted`), and check whether each figure states its unit, period and basis.
 - **Restyle fix**: Keep figures that carry their unit, period and basis; merge the rest into one sentence or chart that compares them, or remove them.
-- **Severity**: low ; **Tags**: copy, hierarchy, craft
+- **Scope**: Where a metric row is the clearest form, keep it and apply A-11 (each figure with its unit, period and basis); merge or remove filler rows instead of restyling them.
+- **Skill**: ux-hierarchy-clarity
+- **Severity**: low ; **Tags**: copy, hierarchy

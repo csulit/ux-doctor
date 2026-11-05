@@ -1,59 +1,56 @@
 # Finding format, scoring and report template
 
 ## One finding
+Write each finding as one object in `.ux-doctor/findings.json` (or in memory under `--dry-run`), then render it in the report:
+```json
+{ "rule": "F-09", "placement": "primary", "title": "Muted nav links fail contrast",
+  "where": "src/components/Nav.tsx · NavLink · line 42 @ a1b2c3d",
+  "evidence": "#9CA3AF on #FFFFFF = 2.5:1 (contrast.mjs)", "label": "verified",
+  "impact": "Nav labels are hard to read in daylight.",
+  "fix": "text-gray-600 (#4B5563, 7.6:1) — keeps: the muted look relative to the active link" }
 ```
-[SEV] <short title>                      rule: <ID> (<citation>)  tags: <tags>
-where:    <file> · <selector | symbol | component> · line N @ <short sha>   (or route + screenshot region)
-evidence: <what you read/measured, with values>   (verified | measured | inferred)
-impact:   <one sentence: what the user experiences>
-fix:      <concrete, token-based change with target values> — keeps: <the visible result it preserves>
-```
-- `SEV` = blocker | major | minor | polish | advisory (table, lowering format, blockers and `(general practice)` severities are defined in `../SKILL.md`).
-- `citation` = `p.N` for playbook rules; `web:<slug>` for web rules (`source: web`, there is no page — say so).
-- The `where` anchor must survive edits: file + selector/symbol/component name + `line N @ <short sha>`. Lines go stale after edits; the name stays findable.
-- Evidence labels (verified | measured | inferred; `inferred (no render)` without a render) are defined in `../SKILL.md`.
-- No good option? Write `fix: needs a design decision` and give none. A fix blocked by a project rule is not a finding fix: list it once as `Blocked by project rule — <file:line>`.
-- `keeps:` is a claim the restyle verifies; for hide/remove/move fixes state the end state per scroll state (`at top: …; after the hero scrolls out: …`) and what the freed space becomes.
-- One finding per distinct problem; repeats go under one finding as `+7 more: ...`. Rules listed under **Restatements** in `rule-tensions.md` count once: cite the canonical ID first and the restatement after it (`rule: F-09 (p.93), also W1-12`).
+- `rule`: a `check` rule ID (cite the canonical ID; an old one resolves with `rule.mjs`, e.g. `W1-12 → F-09`) or `"general practice"` with `"severity": "major" | "minor"` and a `"dimension"`. Principles and defaults are never findings.
+- `placement`: `primary` = primary flow, above the fold, or visibly repeated 3+ times; else `secondary`.
+- Optional: `"lower": "<one-line reason>"` (one level down, the only permitted override), `"contested": true` (the report prints a grade range), `"blocker": "<reason>"` (only the cases in `../SKILL.md`), `"advisory": "<reason>"` (0 points), `"dimension"` (required for extended web rules).
+- `where`: a stable anchor: file + selector/symbol/component + `line N @ <short sha>` (or route + screenshot region). Lines go stale; the name stays findable.
+- `label`: `verified` | `measured` | `inferred` (`inferred (no render)` without a render).
+- `fix`: a concrete, token-based change with target values, then `— keeps: <the visible result it preserves>`. For hide/remove/move fixes state the end state per scroll state (`duplicate-cta.md`). No good option: `needs a design decision`. A fix blocked by a project rule is listed once as `Blocked by project rule — <file:line>` instead.
+- One finding per root cause; repeats go under one finding as `+7 more: ...`.
 
-## Dimensions and score
-There are **7 scored dimensions** (the seven playbook knowledge skills). `ux-web-patterns` has no row of its own: fold its findings into the matching playbook dimension at **half weight**, keeping the `source: web` flag. A `(general practice)` check is weighted per `../SKILL.md`. Per dimension start at 100 and subtract per distinct finding: blocker 25, major 12, minor 5, polish 2 (web findings: 12.5 / 6 / 2.5 / 1); advisory 0 (floor 0). Overall = mean of the dimensions actually checked, rounded to the nearest integer after averaging (skip one with "n/a — not applicable/not checked"; never score Hierarchy or Layout as "no issues" without a render). Grade: A ≥ 90, B ≥ 80, C ≥ 70, D ≥ 55, F < 55. If any lowering is contested, print a grade range computed with and without it, e.g. `B–C (78–84)`. The score tracks change; it is not a verdict — always show the findings behind it. "Accepted by design" items are not scored.
+## Scoring
+Run `node scripts/score.mjs .ux-doctor/findings.json` (or `-` for stdin, `--json` for machine output). It rejects incomplete findings, merged or unknown IDs, principles and defaults, and prints the final severity of each finding (rule severity × placement, then any lowering), the score of each of the 7 dimensions, the overall score, the grade and, for contested lowerings, the range. Copy its numbers into the report; never compute them by hand. Pass `"evidence": "code-only"` at the top level when there is no render (Hierarchy and Layout are then never scored as "no issues") and `"notChecked": [...]` for dimensions you skipped. The score tracks change; it is not a verdict.
 
 ## Measuring (don't eyeball what a tool can compute)
-Tool paths are relative to the ux-doctor skill folder (next to its `SKILL.md`).
-- **Contrast** — computed values win over the playbook's labels (p.86 calls #626262 on white AAA-passing, but it computes to 6.1:1 = AA only): `node scripts/contrast.mjs <fg> <bg> [--large] [--over <hex>]` → ratio + AA/AAA verdict. `--large` applies 3:1; `--over <hex>` flattens a translucent foreground/background onto the colour beneath it. Compute every token pair per theme (light and dark), including translucent overlays. Thresholds: 4.5:1 normal text (WCAG AA, general practice; also playbook p.93), 3:1 large text/UI.
-- **CTAs per viewport** — `node scripts/cta-scan.mjs <url|file.html|-> [--render] [--shots <dir>] [--json] [--scheme light|dark] [--filled <class-regex>] [--base <url>]`. It lists links/buttons in the first viewport (header included) and flags `DUP_IN_VIEWPORT` (same normalised label AND destination) and `MULTI_PRIMARY_IN_VIEWPORT`. Static mode approximates the first viewport; `--render` measures it in an installed Chrome (`measured`). Flags are hints feeding the severity table — confirm "primary" against the CSS or a screenshot. Exit 1 = flags. `--shots` writes PNGs, so run it only where writing under `.ux-doctor/shots/` is allowed (audit; `/ux-review` main agent; restyle baseline — never `--dry-run`); without `--shots` nothing is written.
-- **AI-look tells** — `node scripts/slop-scan.mjs <url|file|dir|-> [--json] [--max-files N] [--list]`. Line-based heuristics over markup, components and stylesheets (no JavaScript is run; a URL fetches the page HTML only) for the tells in W1-80, W1-81, W1-83, W1-84 and W5-03..W5-12 (W1-82, two equal hero CTAs, is `cta-scan`'s MULTI_PRIMARY flag); it prints each tell with its rule IDs and `file:line` hits, the tier (0–1 low, 2–3 medium, 4+ high) and the W5-01 verdict (grouped finding at 3+ tells, else a `(general practice)` note). Hits are `verified` code facts but the tell itself is a hint: confirm each against the code or a render and drop tells the brief or tokens chose. `HIDDEN_UNTIL_SCROLL` (W5-04) is listed apart as a defect candidate, outside the tell count: confirm it with a render without JS or with reduced motion, then score it on its own. `--list` prints every tell with its rule IDs. Exit 1 = tells or a defect candidate, 0 = none, 2 = bad input, an unreadable file or folder, a directory walk stopped at `--max-files` or the 50 MB total (an incomplete directory scan prints its partial result first), a fetch failure or a timeout; a page or stdin over 50 MB is cut and exits 2 too. In a directory scan, files over 1 MB are skipped and counted, not an error; a file named as the target may be up to 50 MB. Writes nothing.
-- **Line length** — `ch` is the width of the `0` glyph, not an average character: `72ch` can be ~93 real characters. Count real characters per line in a browser, or use ~30–36em for proportional UI fonts (inference; measure per font: 36em ≈ 73.5 characters, about 2.0 characters/em). Target 45–75 real characters.
-- **Heading line-height** — the ratio shrinks as size grows (F-08: ~1.3 at 36px); large display type may sit at 1.0–1.15 (inference). Fail only if heading line-height ≥ paragraph line-height or lines collide.
-- **Spacing** — collect all `padding|margin|gap` values; flag values off the project's scale (playbook p.28: multiples of 2, 4 or 6; e.g. 4/8/16/24/32).
-- **Type** — collect `font-family` (max 2), `font-size` (body 16px, nothing < 12px for main text), `line-height` (body 1.5–1.6, heading below the paragraph value, ≈1.2–1.3 at mid sizes).
-- **Colour** — collect distinct hex/hsl values; flag pure `#000`/`#fff` text, saturated page backgrounds, status colours that break red=error/green=success.
-- **Shadows** — collect `box-shadow`; flag grey shadows on tinted backgrounds, hard/zero-offset shadows, more than one unrelated shadow definition per tier.
-- **Rule lookup** — `node scripts/rule.mjs <ID|tag|keyword>` prints matching rules compactly (exit 1 = none).
+Tool paths are relative to the ux-doctor skill folder. Values and hard floors: `defaults.md`.
+- **Contrast**: `node scripts/contrast.mjs <fg> <bg> [--large] [--over <hex>]` → ratio + AA/AAA. `--over` flattens a translucent colour onto the one beneath it. Compute every text/background token pair per theme. Computed values win over the playbook's labels.
+- **CTAs per viewport**: `node scripts/cta-scan.mjs <url|file.html|-> [--render] [--shots <dir>] [--json] [--scheme light|dark] [--filled <class-regex>] [--base <url>]`. Lists links and buttons in the first viewport (header included) and flags `DUP_IN_VIEWPORT` (then load `duplicate-cta.md`) and `MULTI_PRIMARY_IN_VIEWPORT`. Static mode approximates; `--render` measures in an installed Chrome. Flags are hints: confirm "primary" in CSS or a screenshot. `--shots` writes PNGs, so use it only where the workflow allows writing `.ux-doctor/shots/`. Exit 1 = flags.
+- **AI-look tells**: `node scripts/slop-scan.mjs <url|file|dir|-> [--json] [--max-files N] [--list]`. Counts the tells of W1-80, W1-81, W1-83, W1-84 and W5-03..W5-12 with `file:line` hits, a tier (0–1 low, 2–3 medium, 4+ high) and the W5-01 verdict (one grouped finding at 3+ confirmed tells, else a `(general practice)` note). Confirm each hit and drop tells the brief or tokens chose. `HIDDEN_UNTIL_SCROLL` (W5-04) is a defect candidate scored on its own. Exit 1 = tells, 2 = bad input or incomplete scan. Writes nothing.
+- **Line length**: count real characters per line in a browser (`ch` is the width of `0`; ~2.0 characters per em for proportional UI fonts, *inference*).
+- **Collect values with grep**: `padding|margin|gap` (against the spacing scale), `font-family|font-size|line-height|font-weight`, colours (`#000`/`#fff` text, saturated backgrounds, status colours), `box-shadow` (grey on tinted backgrounds, hard shadows, unrelated definitions per tier), `border-radius`.
+- **Rule lookup**: `node scripts/rule.mjs <ID|tag|keyword>` (exit 1 = none). Over-broad tags print a count per skill; add a word to narrow.
 
 ## Report template (`.ux-doctor/audit.md`, under ~100 lines)
 ```
 # UX audit — <target>   (<date> · <git short sha>[+dirty])
-Grade: <grade> (<score>/100)[, range <g1–g2>]  ·  blockers <n> · major <n> · minor <n> · polish <n> · advisory <n>
+Grade: <grade> (<score>/100)[, range <g1–g2>]  ·  blockers <n> · major <n> · minor <n> · polish <n> · advisory <n>   (from score.mjs)
 Evidence: rendered (<viewports, schemes>) | code-only — Visual confidence: low (no render)
 Constraints: 1) … 2) …            (project constraints; "none found" if none)
 Accepted by design: … (excluded from scoring)
 
 ## Fix first (max 3)
-Eligible only if: blocker or major (blockers rank first), measured or verified, not blocked by a project rule, not a pure token-vs-playbook gap.
-Rank: blockers first, then hard-threshold failure > primary flow > visible reach > lowest cost.
+Eligible only if: blocker or major, measured or verified, not blocked by a project rule, not a pure token-vs-playbook gap.
+Rank: blockers first, then hard-floor failure > primary flow > visible reach > lowest cost.
 1. #<finding no.> — before: <value> → target: <value> — verify: <command>
 
 ## Findings
 | # | Sev | Rule | Where | Measured | Fix | Status |
 |---|-----|------|-------|----------|-----|--------|
-(one table; "Where" uses the stable anchor; Status = open | fixed | deferred | blocked)
+(one table; Status = open | fixed | deferred | blocked; web rules marked `source: web`)
 Detail block, majors only (3 lines): what is wrong · why it matters here · what the fix keeps.
 
-## Advisory         (one line each; token passes all thresholds / accepted by design)
+## Advisory         (one line each)
 ## Checked, no issues: <rule IDs on one line>
-## What already works   (max 3; none may contradict a finding; no hierarchy/CTA claims unless true for the whole first viewport incl. header)
-## Restyle plan   (batches: tokens → global → components → pages; reference finding numbers, don't restate them; list files)
+## What already works   (max 3; none may contradict a finding)
+## Restyle plan   (batches: tokens → global → components → pages; reference finding numbers; list files)
 Blocked by project rule: <finding #> — <file:line>
 ```

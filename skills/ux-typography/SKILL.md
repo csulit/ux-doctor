@@ -1,59 +1,37 @@
 ---
 name: ux-typography
-description: "Knowledge of typography rules from the UI/UX playbook: font choice and count, type scale, body size, line-height, line length, weight, text colour and contrast. Use when auditing, reviewing or restyling font-family, font-size, line-height, font-weight, text colour, max-width of text or button-label contrast."
+description: "Knowledge on typography: font choice and count, type scale, body size, line-height, line length, weight, text colour and contrast, plus headline styling tells. Use when auditing, reviewing or restyling font-family, font-size, line-height, font-weight, text colour, max-width of text, button-label contrast, eyebrow labels or one-word gradient headlines."
 ---
 
 # UX Typography
 
-Scope: choosing and setting type so text is readable, hierarchical and accessible.
-Rules E-13…E-33 and F-01…F-19, with the p.96-97 checklist folded into the rules it repeats: E-19, E-31, E-33 and F-08 here, A-12 in ux-hierarchy-clarity and A-24 in ux-layout-spacing (playbook pp.72-97).
+Readable, hierarchical, accessible text. Playbook rules E-13..E-33 and F-01..F-19 (the p.96-97 checklist is folded into the rules it repeats); core web rules W1-24 (fixed type scale), W5-05, W5-06, W5-07 (AI-look type tells, `source: web`). A-12 (heading vs body colour) is scored in ux-hierarchy-clarity and A-24 (text alignment) in ux-layout-spacing.
 
 ## How to use
-Read references/index.md first; open references/rules.md only for the rule IDs relevant to the current finding (search by ID, e.g. `grep -n '^### F-07' references/rules.md`). Cite rule IDs and pages in every finding.
+Start from the Critical 20 (`../ux-doctor/references/critical.md`), then the top checks below. Open a rule only for a candidate finding: `node ../ux-doctor/scripts/rule.mjs F-07`, or `references/index.md` → `references/rules.md`. Only `check` rules become findings.
 
 ## Top checks
-- F-06 (pp.90, 96) — Main text < 12px = violation (p.90); any text < 10px = violation, platform-dependent (p.96); body < 16px = check, not an automatic fail (inference) (`text-[10px]` etc.) → body 16px. `text-xs` is 12px, so it is not itself a violation.
-- F-07 (p.91) — Paragraph line-height < 1.2 cramped, > 2 floating, ideal 1.5-1.6 (`leading-none/tight` on paragraphs = violation) → 1.5-1.6.
-- F-08 (pp.92, 96-97) — Fail = heading line-height ≥ paragraph line-height (compare computed ratios in the same context) or heading lines colliding/clipped (inference). The heading ratio shrinks as size grows: playbook 120% in the card example, 36px heading ≈ 1.3, paragraphs 1.5-1.6. Large display type (≥ ~56px) at 1.0-1.15 is not a violation by itself (inference); do not apply a flat "> 1.3" cut-off.
-- E-22 (pp.76-78) — Desktop body measure outside 45-75 real characters per line (no `max-width`, `max-w-none`, full-width paragraphs) → measure real characters per line in the rendered page (browser `Range` rects per line, or font metrics); 1ch is the width of the `0` glyph, NOT an average character (one proportional UI font: 72ch ≈ 93 real characters, 36em ≈ 73.5). Rule of thumb for proportional UI fonts about 30-36em for 45-75 characters (inference — verify per font); `ch` only for monospace. Centred block (E-27) or left-aligned (E-28).
-- E-23 (p.77) — Mobile lines should be 30-40 characters → adjust padding/size.
-- F-02 (p.86) — Light-grey body text: `#A9A9A9` on white fails, `#626262` passes (`text-gray-300/400`, opacity on text) → darken to ≥ ~#626262 or 4.5:1.
-- F-09 (p.93) — Text/background pair < 4.5:1 (WCAG AA), especially on tinted cards and images → darken text; dark text on mid-tone fills, not white.
-- F-12 (p.95) — Button label < 4.5:1 on its fill (white on pink/pastel) → near-black `#141B12`, semibold, or darker fill.
-- E-33 (pp.84, 96-97) — Heading and body same weight (400/400) → headings 500-700, body 400 (or 300).
-- F-03 (p.87) — Body weight < 400 (`font-thin`, `font-extralight`; `font-light` on small text = warning) → 400, or 500 for delicate small text.
-- F-01 (p.85) — Light heading (≤ 400) relies mostly on size: it must be clearly, visibly larger than body; a colour darker than body is a reinforcement, not a requirement → else raise weight or size. No numeric size ratio in the playbook (a ≥ ~2x rule of thumb would be an inference).
-- F-04 / F-05 (pp.88-89) — Heading size ≈ body size, or a secondary message larger than the critical one → clear size step. Playbook examples: 32px title vs 16px body (p.90 card, = 2x computed) and 28px heading vs 18px body (p.95, ≈ 1.55x computed); no minimum ratio is stated.
-- E-19 (pp.75-76, 96-97) — More than 2 distinct `font-family` values (excluding icon/mono) → 1 family (ideal) or max 2 split heading/body (E-21); two families split by role are not a finding.
-- E-31 (pp.83, 96) — `#000000` / `#FFFFFF` text → graded off-black/off-white. An identical heading and body colour is A-12 (pp.11, 96-97): report it under hierarchy, not here.
-- E-16 (p.74, high) — Decorative/blackletter/condensed/novelty face for body, buttons or UI labels → neutral legible typeface.
-- A-24 (pp.18, 94; layout dimension) — `text-align: center|right` on multi-line paragraphs or lists → left-align; centre only short titles.
+- F-09 / F-12 (p.86, p.93, p.95) — text, or a button label on its fill, below 4.5:1 (3:1 large); light-grey body text is the usual offender → darken text, dark labels on pastel fills; always compute with `contrast.mjs`.
+- F-06 (p.90, p.96) — main text below 12px, or body text not ~16px outside dense tool UIs → 16px body. `text-xs` (12px) is not itself a violation.
+- F-07 / F-08 (p.91-92) — paragraph line-height outside 1.5-1.6 (below 1.2 cramped, above 2 floating); heading line-height ≥ paragraph line-height → body 1.5-1.6, headings tighter (display type at 1.0-1.15 is fine).
+- E-22 / E-23 (p.76-78) — desktop body lines outside 45-75 real characters, mobile outside 30-40 → cap the column (~30-36em for proportional fonts); `ch` is the width of `0`, so measure real characters in the render.
+- E-33 / F-03 / F-04 (p.84, p.87-89) — headings and body at the same weight or nearly the same size; body below weight 400 → headings 500-700 and clearly larger, body 400.
+- E-19 / E-16 (p.74-76) — more than 2 families (icon and mono fonts excluded), or a decorative/novelty face for body, buttons or labels → one proven family, a second only split by role.
+- E-31 (p.83) — `#000000` text on white or `#FFFFFF` on dark → graded off-black and off-white text tokens.
 
 ## Code signals
-- Distinct families: `grep -rhoE "font-family:[^;}]+"` and `font-(sans|serif|mono)`, `@font-face`, Google Fonts `<link>`/`@import`, Figma text styles; count unique non-icon/non-mono (E-19).
-- Sizes: `font-size:\s*([0-9]|1[01])px`, `text-\[(\d|1[01])px\]`, `font-size:\s*0?\.([0-6]\d*|7[0-4]\d*)rem` (i.e. < 0.75rem = < 12px) (F-06).
-- Line-height: `line-height:\s*(0?\.\d+|1(\.[01]\d*)?|1\.[0-4]\d*)\b`, `leading-(none|tight|snug)` on `<p>`; compare heading vs paragraph ratio (F-08 fails on heading ≥ paragraph, not on a fixed number; display type ≥ ~56px at 1.0-1.15 is fine, inference); `line-height` > 2 (F-07, F-08).
-- Measure: `max-w-none`, `w-full` or absent `max-width` on paragraph containers; `max-w-(prose|[0-9]xl)`, `[0-9]+ch` (do not convert `ch` into a character count; `max-w-prose` = 65ch is not 65 characters in a proportional font); measure real characters per line at desktop and mobile widths in the rendered page (E-22, E-23).
-- Weights: `font-weight:\s*[1-3]00`, `font-thin|font-extralight|font-light`, headings with `font-normal` (E-33, F-03).
-- Colours: `color:\s*#(000|000000|fff|ffffff)\b`, `text-(black|white)`, `text-gray-(300|400)`, `opacity-(40|50|60)` on text, placeholder-grey used as content; run a contrast check for every text/background pair and button label/fill pair (E-31, F-02, F-09, F-12).
-- Alignment: `text-center|text-right|text-align:\s*(center|right)` on multi-line blocks (A-24, scored under layout).
-- Paragraph spacing: `<p>` with `margin:0` / `m-0` / no gap in long-form text (E-29, F-19).
-- Body font resolves to serif: `font-serif`, Times New Roman, Georgia (F-17).
-- Screenshots: walls of full-width text, wall-of-paragraph without subheads (E-30), faint grey copy, tiny captions, white labels on pastel buttons.
+- Families: `grep -rhoE "font-family:[^;}]+"`, `@font-face`, Google Fonts `<link>`/`@import`; count unique non-icon, non-mono (E-19).
+- Sizes: `font-size:\s*([0-9]|1[01])px`, `text-\[(\d|1[01])px\]`, rem values below 0.75 (F-06); sizes outside the type scale (W1-24).
+- Line-height: `leading-(none|tight|snug)` on `<p>`; compare heading vs paragraph ratios (F-07, F-08).
+- Measure: `max-w-none`, `w-full` or no `max-width` on paragraph containers; `max-w-prose` = 65ch, not 65 characters (E-22).
+- Weights: `font-thin|font-extralight`, `font-weight:\s*[1-3]00` on body, headings with `font-normal` (E-33, F-03).
+- Colours: `text-(black|white)`, `#000`/`#fff` text, `text-gray-(300|400)` or `opacity-*` on body text; run `contrast.mjs` on every text/background and label/fill pair (E-31, F-09, F-12).
+- `<p>` with `m-0` in long-form text, walls of copy without subheadings (E-29, E-30, F-19).
+- Headlines with one gradient or highlighted word, `uppercase tracking-widest text-xs` eyebrows before every heading, false numbering ("01 / 02") (W5-05, W5-06).
 
-## Restyle defaults
-- One family, e.g. Inter; variety via weight/size (E-17, E-19). Safe list: Inter, Gotham, Lato, Open Sans, San Francisco, Helvetica, Manrope, Roboto (E-17). Two-font pairs: Playfair Display + Sources Sans Pro; Raleway + Merriweather; Montserrat + Open Sans (E-21). Licensed fonts only; Google Fonts is a safe free source (E-18).
-- Sans-serif body (F-17); serif for formal sectors (E-13), sans for tech/music/messaging (E-15), script for hero headline only (E-14).
-- Body 16px / weight 400 / line-height 1.5-1.6 (F-06, F-03, F-07); headings weight 500-700, line-height ≈ 1.2-1.3 (E-33, F-08).
-- Reference card (F-11, p.95): heading 28px Bold LH 120% `#1B000D`; body 18px Regular LH 160% `#5E5458`; button label 18px Semibold `#141B12`; left-aligned.
-- Text tokens (E-31, p.83): light mode heading `#1A1A1A`, body `#4E4E4E`; dark mode heading `#F2F2F2`, body `#CACACA`. Add a secondary text token lighter than the heading token but ≥ 4.5:1 (A-12).
-- Measure: cap text columns in `em`/`rem`, about 30-36em for proportional UI fonts (inference — re-measure real characters per line: target 45-75 desktop); `ch` only for monospace; 30-40 chars mobile (E-22, E-23).
-- Break long copy into short paragraphs with visible gaps and subheadings (semibold, slightly larger than body, optional icon / thin divider line) (E-29, E-30, F-19). Exact paragraph spacing (~0.75-1em) is not in the playbook (general practice).
-- Contrast target 4.5:1 normal text (F-09, WCAG AA); 3:1 for large text/UI is general practice.
-
-## Pairs well with
-- ux-hierarchy-clarity — size/weight/colour as hierarchy.
-- ux-color — contrast, text colour tokens, dark mode.
-- ux-layout-spacing — line length, paragraph spacing, alignment.
-- ux-depth-craft — text on glass or coloured surfaces.
-- ux-ui-patterns — button labels, cards, forms.
+## Restyle
+Values (sizes, line-heights, weights, text colours, families, line length): `../ux-doctor/references/defaults.md`. Specific to this skill:
+- Proven UI families: Inter, Gotham, Lato, Open Sans, San Francisco, Helvetica, Manrope, Roboto (E-17); pairings: Playfair Display + Source Sans Pro, Raleway + Merriweather, Montserrat + Open Sans (E-21). Licensed fonts only (E-18).
+- Sector choices are defaults, not findings: serif headings for formal sectors (E-13), sans for tech and messaging (E-15), script for a hero headline at most (E-14).
+- Reference card (F-11, p.95): heading 28px Bold LH 120% `#1B000D`; body 18px Regular LH 160% `#5E5458`; button label 18px Semibold `#141B12`.
+- Break long copy into short paragraphs with visible gaps and semibold subheadings (E-29, E-30, F-19).
